@@ -9,7 +9,13 @@
     <resource-bundle>messages.MyBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.puotek.armaconfigplugin.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
-        <postStartupActivity implementation="com.github.puotek.armaconfigplugin.startup.MyProjectActivity" />
+        <!-- Only ONE fileType declaration -->
+        <fileType
+                name="Arma Config"
+                implementationClass="arma.config.ArmaConfigFileType"
+                language="ArmaConfig"
+                fileNames="config.cpp"
+                extensions="hpp;ext;h;hh"/>
     </extensions>
+
 </idea-plugin>
