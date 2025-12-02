@@ -6,25 +6,26 @@
   elementTypeClass="arma.config.psi.ArmaConfigElementType"   // ← add this
   tokenTypeClass="arma.config.psi.ArmaConfigTokenType"
 
-  tokens = [
-    CLASS_KEYWORD = 'class'
-    LBRACE        = '{'
-    RBRACE        = '}'
-    LBRACKET      = '['
-    RBRACKET      = ']'
-    EQUAL         = '='
-    SEMICOLON     = ';'
-    COMMA         = ','
-    COLON         = ':'
+    tokens = [
+        CLASS_KEYWORD = 'class'
+        LBRACE        = '{'
+        RBRACE        = '}'
+        LBRACKET      = '['
+        RBRACKET      = ']'
+        EQUAL         = '='
+        SEMICOLON     = ';'
+        COMMA         = ','
+        COLON         = ':'
 
-    LINE_COMMENT  = 'regex://.*'
-    BLOCK_COMMENT = 'regex:/\*([^*]|\*+[^*/])*\*+/'
-    PREPROCESSOR  = 'regex:#.*'
+        LINE_COMMENT  = 'regex://.*'
+        BLOCK_COMMENT = 'regex:/\\*([^*]|\\*+[^*/])*\\*+/'
+        PREPROCESSOR  = 'regex:#.*'
 
-    IDENT  = "regex:[A-Za-z_][A-Za-z0-9_]*"
-    NUMBER = "regex:\d+"
-    STRING = "regex:\"([^\"\\n]|\\.)*\""
-  ]
+        IDENT  = "regex:[A-Za-z_][A-Za-z0-9_]*"
+        FLOAT  = "regex:\\d+\\.\\d+"
+        NUMBER = "regex:\\d+"
+        STRING = "regex:\"([^\"\\\\n]|\\\\.)*\""
+    ]
 }
 
 configFile ::= item*
@@ -39,7 +40,7 @@ assignment ::= IDENT arraySuffix? EQUAL value SEMICOLON
 
 arraySuffix ::= LBRACKET RBRACKET
 
-value ::= IDENT | NUMBER | STRING | array
+value ::= IDENT | FLOAT | NUMBER | STRING | array
 
 array ::= LBRACE valueList? RBRACE
 valueList ::= value (COMMA value)*

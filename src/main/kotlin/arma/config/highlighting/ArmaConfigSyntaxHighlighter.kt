@@ -23,7 +23,7 @@ class ArmaConfigSyntaxHighlighter : SyntaxHighlighter {
     override fun getTokenHighlights(tokenType: IElementType): Array<TextAttributesKey> = when (tokenType) {
         ArmaConfigTypes.CLASS_KEYWORD -> KEYWORD_KEYS
         ArmaConfigTypes.STRING -> STRING_KEYS
-        ArmaConfigTypes.NUMBER -> NUMBER_KEYS
+        ArmaConfigTypes.NUMBER, ArmaConfigTypes.FLOAT -> NUMBER_KEYS
 
         // {} braces
         ArmaConfigTypes.LBRACE, ArmaConfigTypes.RBRACE -> BRACES_KEYS

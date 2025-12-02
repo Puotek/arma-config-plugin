@@ -182,16 +182,31 @@ class ArmaConfigLexer : LexerBase() {
             return
         }
 
-        // NUMBER token: simple integer sequence
+        // NUMBER or FLOAT token
         if (c.isDigit()) {
-            var j = i + 1
-            while (j < endOffset && buffer[j].isDigit()) {
-                j++
+            var j = i
+            var seenDot = false
+
+            while (j < endOffset) {
+                val ch = buffer[j]
+                when {
+                    ch.isDigit() -> {
+                        j++
+                    }
+                    !seenDot && ch == '.' && j + 1 < endOffset && buffer[j + 1].isDigit() -> {
+                        // first dot followed by digit -> start FLOAT
+                        seenDot = true
+                        j++ // consume '.'
+                    }
+                    else -> break
+                }
             }
+
             tokenEnd = j
-            tokenType = ArmaConfigTypes.NUMBER
+            tokenType = if (seenDot) ArmaConfigTypes.FLOAT else ArmaConfigTypes.NUMBER
             return
         }
+
 
         // STRING: " ... ", supports \" and escapes, stops at newline or closing quote
         if (c == '"') {

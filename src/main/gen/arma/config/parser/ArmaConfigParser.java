@@ -169,12 +169,13 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IDENT | NUMBER | STRING | array
+  // IDENT | FLOAT | NUMBER | STRING | array
   public static boolean value(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "value")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, VALUE, "<value>");
     r = consumeToken(b, IDENT);
+    if (!r) r = consumeToken(b, FLOAT);
     if (!r) r = consumeToken(b, NUMBER);
     if (!r) r = consumeToken(b, STRING);
     if (!r) r = array(b, l + 1);

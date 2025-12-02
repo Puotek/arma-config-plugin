@@ -16,21 +16,22 @@ public interface ArmaConfigTypes {
   IElementType VALUE = new ArmaConfigElementType("VALUE");
   IElementType VALUE_LIST = new ArmaConfigElementType("VALUE_LIST");
 
-  IElementType BLOCK_COMMENT = new ArmaConfigTokenType("regex:/\\*([^*]|\\*+[^*/])*\\*+/");
+  IElementType BLOCK_COMMENT = new ArmaConfigTokenType("regex:/\\\\*([^*]|\\\\*+[^*/])*\\\\*+/");
   IElementType CLASS_KEYWORD = new ArmaConfigTokenType("class");
   IElementType COLON = new ArmaConfigTokenType(":");
   IElementType COMMA = new ArmaConfigTokenType(",");
   IElementType EQUAL = new ArmaConfigTokenType("=");
+  IElementType FLOAT = new ArmaConfigTokenType("regex:\\\\d+\\\\.\\\\d+");
   IElementType IDENT = new ArmaConfigTokenType("regex:[A-Za-z_][A-Za-z0-9_]*");
   IElementType LBRACE = new ArmaConfigTokenType("{");
   IElementType LBRACKET = new ArmaConfigTokenType("[");
   IElementType LINE_COMMENT = new ArmaConfigTokenType("regex://.*");
-  IElementType NUMBER = new ArmaConfigTokenType("regex:\\d+");
+  IElementType NUMBER = new ArmaConfigTokenType("regex:\\\\d+");
   IElementType PREPROCESSOR = new ArmaConfigTokenType("regex:#.*");
   IElementType RBRACE = new ArmaConfigTokenType("}");
   IElementType RBRACKET = new ArmaConfigTokenType("]");
   IElementType SEMICOLON = new ArmaConfigTokenType(";");
-  IElementType STRING = new ArmaConfigTokenType("regex:\"([^\"\\\\n]|\\\\.)*\"");
+  IElementType STRING = new ArmaConfigTokenType("regex:\"([^\"\\\\\\\\n]|\\\\\\\\.)*\"");
 
   class Factory {
     public static PsiElement createElement(ASTNode node) {
