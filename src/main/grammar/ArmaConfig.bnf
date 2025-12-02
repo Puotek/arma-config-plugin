@@ -3,36 +3,38 @@
   psiPackage="arma.config.psi"
   psiImplPackage="arma.config.psi.impl"
   elementTypeHolderClass="arma.config.psi.ArmaConfigTypes"
-  elementTypeClass="arma.config.psi.ArmaConfigElementType"   // ← add this
+  elementTypeClass="arma.config.psi.ArmaConfigElementType"
   tokenTypeClass="arma.config.psi.ArmaConfigTokenType"
 
-    tokens = [
-        CLASS_KEYWORD = 'class'
-        LBRACE        = '{'
-        RBRACE        = '}'
-        LBRACKET      = '['
-        RBRACKET      = ']'
-        EQUAL         = '='
-        SEMICOLON     = ';'
-        COMMA         = ','
-        COLON         = ':'
+  tokens = [
+      CLASS_KEYWORD = 'class'
+      LBRACE        = '{'
+      RBRACE        = '}'
+      LBRACKET      = '['
+      RBRACKET      = ']'
+      EQUAL         = '='
+      SEMICOLON     = ';'
+      COMMA         = ','
+      COLON         = ':'
 
-        LINE_COMMENT  = 'regex://.*'
-        BLOCK_COMMENT = 'regex:/\\*([^*]|\\*+[^*/])*\\*+/'
-        PREPROCESSOR  = 'regex:#.*'
+      LINE_COMMENT  = 'regex://.*'
+      BLOCK_COMMENT = 'regex:/\\*([^*]|\\*+[^*/])*\\*+/'
+      PREPROCESSOR  = 'regex:#.*'
 
-        IDENT  = "regex:[A-Za-z_][A-Za-z0-9_]*"
-        FLOAT  = "regex:\\d+\\.\\d+"
-        NUMBER = "regex:\\d+"
-        STRING = "regex:\"([^\"\\\\n]|\\\\.)*\""
-    ]
+      IDENT  = "regex:[A-Za-z_][A-Za-z0-9_]*"
+      FLOAT  = "regex:\\d+\\.\\d+"
+      NUMBER = "regex:\\d+"
+      STRING = "regex:\"([^\"\\\\n]|\\\\.)*\""
+  ]
 }
 
 configFile ::= item*
 
-private item ::= classDecl | assignment | ';'
+private item ::= classDecl | classForwardDecl | assignment | ';'
 
 classDecl ::= CLASS_KEYWORD IDENT classExt? LBRACE item* RBRACE SEMICOLON?
+
+classForwardDecl ::= CLASS_KEYWORD IDENT classExt? SEMICOLON
 
 classExt ::= COLON IDENT
 

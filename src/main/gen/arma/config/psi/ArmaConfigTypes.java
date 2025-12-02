@@ -13,6 +13,7 @@ public interface ArmaConfigTypes {
   IElementType ASSIGNMENT = new ArmaConfigElementType("ASSIGNMENT");
   IElementType CLASS_DECL = new ArmaConfigElementType("CLASS_DECL");
   IElementType CLASS_EXT = new ArmaConfigElementType("CLASS_EXT");
+  IElementType CLASS_FORWARD_DECL = new ArmaConfigElementType("CLASS_FORWARD_DECL");
   IElementType VALUE = new ArmaConfigElementType("VALUE");
   IElementType VALUE_LIST = new ArmaConfigElementType("VALUE_LIST");
 
@@ -50,6 +51,9 @@ public interface ArmaConfigTypes {
       }
       else if (type == CLASS_EXT) {
         return new ClassExtImpl(node);
+      }
+      else if (type == CLASS_FORWARD_DECL) {
+        return new ClassForwardDeclImpl(node);
       }
       else if (type == VALUE) {
         return new ValueImpl(node);

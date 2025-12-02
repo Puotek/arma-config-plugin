@@ -146,6 +146,27 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // CLASS_KEYWORD IDENT classExt? SEMICOLON
+  public static boolean classForwardDecl(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "classForwardDecl")) return false;
+    if (!nextTokenIs(b, CLASS_KEYWORD)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, CLASS_KEYWORD, IDENT);
+    r = r && classForwardDecl_2(b, l + 1);
+    r = r && consumeToken(b, SEMICOLON);
+    exit_section_(b, m, CLASS_FORWARD_DECL, r);
+    return r;
+  }
+
+  // classExt?
+  private static boolean classForwardDecl_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "classForwardDecl_2")) return false;
+    classExt(b, l + 1);
+    return true;
+  }
+
+  /* ********************************************************** */
   // item*
   static boolean configFile(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "configFile")) return false;
@@ -158,11 +179,12 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // classDecl | assignment | ';'
+  // classDecl | classForwardDecl | assignment | ';'
   static boolean item(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item")) return false;
     boolean r;
     r = classDecl(b, l + 1);
+    if (!r) r = classForwardDecl(b, l + 1);
     if (!r) r = assignment(b, l + 1);
     if (!r) r = consumeToken(b, SEMICOLON);
     return r;
