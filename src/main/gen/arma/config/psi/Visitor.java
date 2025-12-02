@@ -31,6 +31,10 @@ public class Visitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitDeleteStmt(@NotNull DeleteStmt o) {
+    visitPsiElement(o);
+  }
+
   public void visitValue(@NotNull Value o) {
     visitPsiElement(o);
   }

@@ -179,13 +179,26 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // classDecl | classForwardDecl | assignment | ';'
+  // DELETE_KEYWORD IDENT SEMICOLON
+  public static boolean deleteStmt(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "deleteStmt")) return false;
+    if (!nextTokenIs(b, DELETE_KEYWORD)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, DELETE_KEYWORD, IDENT, SEMICOLON);
+    exit_section_(b, m, DELETE_STMT, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // classDecl | classForwardDecl | assignment | deleteStmt | ';'
   static boolean item(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item")) return false;
     boolean r;
     r = classDecl(b, l + 1);
     if (!r) r = classForwardDecl(b, l + 1);
     if (!r) r = assignment(b, l + 1);
+    if (!r) r = deleteStmt(b, l + 1);
     if (!r) r = consumeToken(b, SEMICOLON);
     return r;
   }

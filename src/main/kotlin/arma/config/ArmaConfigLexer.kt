@@ -9,24 +9,25 @@ class ArmaConfigLexer : LexerBase() {
 
     // Entire text of the file being lexed
     private var buffer: CharSequence = ""
+
     // Start offset of the region being lexed
     private var startOffset: Int = 0
+
     // End offset of the region being lexed
     private var endOffset: Int = 0
 
     // Start offset of the current token
     private var tokenStart: Int = 0
+
     // End offset (exclusive) of the current token
     private var tokenEnd: Int = 0
+
     // Type of the current token (or null if EOF)
     private var tokenType: IElementType? = null
 
     // Called when lexing starts (or restarts for a region of text)
     override fun start(
-        buffer: CharSequence,
-        startOffset: Int,
-        endOffset: Int,
-        initialState: Int
+        buffer: CharSequence, startOffset: Int, endOffset: Int, initialState: Int
     ) {
         // Store the input buffer and region
         this.buffer = buffer
@@ -174,10 +175,11 @@ class ArmaConfigLexer : LexerBase() {
             }
             tokenEnd = j
             val text = buffer.subSequence(tokenStart, tokenEnd).toString()
-            // Recognize "class" as a keyword; otherwise IDENT
+            // Recognize keywords; otherwise IDENT
             tokenType = when (text) {
                 "class" -> ArmaConfigTypes.CLASS_KEYWORD
-                else    -> ArmaConfigTypes.IDENT
+                "delete" -> ArmaConfigTypes.DELETE_KEYWORD
+                else -> ArmaConfigTypes.IDENT
             }
             return
         }
@@ -193,11 +195,13 @@ class ArmaConfigLexer : LexerBase() {
                     ch.isDigit() -> {
                         j++
                     }
+
                     !seenDot && ch == '.' && j + 1 < endOffset && buffer[j + 1].isDigit() -> {
                         // first dot followed by digit -> start FLOAT
                         seenDot = true
                         j++ // consume '.'
                     }
+
                     else -> break
                 }
             }

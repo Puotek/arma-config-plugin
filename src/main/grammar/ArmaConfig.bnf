@@ -6,31 +6,32 @@
   elementTypeClass="arma.config.psi.ArmaConfigElementType"
   tokenTypeClass="arma.config.psi.ArmaConfigTokenType"
 
-  tokens = [
-      CLASS_KEYWORD = 'class'
-      LBRACE        = '{'
-      RBRACE        = '}'
-      LBRACKET      = '['
-      RBRACKET      = ']'
-      EQUAL         = '='
-      SEMICOLON     = ';'
-      COMMA         = ','
-      COLON         = ':'
+    tokens = [
+        CLASS_KEYWORD  = 'class'
+        DELETE_KEYWORD = 'delete'
+        LBRACE         = '{'
+        RBRACE         = '}'
+        LBRACKET       = '['
+        RBRACKET       = ']'
+        EQUAL          = '='
+        SEMICOLON      = ';'
+        COMMA          = ','
+        COLON          = ':'
 
-      LINE_COMMENT  = 'regex://.*'
-      BLOCK_COMMENT = 'regex:/\\*([^*]|\\*+[^*/])*\\*+/'
-      PREPROCESSOR  = 'regex:#.*'
+        LINE_COMMENT  = 'regex://.*'
+        BLOCK_COMMENT = 'regex:/\\*([^*]|\\*+[^*/])*\\*+/'
+        PREPROCESSOR  = 'regex:#.*'
 
-      IDENT  = "regex:[A-Za-z_][A-Za-z0-9_]*"
-      FLOAT  = "regex:\\d+\\.\\d+"
-      NUMBER = "regex:\\d+"
-      STRING = "regex:\"([^\"\\\\n]|\\\\.)*\""
-  ]
+        IDENT  = "regex:[A-Za-z_][A-Za-z0-9_]*"
+        FLOAT  = "regex:\\d+\\.\\d+"
+        NUMBER = "regex:\\d+"
+        STRING = "regex:\"([^\"\\\\n]|\\\\.)*\""
+    ]
 }
 
 configFile ::= item*
 
-private item ::= classDecl | classForwardDecl | assignment | ';'
+private item ::= classDecl | classForwardDecl | assignment | deleteStmt | ';'
 
 classDecl ::= CLASS_KEYWORD IDENT classExt? LBRACE item* RBRACE SEMICOLON?
 
@@ -41,6 +42,8 @@ classExt ::= COLON IDENT
 assignment ::= IDENT arraySuffix? EQUAL value SEMICOLON
 
 arraySuffix ::= LBRACKET RBRACKET
+
+deleteStmt ::= DELETE_KEYWORD IDENT SEMICOLON
 
 value ::= IDENT | FLOAT | NUMBER | STRING | array
 

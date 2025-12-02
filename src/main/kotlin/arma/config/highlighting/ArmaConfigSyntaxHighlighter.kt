@@ -21,7 +21,8 @@ class ArmaConfigSyntaxHighlighter : SyntaxHighlighter {
 
     // Maps a token type to one or more TextAttributesKey (color styles)
     override fun getTokenHighlights(tokenType: IElementType): Array<TextAttributesKey> = when (tokenType) {
-        ArmaConfigTypes.CLASS_KEYWORD -> KEYWORD_KEYS
+        ArmaConfigTypes.CLASS_KEYWORD, ArmaConfigTypes.DELETE_KEYWORD -> KEYWORD_KEYS
+
         ArmaConfigTypes.STRING -> STRING_KEYS
         ArmaConfigTypes.NUMBER, ArmaConfigTypes.FLOAT -> NUMBER_KEYS
 

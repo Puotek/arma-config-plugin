@@ -14,6 +14,7 @@ public interface ArmaConfigTypes {
   IElementType CLASS_DECL = new ArmaConfigElementType("CLASS_DECL");
   IElementType CLASS_EXT = new ArmaConfigElementType("CLASS_EXT");
   IElementType CLASS_FORWARD_DECL = new ArmaConfigElementType("CLASS_FORWARD_DECL");
+  IElementType DELETE_STMT = new ArmaConfigElementType("DELETE_STMT");
   IElementType VALUE = new ArmaConfigElementType("VALUE");
   IElementType VALUE_LIST = new ArmaConfigElementType("VALUE_LIST");
 
@@ -21,6 +22,7 @@ public interface ArmaConfigTypes {
   IElementType CLASS_KEYWORD = new ArmaConfigTokenType("class");
   IElementType COLON = new ArmaConfigTokenType(":");
   IElementType COMMA = new ArmaConfigTokenType(",");
+  IElementType DELETE_KEYWORD = new ArmaConfigTokenType("delete");
   IElementType EQUAL = new ArmaConfigTokenType("=");
   IElementType FLOAT = new ArmaConfigTokenType("regex:\\\\d+\\\\.\\\\d+");
   IElementType IDENT = new ArmaConfigTokenType("regex:[A-Za-z_][A-Za-z0-9_]*");
@@ -54,6 +56,9 @@ public interface ArmaConfigTypes {
       }
       else if (type == CLASS_FORWARD_DECL) {
         return new ClassForwardDeclImpl(node);
+      }
+      else if (type == DELETE_STMT) {
+        return new DeleteStmtImpl(node);
       }
       else if (type == VALUE) {
         return new ValueImpl(node);
