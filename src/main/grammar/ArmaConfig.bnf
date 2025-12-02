@@ -4,21 +4,25 @@
   psiImplPackage="arma.config.psi.impl"
   elementTypeHolderClass="arma.config.psi.ArmaConfigTypes"
   tokenTypeClass="arma.config.psi.ArmaConfigTokenType"
+
+  tokens = [
+    CLASS_KEYWORD = 'class'
+    LBRACE = '{'
+    RBRACE = '}'
+    EQUAL = '='
+    SEMICOLON = ';'
+    IDENT = "regex:[A-Za-z_][A-Za-z0-9_]*"
+    NUMBER = "regex:\d+"
+    STRING = "regex:\"([^\"\\n]|\\.)*\""
+  ]
 }
 
 configFile ::= item*
 
 private item ::= classDecl | assignment | ';'
 
-classDecl ::= 'class' IDENT '{' item* '}' ';'?
-               {implements="com.intellij.psi.PsiNamedElement"}
+classDecl ::= CLASS_KEYWORD IDENT LBRACE item* RBRACE SEMICOLON?
 
-assignment ::= IDENT '=' value ';'
+assignment ::= IDENT EQUAL value SEMICOLON
 
 value ::= IDENT | NUMBER | STRING
-
-tokens = [
-  IDENT = "regex:[A-Za-z_][A-Za-z0-9_]*"
-  NUMBER = "regex:\d+"
-  STRING = "regex:\"([^\"\\n]|\\.)*\""
-]

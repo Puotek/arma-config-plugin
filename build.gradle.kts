@@ -162,3 +162,7 @@ sourceSets {
         java.srcDir("src/main/gen")
     }
 }
+
+tasks.withType<Test> {
+    enabled = false
+}

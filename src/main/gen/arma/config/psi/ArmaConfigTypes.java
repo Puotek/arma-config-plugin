@@ -12,10 +12,14 @@ public interface ArmaConfigTypes {
   IElementType CLASS_DECL = new IElementType("CLASS_DECL", null);
   IElementType VALUE = new IElementType("VALUE", null);
 
-  IElementType IDENT = new ArmaConfigTokenType("IDENT");
-  IElementType NUMBER = new ArmaConfigTokenType("NUMBER");
-  IElementType STRING = new ArmaConfigTokenType("STRING");
-  IElementType TOKENS = new ArmaConfigTokenType("tokens");
+  IElementType CLASS_KEYWORD = new ArmaConfigTokenType("class");
+  IElementType EQUAL = new ArmaConfigTokenType("=");
+  IElementType IDENT = new ArmaConfigTokenType("regex:[A-Za-z_][A-Za-z0-9_]*");
+  IElementType LBRACE = new ArmaConfigTokenType("{");
+  IElementType NUMBER = new ArmaConfigTokenType("regex:\\d+");
+  IElementType RBRACE = new ArmaConfigTokenType("}");
+  IElementType SEMICOLON = new ArmaConfigTokenType(";");
+  IElementType STRING = new ArmaConfigTokenType("regex:\"([^\"\\\\n]|\\\\.)*\"");
 
   class Factory {
     public static PsiElement createElement(ASTNode node) {

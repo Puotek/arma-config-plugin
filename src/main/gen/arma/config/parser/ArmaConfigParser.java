@@ -36,33 +36,31 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IDENT '=' value ';'
+  // IDENT EQUAL value SEMICOLON
   public static boolean assignment(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "assignment")) return false;
     if (!nextTokenIs(b, IDENT)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, IDENT);
-    r = r && consumeToken(b, "=");
+    r = consumeTokens(b, 0, IDENT, EQUAL);
     r = r && value(b, l + 1);
-    r = r && consumeToken(b, ";");
+    r = r && consumeToken(b, SEMICOLON);
     exit_section_(b, m, ASSIGNMENT, r);
     return r;
   }
 
   /* ********************************************************** */
-  // 'class' IDENT '{' item* '}' ';'?
+  // CLASS_KEYWORD IDENT LBRACE item* RBRACE SEMICOLON?
   public static boolean classDecl(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "classDecl")) return false;
+    if (!nextTokenIs(b, CLASS_KEYWORD)) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, CLASS_DECL, "<class decl>");
-    r = consumeToken(b, "class");
-    r = r && consumeToken(b, IDENT);
-    r = r && consumeToken(b, "{");
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, CLASS_KEYWORD, IDENT, LBRACE);
     r = r && classDecl_3(b, l + 1);
-    r = r && consumeToken(b, "}");
+    r = r && consumeToken(b, RBRACE);
     r = r && classDecl_5(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
+    exit_section_(b, m, CLASS_DECL, r);
     return r;
   }
 
@@ -77,10 +75,10 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // ';'?
+  // SEMICOLON?
   private static boolean classDecl_5(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "classDecl_5")) return false;
-    consumeToken(b, ";");
+    consumeToken(b, SEMICOLON);
     return true;
   }
 
@@ -103,20 +101,19 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
     boolean r;
     r = classDecl(b, l + 1);
     if (!r) r = assignment(b, l + 1);
-    if (!r) r = consumeToken(b, ";");
+    if (!r) r = consumeToken(b, SEMICOLON);
     return r;
   }
 
   /* ********************************************************** */
   // IDENT | NUMBER | STRING
-  // tokens =
   public static boolean value(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "value")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, VALUE, "<value>");
     r = consumeToken(b, IDENT);
     if (!r) r = consumeToken(b, NUMBER);
-    if (!r) r = parseTokens(b, 0, STRING, TOKENS);
+    if (!r) r = consumeToken(b, STRING);
     exit_section_(b, l, m, r, false, null);
     return r;
   }

@@ -22,11 +22,9 @@ class ArmaConfigParserDefinition : ParserDefinition {
         val WHITE_SPACES: TokenSet = TokenSet.create(TokenType.WHITE_SPACE)
     }
 
-    override fun createLexer(project: Project): Lexer =
-        ArmaConfigLexer()
+    override fun createLexer(project: Project) = ArmaConfigLexer()
 
-    override fun createParser(project: Project): PsiParser =
-        ArmaConfigParser()
+    override fun createParser(project: Project) = ArmaConfigParser()
 
     override fun getFileNodeType(): IFileElementType = FILE
 

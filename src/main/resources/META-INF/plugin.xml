@@ -17,7 +17,7 @@
         <lang.parserDefinition
                 language="ArmaConfig"
                 implementationClass="arma.config.ArmaConfigParserDefinition"/>
+        <breadcrumbsInfoProvider
+                implementation="arma.config.breadcrumbs.ArmaBreadcrumbsProvider"/>
     </extensions>
-
-
 </idea-plugin>

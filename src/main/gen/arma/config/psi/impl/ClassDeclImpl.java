@@ -11,7 +11,7 @@ import static arma.config.psi.ArmaConfigTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import arma.config.psi.*;
 
-public class ClassDeclImpl extends ClassDeclMixin implements ClassDecl {
+public class ClassDeclImpl extends ASTWrapperPsiElement implements ClassDecl {
 
   public ClassDeclImpl(@NotNull ASTNode node) {
     super(node);
@@ -23,7 +23,6 @@ public class ClassDeclImpl extends ClassDeclMixin implements ClassDecl {
 
   @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof Visitor) accept((Visitor)visitor);
     if (visitor instanceof Visitor) accept((Visitor)visitor);
     else super.accept(visitor);
   }

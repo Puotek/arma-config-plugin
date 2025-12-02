@@ -15,12 +15,7 @@ class ArmaConfigLexer : LexerBase() {
     private var tokenEnd: Int = 0
     private var tokenType: IElementType? = null
 
-    override fun start(
-        buffer: CharSequence,
-        startOffset: Int,
-        endOffset: Int,
-        initialState: Int
-    ) {
+    override fun start(buffer: CharSequence, startOffset: Int, endOffset: Int, initialState: Int) {
         this.buffer = buffer
         this.startOffset = startOffset
         this.endOffset = endOffset
@@ -43,8 +38,11 @@ class ArmaConfigLexer : LexerBase() {
     override fun getBufferEnd(): Int = endOffset
 
     override fun advance() {
+        // skip whitespace
         var i = if (tokenEnd == 0) startOffset else tokenEnd
-
+        while (i < endOffset && buffer[i].isWhitespace()) {
+            i++
+        }
         if (i >= endOffset) {
             tokenType = null
             tokenStart = endOffset
@@ -52,32 +50,25 @@ class ArmaConfigLexer : LexerBase() {
             return
         }
 
-        if (buffer[i].isWhitespace()) {
-            tokenStart = i
-            while (i < endOffset && buffer[i].isWhitespace()) {
-                i++
-            }
-            tokenEnd = i
-            tokenType = TokenType.WHITE_SPACE
-            return
-        }
-
         tokenStart = i
         val c = buffer[i]
 
+        // identifiers: [A-Za-z_][A-Za-z0-9_]*
         if (c.isLetter() || c == '_') {
             i++
-            while (i < endOffset) {
-                val ch = buffer[i]
-                if (ch.isLetterOrDigit() || ch == '_') {
-                    i++
-                } else break
+            while (i < endOffset && (buffer[i].isLetterOrDigit() || buffer[i] == '_')) {
+                i++
             }
+            val text = buffer.subSequence(tokenStart, i).toString()
             tokenEnd = i
-            tokenType = ArmaConfigTypes.IDENT
+            tokenType = when (text) {
+                "class" -> ArmaConfigTypes.CLASS_KEYWORD
+                else -> ArmaConfigTypes.IDENT
+            }
             return
         }
 
+        // numbers: \d+
         if (c.isDigit()) {
             i++
             while (i < endOffset && buffer[i].isDigit()) {
@@ -88,28 +79,41 @@ class ArmaConfigLexer : LexerBase() {
             return
         }
 
+        // strings: " ... "
         if (c == '"') {
-            i++
+            i++ // consume opening quote
+            var escaped = false
             while (i < endOffset) {
                 val ch = buffer[i]
-                if (ch == '\\') {
-                    i += 2
-                } else if (ch == '"') {
-                    i++
-                    break
-                } else if (ch == '\n' || ch == '\r') {
-                    break
+                if (escaped) {
+                    escaped = false
                 } else {
-                    i++
+                    if (ch == '\\') {
+                        escaped = true
+                    } else if (ch == '"') {
+                        i++ // consume closing quote
+                        break
+                    } else if (ch == '\n' || ch == '\r') {
+                        // break on newline – invalid string, let parser handle it
+                        break
+                    }
                 }
+                i++
             }
             tokenEnd = i
             tokenType = ArmaConfigTypes.STRING
             return
         }
 
+        // single-character tokens
         tokenEnd = i + 1
-        tokenType = TokenType.BAD_CHARACTER
+        tokenType = when (c) {
+            '{' -> ArmaConfigTypes.LBRACE
+            '}' -> ArmaConfigTypes.RBRACE
+            '=' -> ArmaConfigTypes.EQUAL
+            ';' -> ArmaConfigTypes.SEMICOLON
+            else -> TokenType.BAD_CHARACTER
+        }
     }
 
     private fun Char.isLetterOrDigit(): Boolean = isLetter() || isDigit()
