@@ -1,21 +1,23 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <id>com.github.puotek.armaconfigplugin</id>
-    <name>arma-config-plugin</name>
-    <vendor>puotek</vendor>
+    <name>Arma Config Files</name>
+    <vendor>Puotek</vendor>
 
     <depends>com.intellij.modules.platform</depends>
 
-    <resource-bundle>messages.MyBundle</resource-bundle>
-
     <extensions defaultExtensionNs="com.intellij">
-        <!-- Only ONE fileType declaration -->
         <fileType
                 name="Arma Config"
                 implementationClass="arma.config.ArmaConfigFileType"
                 language="ArmaConfig"
                 fileNames="config.cpp"
                 extensions="hpp;ext;h;hh"/>
+
+        <lang.parserDefinition
+                language="ArmaConfig"
+                implementationClass="arma.config.ArmaConfigParserDefinition"/>
     </extensions>
+
 
 </idea-plugin>

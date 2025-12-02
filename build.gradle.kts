@@ -156,3 +156,9 @@ intellijPlatformTesting {
         }
     }
 }
+
+sourceSets {
+    main {
+        java.srcDir("src/main/gen")
+    }
+}

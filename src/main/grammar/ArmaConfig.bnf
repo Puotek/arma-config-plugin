@@ -1,0 +1,24 @@
+{
+  parserClass="arma.config.parser.ArmaConfigParser"
+  psiPackage="arma.config.psi"
+  psiImplPackage="arma.config.psi.impl"
+  elementTypeHolderClass="arma.config.psi.ArmaConfigTypes"
+  tokenTypeClass="arma.config.psi.ArmaConfigTokenType"
+}
+
+configFile ::= item*
+
+private item ::= classDecl | assignment | ';'
+
+classDecl ::= 'class' IDENT '{' item* '}' ';'?
+               {implements="com.intellij.psi.PsiNamedElement"}
+
+assignment ::= IDENT '=' value ';'
+
+value ::= IDENT | NUMBER | STRING
+
+tokens = [
+  IDENT = "regex:[A-Za-z_][A-Za-z0-9_]*"
+  NUMBER = "regex:\d+"
+  STRING = "regex:\"([^\"\\n]|\\.)*\""
+]
