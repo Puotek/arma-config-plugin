@@ -28,6 +28,12 @@ public class AssignmentImpl extends ASTWrapperPsiElement implements Assignment {
   }
 
   @Override
+  @Nullable
+  public ArraySuffix getArraySuffix() {
+    return findChildByClass(ArraySuffix.class);
+  }
+
+  @Override
   @NotNull
   public Value getValue() {
     return findNotNullChildByClass(Value.class);

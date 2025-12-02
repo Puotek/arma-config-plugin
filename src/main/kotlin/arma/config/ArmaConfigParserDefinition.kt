@@ -1,5 +1,8 @@
 package arma.config
 
+import arma.config.parser.ArmaConfigParser
+import arma.config.psi.ArmaConfigFile
+import arma.config.psi.ArmaConfigTypes
 import com.intellij.lang.ASTNode
 import com.intellij.lang.ParserDefinition
 import com.intellij.lang.PsiParser
@@ -11,28 +14,40 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.TokenType
 import com.intellij.psi.tree.IFileElementType
 import com.intellij.psi.tree.TokenSet
-import arma.config.parser.ArmaConfigParser
-import arma.config.psi.ArmaConfigFile
-import arma.config.psi.ArmaConfigTypes
 
 class ArmaConfigParserDefinition : ParserDefinition {
 
     companion object {
         val FILE = IFileElementType(ArmaConfigLanguage)
-        val WHITE_SPACES: TokenSet = TokenSet.create(TokenType.WHITE_SPACE)
+
+        private val WHITE_SPACES: TokenSet = TokenSet.create(TokenType.WHITE_SPACE)
+
+        private val COMMENTS: TokenSet = TokenSet.create(
+            ArmaConfigTypes.LINE_COMMENT,
+            ArmaConfigTypes.BLOCK_COMMENT,
+            ArmaConfigTypes.PREPROCESSOR
+        )
+
+        private val STRINGS: TokenSet = TokenSet.create(
+            ArmaConfigTypes.STRING
+        )
     }
 
-    override fun createLexer(project: Project) = ArmaConfigLexer()
+    override fun createLexer(project: Project): Lexer = ArmaConfigLexer()
 
-    override fun createParser(project: Project) = ArmaConfigParser()
+    override fun createParser(project: Project): PsiParser = ArmaConfigParser()
 
     override fun getFileNodeType(): IFileElementType = FILE
 
     override fun getWhitespaceTokens(): TokenSet = WHITE_SPACES
 
-    override fun getCommentTokens(): TokenSet = TokenSet.EMPTY
+    override fun getCommentTokens(): TokenSet = TokenSet.create(
+        ArmaConfigTypes.LINE_COMMENT,
+        ArmaConfigTypes.BLOCK_COMMENT,
+        ArmaConfigTypes.PREPROCESSOR
+    )
 
-    override fun getStringLiteralElements(): TokenSet = TokenSet.EMPTY
+    override fun getStringLiteralElements(): TokenSet = STRINGS
 
     override fun createElement(node: ASTNode): PsiElement =
         ArmaConfigTypes.Factory.createElement(node)

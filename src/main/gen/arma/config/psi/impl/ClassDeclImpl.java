@@ -39,4 +39,10 @@ public class ClassDeclImpl extends ASTWrapperPsiElement implements ClassDecl {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, ClassDecl.class);
   }
 
+  @Override
+  @Nullable
+  public ClassExt getClassExt() {
+    return findChildByClass(ClassExt.class);
+  }
+
 }

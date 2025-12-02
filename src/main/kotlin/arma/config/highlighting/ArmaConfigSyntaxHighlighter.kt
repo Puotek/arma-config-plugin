@@ -20,17 +20,26 @@ class ArmaConfigSyntaxHighlighter : SyntaxHighlighter {
         ArmaConfigTypes.CLASS_KEYWORD -> KEYWORD_KEYS
         ArmaConfigTypes.STRING        -> STRING_KEYS
         ArmaConfigTypes.NUMBER        -> NUMBER_KEYS
+
         ArmaConfigTypes.LBRACE,
         ArmaConfigTypes.RBRACE,
         ArmaConfigTypes.LBRACKET,
         ArmaConfigTypes.RBRACKET      -> BRACES_KEYS
+
         ArmaConfigTypes.EQUAL,
         ArmaConfigTypes.SEMICOLON,
         ArmaConfigTypes.COMMA,
         ArmaConfigTypes.COLON         -> OPERATOR_KEYS
+
+        ArmaConfigTypes.LINE_COMMENT,
+        ArmaConfigTypes.BLOCK_COMMENT -> COMMENT_KEYS
+
+        ArmaConfigTypes.PREPROCESSOR  -> PREPROCESSOR_KEYS
+
         TokenType.BAD_CHARACTER       -> BAD_CHAR_KEYS
         else                          -> EMPTY_KEYS
     }
+
 
     companion object {
         private val KEYWORD = TextAttributesKey.createTextAttributesKey(
@@ -65,6 +74,19 @@ class ArmaConfigSyntaxHighlighter : SyntaxHighlighter {
         private val OPERATOR_KEYS = arrayOf(OPERATOR)
         private val BAD_CHAR_KEYS = arrayOf(BAD_CHAR)
         private val EMPTY_KEYS    = emptyArray<TextAttributesKey>()
+        private val COMMENT = TextAttributesKey.createTextAttributesKey(
+            "ARMA_CONFIG_COMMENT",
+            DefaultLanguageHighlighterColors.LINE_COMMENT
+        )
+
+        private val PREPROCESSOR = TextAttributesKey.createTextAttributesKey(
+            "ARMA_CONFIG_PREPROCESSOR",
+            DefaultLanguageHighlighterColors.METADATA // or KEYWORD, up to you
+        )
+
+        private val COMMENT_KEYS     = arrayOf(COMMENT)
+        private val PREPROCESSOR_KEYS = arrayOf(PREPROCESSOR)
+
     }
 }
 

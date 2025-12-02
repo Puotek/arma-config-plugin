@@ -7,4 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface Value extends PsiElement {
 
+  @Nullable
+  Array getArray();
+
 }

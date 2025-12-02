@@ -7,16 +7,20 @@
 
   tokens = [
     CLASS_KEYWORD = 'class'
-    LBRACE = '{'
-    RBRACE = '}'
-    EQUAL = '='
-    SEMICOLON = ';'
-    LBRACKET = '['
-    RBRACKET = ']'
-    COMMA = ','
-    COLON = ':'
+    LBRACE        = '{'
+    RBRACE        = '}'
+    LBRACKET      = '['
+    RBRACKET      = ']'
+    EQUAL         = '='
+    SEMICOLON     = ';'
+    COMMA         = ','
+    COLON         = ':'
 
-    IDENT = "regex:[A-Za-z_][A-Za-z0-9_]*"
+    LINE_COMMENT  = 'regex://.*'
+    BLOCK_COMMENT = 'regex:/\*([^*]|\*+[^*/])*\*+/'
+    PREPROCESSOR  = 'regex:#.*'
+
+    IDENT  = "regex:[A-Za-z_][A-Za-z0-9_]*"
     NUMBER = "regex:\d+"
     STRING = "regex:\"([^\"\\n]|\\.)*\""
   ]
@@ -26,8 +30,15 @@ configFile ::= item*
 
 private item ::= classDecl | assignment | ';'
 
-classDecl ::= CLASS_KEYWORD IDENT LBRACE item* RBRACE SEMICOLON?
+classDecl ::= CLASS_KEYWORD IDENT classExt? LBRACE item* RBRACE SEMICOLON?
 
-assignment ::= IDENT EQUAL value SEMICOLON
+classExt ::= COLON IDENT
 
-value ::= IDENT | NUMBER | STRING
+assignment ::= IDENT arraySuffix? EQUAL value SEMICOLON
+
+arraySuffix ::= LBRACKET RBRACKET
+
+value ::= IDENT | NUMBER | STRING | array
+
+array ::= LBRACE valueList? RBRACE
+valueList ::= value (COMMA value)*

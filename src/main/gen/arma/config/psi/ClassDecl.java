@@ -13,4 +13,7 @@ public interface ClassDecl extends PsiElement {
   @NotNull
   List<ClassDecl> getClassDeclList();
 
+  @Nullable
+  ClassExt getClassExt();
+
 }

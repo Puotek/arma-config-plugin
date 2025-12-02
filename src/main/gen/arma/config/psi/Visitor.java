@@ -7,6 +7,14 @@ import com.intellij.psi.PsiElement;
 
 public class Visitor extends PsiElementVisitor {
 
+  public void visitArray(@NotNull Array o) {
+    visitPsiElement(o);
+  }
+
+  public void visitArraySuffix(@NotNull ArraySuffix o) {
+    visitPsiElement(o);
+  }
+
   public void visitAssignment(@NotNull Assignment o) {
     visitPsiElement(o);
   }
@@ -15,7 +23,15 @@ public class Visitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitClassExt(@NotNull ClassExt o) {
+    visitPsiElement(o);
+  }
+
   public void visitValue(@NotNull Value o) {
+    visitPsiElement(o);
+  }
+
+  public void visitValueList(@NotNull ValueList o) {
     visitPsiElement(o);
   }
 

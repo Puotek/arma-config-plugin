@@ -11,14 +11,14 @@ import static arma.config.psi.ArmaConfigTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import arma.config.psi.*;
 
-public class ValueImpl extends ASTWrapperPsiElement implements Value {
+public class ValueListImpl extends ASTWrapperPsiElement implements ValueList {
 
-  public ValueImpl(@NotNull ASTNode node) {
+  public ValueListImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull Visitor visitor) {
-    visitor.visitValue(this);
+    visitor.visitValueList(this);
   }
 
   @Override
@@ -28,9 +28,9 @@ public class ValueImpl extends ASTWrapperPsiElement implements Value {
   }
 
   @Override
-  @Nullable
-  public Array getArray() {
-    return findChildByClass(Array.class);
+  @NotNull
+  public List<Value> getValueList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, Value.class);
   }
 
 }

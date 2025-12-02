@@ -5,12 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface Assignment extends PsiElement {
-
-  @Nullable
-  ArraySuffix getArraySuffix();
+public interface ValueList extends PsiElement {
 
   @NotNull
-  Value getValue();
+  List<Value> getValueList();
 
 }
