@@ -8,13 +8,13 @@ import arma.config.psi.impl.*;
 
 public interface ArmaConfigTypes {
 
-  IElementType ARRAY = new IElementType("ARRAY", null);
-  IElementType ARRAY_SUFFIX = new IElementType("ARRAY_SUFFIX", null);
-  IElementType ASSIGNMENT = new IElementType("ASSIGNMENT", null);
-  IElementType CLASS_DECL = new IElementType("CLASS_DECL", null);
-  IElementType CLASS_EXT = new IElementType("CLASS_EXT", null);
-  IElementType VALUE = new IElementType("VALUE", null);
-  IElementType VALUE_LIST = new IElementType("VALUE_LIST", null);
+  IElementType ARRAY = new ArmaConfigElementType("ARRAY");
+  IElementType ARRAY_SUFFIX = new ArmaConfigElementType("ARRAY_SUFFIX");
+  IElementType ASSIGNMENT = new ArmaConfigElementType("ASSIGNMENT");
+  IElementType CLASS_DECL = new ArmaConfigElementType("CLASS_DECL");
+  IElementType CLASS_EXT = new ArmaConfigElementType("CLASS_EXT");
+  IElementType VALUE = new ArmaConfigElementType("VALUE");
+  IElementType VALUE_LIST = new ArmaConfigElementType("VALUE_LIST");
 
   IElementType BLOCK_COMMENT = new ArmaConfigTokenType("regex:/\\*([^*]|\\*+[^*/])*\\*+/");
   IElementType CLASS_KEYWORD = new ArmaConfigTokenType("class");

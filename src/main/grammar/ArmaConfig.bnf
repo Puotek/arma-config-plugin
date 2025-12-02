@@ -3,6 +3,7 @@
   psiPackage="arma.config.psi"
   psiImplPackage="arma.config.psi.impl"
   elementTypeHolderClass="arma.config.psi.ArmaConfigTypes"
+  elementTypeClass="arma.config.psi.ArmaConfigElementType"   // ← add this
   tokenTypeClass="arma.config.psi.ArmaConfigTokenType"
 
   tokens = [

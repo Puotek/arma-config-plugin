@@ -1,24 +1,21 @@
 package arma.config.breadcrumbs
 
-import arma.config.ArmaConfigLanguage     // Our language
-import arma.config.psi.ArmaConfigTypes   // Token/element types for PSI
+import arma.config.ArmaConfigLanguage
+import arma.config.psi.ArmaConfigTypes
 import com.intellij.lang.Language
 import com.intellij.psi.PsiElement
 import com.intellij.ui.breadcrumbs.BreadcrumbsProvider
 import javax.swing.Action
 import javax.swing.Icon
 
-/**
- * Breadcrumbs + sticky lines support for Arma config.
- *
- * Sticky Lines uses this breadcrumb structure to decide which lines
- * to pin at the top of the editor as you scroll.
- */
 class ArmaBreadcrumbsProvider : BreadcrumbsProvider {
 
     // Which languages this provider applies to
     override fun getLanguages(): Array<Language> =
-        arrayOf(ArmaConfigLanguage)
+        arrayOf(
+            // use the registered language instance if possible
+            Language.findLanguageByID("ArmaConfig") ?: ArmaConfigLanguage
+        )
 
     // Decide which PSI elements should appear as breadcrumb nodes
     override fun acceptElement(e: PsiElement): Boolean {
@@ -31,49 +28,42 @@ class ArmaBreadcrumbsProvider : BreadcrumbsProvider {
                 type == ArmaConfigTypes.ASSIGNMENT
     }
 
-    // Text representation shown in breadcrumbs bar (and used in sticky lines)
+    // Text shown in breadcrumbs bar
     override fun getElementInfo(e: PsiElement): String {
         val type = e.node?.elementType
 
         return when (type) {
             ArmaConfigTypes.CLASS_DECL -> {
-                // For a class declaration, try to get its IDENT child: `class Name`
+                // `class Name` → show "class Name"
                 val ident = e.node.findChildByType(ArmaConfigTypes.IDENT)
                 val name = ident?.text ?: "class"
-                "class $name"
+                name
             }
 
             ArmaConfigTypes.ASSIGNMENT -> {
-                // For assignments, show the variable name (IDENT child)
+                // `name = value;` → show "name"
                 val ident = e.node.findChildByType(ArmaConfigTypes.IDENT)
                 ident?.text ?: "<assignment>"
             }
 
-            else -> e.text // Fallback: show raw text
+            else -> {
+                // Shouldn’t be hit if acceptElement() is correct, but just in case:
+                e.text.take(30).replace('\n', ' ')
+            }
         }
     }
 
-    // Tooltip when hovering a breadcrumb; we don't use it
-    override fun getElementTooltip(e: PsiElement): String? =
-        null
+    override fun getElementTooltip(e: PsiElement): String? = null
 
-    // Icon for a breadcrumb; return null for no icon
-    override fun getElementIcon(e: PsiElement): Icon? =
-        null
+    override fun getElementIcon(e: PsiElement): Icon? = null
 
-    // Children of a breadcrumb element (for hierarchical breadcrumb tree)
-    // Here we make it a flat structure and return none
-    override fun getChildren(e: PsiElement): List<PsiElement> =
-        emptyList()
+    override fun getChildren(e: PsiElement): List<PsiElement> = emptyList()
 
-    // Context actions when right-clicking breadcrumb; we don't provide any
-    override fun getContextActions(e: PsiElement): List<out Action> =
-        emptyList()
+    override fun getContextActions(e: PsiElement): List<Action> = emptyList()
 
-    // Parent element in breadcrumb hierarchy; we just use PSI parent
-    override fun getParent(e: PsiElement): PsiElement? =
-        e.parent
+    // Default is fine: breadcrumbs infra will walk PSI parents and
+    // then filter them via acceptElement()
+    override fun getParent(e: PsiElement): PsiElement? = e.parent
 
-    // Whether breadcrumbs for this provider are shown by default
     override fun isShownByDefault(): Boolean = true
 }
