@@ -12,13 +12,8 @@ We are implementing a full IntelliJ language plugin with:
 
 Here is the current TODO list (start with easiest to implement after reading the files I upload):
 
-- Add full math expression support to assignment RHS (1 + 2 * (3 - 4)).
-- Add macro-style calls like Q(...), TAG(...), PATH(...), FNC(...).
-- Allow macros inside class names and base classes (class TAG(x) : TAG(y)).
-- Allow standalone macro invocations: MACRO(...); and MACRO;.
-- Add delete keyword statement (delete ClassName;).
+- I would like to have weak warnings on any , inside of any ()
 - Add semantic check: array[] must match {} and vice versa.
-- Add improved handling for defines used in code (no validation, but must not error). Related to point 2, 3 and 4
 - Fix Folding - It does not work currently
 
 I will now upload the files you need. Please parse them and reconstruct the full plugin state before continuing.

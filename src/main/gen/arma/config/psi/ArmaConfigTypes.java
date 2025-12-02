@@ -14,7 +14,12 @@ public interface ArmaConfigTypes {
   IElementType CLASS_DECL = new ArmaConfigElementType("CLASS_DECL");
   IElementType CLASS_EXT = new ArmaConfigElementType("CLASS_EXT");
   IElementType CLASS_FORWARD_DECL = new ArmaConfigElementType("CLASS_FORWARD_DECL");
+  IElementType CLASS_NAME = new ArmaConfigElementType("CLASS_NAME");
   IElementType DELETE_STMT = new ArmaConfigElementType("DELETE_STMT");
+  IElementType MACRO_INNER = new ArmaConfigElementType("MACRO_INNER");
+  IElementType MACRO_INNER_TOKEN = new ArmaConfigElementType("MACRO_INNER_TOKEN");
+  IElementType MACRO_INVOCATION = new ArmaConfigElementType("MACRO_INVOCATION");
+  IElementType MACRO_STMT = new ArmaConfigElementType("MACRO_STMT");
   IElementType VALUE = new ArmaConfigElementType("VALUE");
   IElementType VALUE_LIST = new ArmaConfigElementType("VALUE_LIST");
 
@@ -29,10 +34,12 @@ public interface ArmaConfigTypes {
   IElementType LBRACE = new ArmaConfigTokenType("{");
   IElementType LBRACKET = new ArmaConfigTokenType("[");
   IElementType LINE_COMMENT = new ArmaConfigTokenType("regex://.*");
+  IElementType LPAREN = new ArmaConfigTokenType("(");
   IElementType NUMBER = new ArmaConfigTokenType("regex:\\\\d+");
   IElementType PREPROCESSOR = new ArmaConfigTokenType("regex:#.*");
   IElementType RBRACE = new ArmaConfigTokenType("}");
   IElementType RBRACKET = new ArmaConfigTokenType("]");
+  IElementType RPAREN = new ArmaConfigTokenType(")");
   IElementType SEMICOLON = new ArmaConfigTokenType(";");
   IElementType STRING = new ArmaConfigTokenType("regex:\"([^\"\\\\\\\\n]|\\\\\\\\.)*\"");
 
@@ -57,8 +64,23 @@ public interface ArmaConfigTypes {
       else if (type == CLASS_FORWARD_DECL) {
         return new ClassForwardDeclImpl(node);
       }
+      else if (type == CLASS_NAME) {
+        return new ClassNameImpl(node);
+      }
       else if (type == DELETE_STMT) {
         return new DeleteStmtImpl(node);
+      }
+      else if (type == MACRO_INNER) {
+        return new MacroInnerImpl(node);
+      }
+      else if (type == MACRO_INNER_TOKEN) {
+        return new MacroInnerTokenImpl(node);
+      }
+      else if (type == MACRO_INVOCATION) {
+        return new MacroInvocationImpl(node);
+      }
+      else if (type == MACRO_STMT) {
+        return new MacroStmtImpl(node);
       }
       else if (type == VALUE) {
         return new ValueImpl(node);

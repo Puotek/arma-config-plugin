@@ -22,4 +22,7 @@ public interface ClassDecl extends PsiElement {
   @NotNull
   List<DeleteStmt> getDeleteStmtList();
 
+  @NotNull
+  List<MacroStmt> getMacroStmtList();
+
 }

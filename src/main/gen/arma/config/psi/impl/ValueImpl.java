@@ -33,4 +33,10 @@ public class ValueImpl extends ASTWrapperPsiElement implements Value {
     return findChildByClass(Array.class);
   }
 
+  @Override
+  @Nullable
+  public MacroInvocation getMacroInvocation() {
+    return findChildByClass(MacroInvocation.class);
+  }
+
 }

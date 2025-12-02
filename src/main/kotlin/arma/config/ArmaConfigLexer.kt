@@ -247,6 +247,8 @@ class ArmaConfigLexer : LexerBase() {
             ']' -> ArmaConfigTypes.RBRACKET
             ',' -> ArmaConfigTypes.COMMA
             ':' -> ArmaConfigTypes.COLON
+            '(' -> ArmaConfigTypes.LPAREN
+            ')' -> ArmaConfigTypes.RPAREN
             else -> TokenType.BAD_CHARACTER  // Unknown/invalid char
         }
     }

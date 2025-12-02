@@ -24,24 +24,21 @@ class ArmaConfigSyntaxHighlighter : SyntaxHighlighter {
         ArmaConfigTypes.CLASS_KEYWORD, ArmaConfigTypes.DELETE_KEYWORD -> KEYWORD_KEYS
 
         ArmaConfigTypes.STRING -> STRING_KEYS
+
         ArmaConfigTypes.NUMBER, ArmaConfigTypes.FLOAT -> NUMBER_KEYS
 
-        // {} braces
         ArmaConfigTypes.LBRACE, ArmaConfigTypes.RBRACE -> BRACES_KEYS
 
-        // [] brackets
         ArmaConfigTypes.LBRACKET, ArmaConfigTypes.RBRACKET -> BRACKETS_KEYS
 
-        // Operators / punctuation
+        ArmaConfigTypes.LPAREN, ArmaConfigTypes.RPAREN -> PAREN_KEYS
+
         ArmaConfigTypes.EQUAL, ArmaConfigTypes.SEMICOLON, ArmaConfigTypes.COMMA, ArmaConfigTypes.COLON -> OPERATOR_KEYS
 
-        // Comments
         ArmaConfigTypes.LINE_COMMENT, ArmaConfigTypes.BLOCK_COMMENT -> COMMENT_KEYS
 
-        // Preprocessor stuff (#include, #define, etc)
         ArmaConfigTypes.PREPROCESSOR -> PREPROCESSOR_KEYS
 
-        // Bad characters
         TokenType.BAD_CHARACTER -> BAD_CHAR_KEYS
 
         else -> EMPTY_KEYS
@@ -77,6 +74,12 @@ class ArmaConfigSyntaxHighlighter : SyntaxHighlighter {
             "ARMA_CONFIG_BRACKETS", DefaultLanguageHighlighterColors.BRACKETS
         )
 
+        // () parentheses – inherit Language Defaults → Parentheses
+        @JvmField
+        val PAREN: TextAttributesKey = TextAttributesKey.createTextAttributesKey(
+            "ARMA_CONFIG_PAREN", DefaultLanguageHighlighterColors.PARENTHESES
+        )
+
         // Operators, separators (=, ;, , :)
         @JvmField
         val OPERATOR: TextAttributesKey = TextAttributesKey.createTextAttributesKey(
@@ -107,6 +110,7 @@ class ArmaConfigSyntaxHighlighter : SyntaxHighlighter {
         val NUMBER_KEYS = arrayOf(NUMBER)
         val BRACES_KEYS = arrayOf(BRACES)
         val BRACKETS_KEYS = arrayOf(BRACKETS)
+        val PAREN_KEYS = arrayOf(PAREN)
         val OPERATOR_KEYS = arrayOf(OPERATOR)
         val COMMENT_KEYS = arrayOf(COMMENT)
         val PREPROCESSOR_KEYS = arrayOf(PREPROCESSOR)

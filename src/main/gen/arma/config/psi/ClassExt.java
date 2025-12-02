@@ -7,4 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface ClassExt extends PsiElement {
 
+  @NotNull
+  ClassName getClassName();
+
 }

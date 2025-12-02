@@ -5,12 +5,6 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface Value extends PsiElement {
-
-  @Nullable
-  Array getArray();
-
-  @Nullable
-  MacroInvocation getMacroInvocation();
+public interface MacroInnerToken extends PsiElement {
 
 }

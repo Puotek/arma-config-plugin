@@ -17,6 +17,8 @@
         SEMICOLON      = ';'
         COMMA          = ','
         COLON          = ':'
+        LPAREN       = '('
+        RPAREN       = ')'
 
         LINE_COMMENT  = 'regex://.*'
         BLOCK_COMMENT = 'regex:/\\*([^*]|\\*+[^*/])*\\*+/'
@@ -31,13 +33,20 @@
 
 configFile ::= item*
 
-private item ::= classDecl | classForwardDecl | assignment | deleteStmt | ';'
+private item ::= classDecl
+               | classForwardDecl
+               | assignment
+               | deleteStmt
+               | macroStmt
+               | ';'
 
 classDecl ::= CLASS_KEYWORD IDENT classExt? LBRACE item* RBRACE SEMICOLON?
 
 classForwardDecl ::= CLASS_KEYWORD IDENT classExt? SEMICOLON
 
-classExt ::= COLON IDENT
+classExt ::= COLON className
+
+className ::= IDENT | macroInvocation
 
 assignment ::= IDENT arraySuffix? EQUAL value SEMICOLON
 
@@ -45,7 +54,32 @@ arraySuffix ::= LBRACKET RBRACKET
 
 deleteStmt ::= DELETE_KEYWORD IDENT SEMICOLON
 
-value ::= IDENT | FLOAT | NUMBER | STRING | array
+value ::= IDENT
+        | FLOAT
+        | NUMBER
+        | STRING
+        | array
+        | macroInvocation
 
 array ::= LBRACE valueList? RBRACE
 valueList ::= value (COMMA value)*
+
+macroInvocation ::= IDENT LPAREN macroInner? RPAREN
+
+macroInner ::= macroInnerToken*
+
+macroInnerToken ::= IDENT
+                  | NUMBER
+                  | FLOAT
+                  | STRING
+                  | PREPROCESSOR
+                  | LBRACE | RBRACE
+                  | LBRACKET | RBRACKET
+                  | COMMA
+                  | EQUAL
+                  | COLON
+                  | LINE_COMMENT
+                  | BLOCK_COMMENT
+
+macroStmt ::= macroInvocation SEMICOLON
+            | IDENT SEMICOLON

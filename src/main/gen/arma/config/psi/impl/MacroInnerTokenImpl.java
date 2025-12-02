@@ -11,26 +11,20 @@ import static arma.config.psi.ArmaConfigTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import arma.config.psi.*;
 
-public class ClassExtImpl extends ASTWrapperPsiElement implements ClassExt {
+public class MacroInnerTokenImpl extends ASTWrapperPsiElement implements MacroInnerToken {
 
-  public ClassExtImpl(@NotNull ASTNode node) {
+  public MacroInnerTokenImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull Visitor visitor) {
-    visitor.visitClassExt(this);
+    visitor.visitMacroInnerToken(this);
   }
 
   @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof Visitor) accept((Visitor)visitor);
     else super.accept(visitor);
-  }
-
-  @Override
-  @NotNull
-  public ClassName getClassName() {
-    return findNotNullChildByClass(ClassName.class);
   }
 
 }

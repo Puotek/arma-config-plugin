@@ -31,7 +31,27 @@ public class Visitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitClassName(@NotNull ClassName o) {
+    visitPsiElement(o);
+  }
+
   public void visitDeleteStmt(@NotNull DeleteStmt o) {
+    visitPsiElement(o);
+  }
+
+  public void visitMacroInner(@NotNull MacroInner o) {
+    visitPsiElement(o);
+  }
+
+  public void visitMacroInnerToken(@NotNull MacroInnerToken o) {
+    visitPsiElement(o);
+  }
+
+  public void visitMacroInvocation(@NotNull MacroInvocation o) {
+    visitPsiElement(o);
+  }
+
+  public void visitMacroStmt(@NotNull MacroStmt o) {
     visitPsiElement(o);
   }
 

@@ -11,14 +11,14 @@ import static arma.config.psi.ArmaConfigTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import arma.config.psi.*;
 
-public class ClassExtImpl extends ASTWrapperPsiElement implements ClassExt {
+public class MacroInvocationImpl extends ASTWrapperPsiElement implements MacroInvocation {
 
-  public ClassExtImpl(@NotNull ASTNode node) {
+  public MacroInvocationImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull Visitor visitor) {
-    visitor.visitClassExt(this);
+    visitor.visitMacroInvocation(this);
   }
 
   @Override
@@ -28,9 +28,9 @@ public class ClassExtImpl extends ASTWrapperPsiElement implements ClassExt {
   }
 
   @Override
-  @NotNull
-  public ClassName getClassName() {
-    return findNotNullChildByClass(ClassName.class);
+  @Nullable
+  public MacroInner getMacroInner() {
+    return findChildByClass(MacroInner.class);
   }
 
 }

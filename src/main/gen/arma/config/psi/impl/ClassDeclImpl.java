@@ -57,4 +57,10 @@ public class ClassDeclImpl extends ASTWrapperPsiElement implements ClassDecl {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, DeleteStmt.class);
   }
 
+  @Override
+  @NotNull
+  public List<MacroStmt> getMacroStmtList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MacroStmt.class);
+  }
+
 }

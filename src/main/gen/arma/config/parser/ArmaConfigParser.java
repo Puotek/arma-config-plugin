@@ -134,13 +134,14 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // COLON IDENT
+  // COLON className
   public static boolean classExt(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "classExt")) return false;
     if (!nextTokenIs(b, COLON)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, COLON, IDENT);
+    r = consumeToken(b, COLON);
+    r = r && className(b, l + 1);
     exit_section_(b, m, CLASS_EXT, r);
     return r;
   }
@@ -164,6 +165,19 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "classForwardDecl_2")) return false;
     classExt(b, l + 1);
     return true;
+  }
+
+  /* ********************************************************** */
+  // IDENT | macroInvocation
+  public static boolean className(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "className")) return false;
+    if (!nextTokenIs(b, IDENT)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, IDENT);
+    if (!r) r = macroInvocation(b, l + 1);
+    exit_section_(b, m, CLASS_NAME, r);
+    return r;
   }
 
   /* ********************************************************** */
@@ -191,7 +205,12 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // classDecl | classForwardDecl | assignment | deleteStmt | ';'
+  // classDecl
+  //                | classForwardDecl
+  //                | assignment
+  //                | deleteStmt
+  //                | macroStmt
+  //                | ';'
   static boolean item(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item")) return false;
     boolean r;
@@ -199,12 +218,113 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
     if (!r) r = classForwardDecl(b, l + 1);
     if (!r) r = assignment(b, l + 1);
     if (!r) r = deleteStmt(b, l + 1);
+    if (!r) r = macroStmt(b, l + 1);
     if (!r) r = consumeToken(b, SEMICOLON);
     return r;
   }
 
   /* ********************************************************** */
-  // IDENT | FLOAT | NUMBER | STRING | array
+  // macroInnerToken*
+  public static boolean macroInner(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "macroInner")) return false;
+    Marker m = enter_section_(b, l, _NONE_, MACRO_INNER, "<macro inner>");
+    while (true) {
+      int c = current_position_(b);
+      if (!macroInnerToken(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "macroInner", c)) break;
+    }
+    exit_section_(b, l, m, true, false, null);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // IDENT
+  //                   | NUMBER
+  //                   | FLOAT
+  //                   | STRING
+  //                   | PREPROCESSOR
+  //                   | LBRACE | RBRACE
+  //                   | LBRACKET | RBRACKET
+  //                   | COMMA
+  //                   | EQUAL
+  //                   | COLON
+  //                   | LINE_COMMENT
+  //                   | BLOCK_COMMENT
+  public static boolean macroInnerToken(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "macroInnerToken")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, MACRO_INNER_TOKEN, "<macro inner token>");
+    r = consumeToken(b, IDENT);
+    if (!r) r = consumeToken(b, NUMBER);
+    if (!r) r = consumeToken(b, FLOAT);
+    if (!r) r = consumeToken(b, STRING);
+    if (!r) r = consumeToken(b, PREPROCESSOR);
+    if (!r) r = consumeToken(b, LBRACE);
+    if (!r) r = consumeToken(b, RBRACE);
+    if (!r) r = consumeToken(b, LBRACKET);
+    if (!r) r = consumeToken(b, RBRACKET);
+    if (!r) r = consumeToken(b, COMMA);
+    if (!r) r = consumeToken(b, EQUAL);
+    if (!r) r = consumeToken(b, COLON);
+    if (!r) r = consumeToken(b, LINE_COMMENT);
+    if (!r) r = consumeToken(b, BLOCK_COMMENT);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // IDENT LPAREN macroInner? RPAREN
+  public static boolean macroInvocation(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "macroInvocation")) return false;
+    if (!nextTokenIs(b, IDENT)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, IDENT, LPAREN);
+    r = r && macroInvocation_2(b, l + 1);
+    r = r && consumeToken(b, RPAREN);
+    exit_section_(b, m, MACRO_INVOCATION, r);
+    return r;
+  }
+
+  // macroInner?
+  private static boolean macroInvocation_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "macroInvocation_2")) return false;
+    macroInner(b, l + 1);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // macroInvocation SEMICOLON
+  //             | IDENT SEMICOLON
+  public static boolean macroStmt(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "macroStmt")) return false;
+    if (!nextTokenIs(b, IDENT)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = macroStmt_0(b, l + 1);
+    if (!r) r = parseTokens(b, 0, IDENT, SEMICOLON);
+    exit_section_(b, m, MACRO_STMT, r);
+    return r;
+  }
+
+  // macroInvocation SEMICOLON
+  private static boolean macroStmt_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "macroStmt_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = macroInvocation(b, l + 1);
+    r = r && consumeToken(b, SEMICOLON);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // IDENT
+  //         | FLOAT
+  //         | NUMBER
+  //         | STRING
+  //         | array
+  //         | macroInvocation
   public static boolean value(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "value")) return false;
     boolean r;
@@ -214,6 +334,7 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, NUMBER);
     if (!r) r = consumeToken(b, STRING);
     if (!r) r = array(b, l + 1);
+    if (!r) r = macroInvocation(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
