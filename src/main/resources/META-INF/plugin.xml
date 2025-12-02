@@ -25,6 +25,7 @@
         <lang.foldingBuilder
                 language="ArmaConfig"
                 implementationClass="arma.config.folding.ArmaConfigFoldingBuilder"/>
+        <colorSettingsPage implementation="arma.config.highlighting.ArmaConfigColorSettingsPage"/>
 
     </extensions>
 </idea-plugin>

@@ -1,9 +1,10 @@
 package arma.config.highlighting
 
-import arma.config.ArmaConfigLexer          // Our lexer
-import arma.config.psi.ArmaConfigTypes      // Token/element types
+import arma.config.ArmaConfigLexer
+import arma.config.psi.ArmaConfigTypes
 import com.intellij.lexer.Lexer
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors
+import com.intellij.openapi.editor.HighlighterColors
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.fileTypes.SyntaxHighlighter
 import com.intellij.openapi.fileTypes.SyntaxHighlighterFactory
@@ -21,85 +22,95 @@ class ArmaConfigSyntaxHighlighter : SyntaxHighlighter {
     // Maps a token type to one or more TextAttributesKey (color styles)
     override fun getTokenHighlights(tokenType: IElementType): Array<TextAttributesKey> = when (tokenType) {
         ArmaConfigTypes.CLASS_KEYWORD -> KEYWORD_KEYS
-        ArmaConfigTypes.STRING        -> STRING_KEYS
-        ArmaConfigTypes.NUMBER        -> NUMBER_KEYS
+        ArmaConfigTypes.STRING -> STRING_KEYS
+        ArmaConfigTypes.NUMBER -> NUMBER_KEYS
 
-        ArmaConfigTypes.LBRACE,
-        ArmaConfigTypes.RBRACE,
-        ArmaConfigTypes.LBRACKET,
-        ArmaConfigTypes.RBRACKET      -> BRACES_KEYS
+        // {} braces
+        ArmaConfigTypes.LBRACE, ArmaConfigTypes.RBRACE -> BRACES_KEYS
 
-        ArmaConfigTypes.EQUAL,
-        ArmaConfigTypes.SEMICOLON,
-        ArmaConfigTypes.COMMA,
-        ArmaConfigTypes.COLON         -> OPERATOR_KEYS
+        // [] brackets
+        ArmaConfigTypes.LBRACKET, ArmaConfigTypes.RBRACKET -> BRACKETS_KEYS
 
-        ArmaConfigTypes.LINE_COMMENT,
-        ArmaConfigTypes.BLOCK_COMMENT -> COMMENT_KEYS
+        // Operators / punctuation
+        ArmaConfigTypes.EQUAL, ArmaConfigTypes.SEMICOLON, ArmaConfigTypes.COMMA, ArmaConfigTypes.COLON -> OPERATOR_KEYS
 
-        ArmaConfigTypes.PREPROCESSOR  -> PREPROCESSOR_KEYS
+        // Comments
+        ArmaConfigTypes.LINE_COMMENT, ArmaConfigTypes.BLOCK_COMMENT -> COMMENT_KEYS
 
-        TokenType.BAD_CHARACTER       -> BAD_CHAR_KEYS
-        else                          -> EMPTY_KEYS
+        // Preprocessor stuff (#include, #define, etc)
+        ArmaConfigTypes.PREPROCESSOR -> PREPROCESSOR_KEYS
+
+        // Bad characters
+        TokenType.BAD_CHARACTER -> BAD_CHAR_KEYS
+
+        else -> EMPTY_KEYS
     }
 
     companion object {
-        // KEYWORD style, based on default language keyword color
-        private val KEYWORD = TextAttributesKey.createTextAttributesKey(
-            "ARMA_CONFIG_KEYWORD",
-            DefaultLanguageHighlighterColors.KEYWORD
+        // Make these @JvmField so they can be referenced from the ColorSettingsPage
+
+        @JvmField
+        val KEYWORD: TextAttributesKey = TextAttributesKey.createTextAttributesKey(
+            "ARMA_CONFIG_KEYWORD", DefaultLanguageHighlighterColors.KEYWORD
         )
-        // STRING style
-        private val STRING = TextAttributesKey.createTextAttributesKey(
-            "ARMA_CONFIG_STRING",
-            DefaultLanguageHighlighterColors.STRING
+
+        @JvmField
+        val STRING: TextAttributesKey = TextAttributesKey.createTextAttributesKey(
+            "ARMA_CONFIG_STRING", DefaultLanguageHighlighterColors.STRING
         )
-        // NUMBER style
-        private val NUMBER = TextAttributesKey.createTextAttributesKey(
-            "ARMA_CONFIG_NUMBER",
-            DefaultLanguageHighlighterColors.NUMBER
+
+        @JvmField
+        val NUMBER: TextAttributesKey = TextAttributesKey.createTextAttributesKey(
+            "ARMA_CONFIG_NUMBER", DefaultLanguageHighlighterColors.NUMBER
         )
-        // BRACES style for {}, []
-        private val BRACES = TextAttributesKey.createTextAttributesKey(
-            "ARMA_CONFIG_BRACES",
-            DefaultLanguageHighlighterColors.BRACES
+
+        // {} braces – inherit Language Defaults → Braces
+        @JvmField
+        val BRACES: TextAttributesKey = TextAttributesKey.createTextAttributesKey(
+            "ARMA_CONFIG_BRACES", DefaultLanguageHighlighterColors.BRACES
         )
+
+        // [] brackets – inherit Language Defaults → Brackets
+        @JvmField
+        val BRACKETS: TextAttributesKey = TextAttributesKey.createTextAttributesKey(
+            "ARMA_CONFIG_BRACKETS", DefaultLanguageHighlighterColors.BRACKETS
+        )
+
         // Operators, separators (=, ;, , :)
-        private val OPERATOR = TextAttributesKey.createTextAttributesKey(
-            "ARMA_CONFIG_OPERATOR",
-            DefaultLanguageHighlighterColors.OPERATION_SIGN
+        @JvmField
+        val OPERATOR: TextAttributesKey = TextAttributesKey.createTextAttributesKey(
+            "ARMA_CONFIG_OPERATOR", DefaultLanguageHighlighterColors.OPERATION_SIGN
         )
-        // Bad characters / invalid tokens
-        private val BAD_CHAR = TextAttributesKey.createTextAttributesKey(
-            "ARMA_CONFIG_BAD_CHAR",
-            DefaultLanguageHighlighterColors.INVALID_STRING_ESCAPE
+
+        // Comment style
+        @JvmField
+        val COMMENT: TextAttributesKey = TextAttributesKey.createTextAttributesKey(
+            "ARMA_CONFIG_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT
+        )
+
+        // Preprocessor style (metadata-like)
+        @JvmField
+        val PREPROCESSOR: TextAttributesKey = TextAttributesKey.createTextAttributesKey(
+            "ARMA_CONFIG_PREPROCESSOR", DefaultLanguageHighlighterColors.METADATA
+        )
+
+        // Bad characters -> use the global “Bad character” style (red by default)
+        @JvmField
+        val BAD_CHAR: TextAttributesKey = TextAttributesKey.createTextAttributesKey(
+            "ARMA_CONFIG_BAD_CHAR", HighlighterColors.BAD_CHARACTER
         )
 
         // Arrays of keys for convenience
-        private val KEYWORD_KEYS  = arrayOf(KEYWORD)
-        private val STRING_KEYS   = arrayOf(STRING)
-        private val NUMBER_KEYS   = arrayOf(NUMBER)
-        private val BRACES_KEYS   = arrayOf(BRACES)
-        private val OPERATOR_KEYS = arrayOf(OPERATOR)
-        private val BAD_CHAR_KEYS = arrayOf(BAD_CHAR)
-        private val EMPTY_KEYS    = emptyArray<TextAttributesKey>()
-
-        // Comment style
-        private val COMMENT = TextAttributesKey.createTextAttributesKey(
-            "ARMA_CONFIG_COMMENT",
-            DefaultLanguageHighlighterColors.LINE_COMMENT
-        )
-
-        // Preprocessor style (using METADATA for now)
-        private val PREPROCESSOR = TextAttributesKey.createTextAttributesKey(
-            "ARMA_CONFIG_PREPROCESSOR",
-            DefaultLanguageHighlighterColors.METADATA // you can choose something else
-        )
-
-        // Arrays for comments and preprocessor tokens
-        private val COMMENT_KEYS      = arrayOf(COMMENT)
-        private val PREPROCESSOR_KEYS = arrayOf(PREPROCESSOR)
-
+        val KEYWORD_KEYS = arrayOf(KEYWORD)
+        val STRING_KEYS = arrayOf(STRING)
+        val NUMBER_KEYS = arrayOf(NUMBER)
+        val BRACES_KEYS = arrayOf(BRACES)
+        val BRACKETS_KEYS = arrayOf(BRACKETS)
+        val OPERATOR_KEYS = arrayOf(OPERATOR)
+        val COMMENT_KEYS = arrayOf(COMMENT)
+        val PREPROCESSOR_KEYS = arrayOf(PREPROCESSOR)
+        val BAD_CHAR_KEYS = arrayOf(BAD_CHAR)
+        val EMPTY_KEYS = emptyArray<TextAttributesKey>()
     }
 }
 
