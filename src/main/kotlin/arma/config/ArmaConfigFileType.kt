@@ -1,5 +1,6 @@
 package arma.config                          // Same package as language
 
+import com.intellij.icons.AllIcons
 import com.intellij.openapi.fileTypes.LanguageFileType // Base class for language-based file types
 import javax.swing.Icon                      // For file icons in UI
 
@@ -16,5 +17,5 @@ object ArmaConfigFileType : LanguageFileType(ArmaConfigLanguage) {
     override fun getDefaultExtension(): String = "cpp"  // you can add bindings in plugin.xml too
 
     // Icon for this file type (null means no custom icon yet)
-    override fun getIcon(): Icon? = null                // you can provide an icon later
+    override fun getIcon(): Icon = AllIcons.Nodes.Class              // you can provide an icon later
 }
