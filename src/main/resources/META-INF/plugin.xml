@@ -19,5 +19,9 @@
                 implementationClass="arma.config.ArmaConfigParserDefinition"/>
         <breadcrumbsInfoProvider
                 implementation="arma.config.breadcrumbs.ArmaBreadcrumbsProvider"/>
+        <lang.syntaxHighlighterFactory
+                language="ArmaConfig"
+                implementationClass="arma.config.highlighting.ArmaConfigSyntaxHighlighterFactory"/>
+
     </extensions>
 </idea-plugin>

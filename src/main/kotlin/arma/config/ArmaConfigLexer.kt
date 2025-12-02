@@ -15,13 +15,20 @@ class ArmaConfigLexer : LexerBase() {
     private var tokenEnd: Int = 0
     private var tokenType: IElementType? = null
 
-    override fun start(buffer: CharSequence, startOffset: Int, endOffset: Int, initialState: Int) {
+    override fun start(
+        buffer: CharSequence,
+        startOffset: Int,
+        endOffset: Int,
+        initialState: Int
+    ) {
         this.buffer = buffer
         this.startOffset = startOffset
         this.endOffset = endOffset
+
         this.tokenStart = startOffset
         this.tokenEnd = startOffset
         this.tokenType = null
+
         advance()
     }
 
@@ -38,11 +45,11 @@ class ArmaConfigLexer : LexerBase() {
     override fun getBufferEnd(): Int = endOffset
 
     override fun advance() {
-        // skip whitespace
-        var i = if (tokenEnd == 0) startOffset else tokenEnd
-        while (i < endOffset && buffer[i].isWhitespace()) {
-            i++
-        }
+        // continue exactly where previous token ended
+        var i = tokenEnd
+        if (i < startOffset) i = startOffset
+
+        // EOF
         if (i >= endOffset) {
             tokenType = null
             tokenStart = endOffset
@@ -50,68 +57,87 @@ class ArmaConfigLexer : LexerBase() {
             return
         }
 
-        tokenStart = i
         val c = buffer[i]
 
-        // identifiers: [A-Za-z_][A-Za-z0-9_]*
-        if (c.isLetter() || c == '_') {
-            i++
-            while (i < endOffset && (buffer[i].isLetterOrDigit() || buffer[i] == '_')) {
-                i++
+        // WHITESPACE -> emit as TokenType.WHITE_SPACE
+        if (c.isWhitespace()) {
+            tokenStart = i
+            var j = i + 1
+            while (j < endOffset && buffer[j].isWhitespace()) {
+                j++
             }
-            val text = buffer.subSequence(tokenStart, i).toString()
-            tokenEnd = i
+            tokenEnd = j
+            tokenType = TokenType.WHITE_SPACE
+            return
+        }
+
+        tokenStart = i
+
+        // IDENT or keyword
+        if (c.isLetter() || c == '_') {
+            var j = i + 1
+            while (j < endOffset) {
+                val ch = buffer[j]
+                if (ch.isLetterOrDigit() || ch == '_') {
+                    j++
+                } else break
+            }
+            val text = buffer.subSequence(tokenStart, j).toString()
+            tokenEnd = j
+
             tokenType = when (text) {
                 "class" -> ArmaConfigTypes.CLASS_KEYWORD
-                else -> ArmaConfigTypes.IDENT
+                else    -> ArmaConfigTypes.IDENT
             }
             return
         }
 
-        // numbers: \d+
+        // NUMBER
         if (c.isDigit()) {
-            i++
-            while (i < endOffset && buffer[i].isDigit()) {
-                i++
+            var j = i + 1
+            while (j < endOffset && buffer[j].isDigit()) {
+                j++
             }
-            tokenEnd = i
+            tokenEnd = j
             tokenType = ArmaConfigTypes.NUMBER
             return
         }
 
-        // strings: " ... "
+        // STRING: " ... "
         if (c == '"') {
-            i++ // consume opening quote
-            var escaped = false
-            while (i < endOffset) {
-                val ch = buffer[i]
-                if (escaped) {
-                    escaped = false
+            var j = i + 1
+            while (j < endOffset) {
+                val ch = buffer[j]
+                if (ch == '\\') {
+                    // skip escaped char
+                    j += 2
+                } else if (ch == '"') {
+                    j++  // include closing quote
+                    break
+                } else if (ch == '\n' || ch == '\r') {
+                    // unterminated string: stop at newline
+                    break
                 } else {
-                    if (ch == '\\') {
-                        escaped = true
-                    } else if (ch == '"') {
-                        i++ // consume closing quote
-                        break
-                    } else if (ch == '\n' || ch == '\r') {
-                        // break on newline – invalid string, let parser handle it
-                        break
-                    }
+                    j++
                 }
-                i++
             }
-            tokenEnd = i
+            if (j > endOffset) j = endOffset
+            tokenEnd = j
             tokenType = ArmaConfigTypes.STRING
             return
         }
 
-        // single-character tokens
+        // Single-character tokens
         tokenEnd = i + 1
         tokenType = when (c) {
             '{' -> ArmaConfigTypes.LBRACE
             '}' -> ArmaConfigTypes.RBRACE
             '=' -> ArmaConfigTypes.EQUAL
             ';' -> ArmaConfigTypes.SEMICOLON
+            '[' -> ArmaConfigTypes.LBRACKET
+            ']' -> ArmaConfigTypes.RBRACKET
+            ',' -> ArmaConfigTypes.COMMA
+            ':' -> ArmaConfigTypes.COLON
             else -> TokenType.BAD_CHARACTER
         }
     }

@@ -11,6 +11,11 @@
     RBRACE = '}'
     EQUAL = '='
     SEMICOLON = ';'
+    LBRACKET = '['
+    RBRACKET = ']'
+    COMMA = ','
+    COLON = ':'
+
     IDENT = "regex:[A-Za-z_][A-Za-z0-9_]*"
     NUMBER = "regex:\d+"
     STRING = "regex:\"([^\"\\n]|\\.)*\""

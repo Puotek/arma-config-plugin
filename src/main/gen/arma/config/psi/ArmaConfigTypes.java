@@ -13,11 +13,15 @@ public interface ArmaConfigTypes {
   IElementType VALUE = new IElementType("VALUE", null);
 
   IElementType CLASS_KEYWORD = new ArmaConfigTokenType("class");
+  IElementType COLON = new ArmaConfigTokenType(":");
+  IElementType COMMA = new ArmaConfigTokenType(",");
   IElementType EQUAL = new ArmaConfigTokenType("=");
   IElementType IDENT = new ArmaConfigTokenType("regex:[A-Za-z_][A-Za-z0-9_]*");
   IElementType LBRACE = new ArmaConfigTokenType("{");
+  IElementType LBRACKET = new ArmaConfigTokenType("[");
   IElementType NUMBER = new ArmaConfigTokenType("regex:\\d+");
   IElementType RBRACE = new ArmaConfigTokenType("}");
+  IElementType RBRACKET = new ArmaConfigTokenType("]");
   IElementType SEMICOLON = new ArmaConfigTokenType(";");
   IElementType STRING = new ArmaConfigTokenType("regex:\"([^\"\\\\n]|\\\\.)*\"");
 
