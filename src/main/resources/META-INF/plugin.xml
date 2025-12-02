@@ -22,6 +22,9 @@
         <lang.syntaxHighlighterFactory
                 language="ArmaConfig"
                 implementationClass="arma.config.highlighting.ArmaConfigSyntaxHighlighterFactory"/>
+        <lang.foldingBuilder
+                language="ArmaConfig"
+                implementationClass="arma.config.folding.ArmaConfigFoldingBuilder"/>
 
     </extensions>
 </idea-plugin>
