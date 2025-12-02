@@ -1,6 +1,7 @@
 import org.jetbrains.changelog.Changelog
 import org.jetbrains.changelog.markdownToHTML
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
+import org.jetbrains.intellij.platform.gradle.tasks.BuildPluginTask
 
 plugins {
     id("java") // Java support
@@ -75,9 +76,7 @@ intellijPlatform {
         changeNotes = providers.gradleProperty("pluginVersion").map { pluginVersion ->
             with(changelog) {
                 renderItem(
-                    (getOrNull(pluginVersion) ?: getUnreleased())
-                        .withHeader(false)
-                        .withEmptySections(false),
+                    (getOrNull(pluginVersion) ?: getUnreleased()).withHeader(false).withEmptySections(false),
                     Changelog.OutputType.HTML,
                 )
             }
@@ -99,7 +98,8 @@ intellijPlatform {
         // The pluginVersion is based on the SemVer (https://semver.org) and supports pre-release labels, like 2.1.7-alpha.3
         // Specify pre-release label to publish the plugin in a custom Release Channel automatically. Read more:
         // https://plugins.jetbrains.com/docs/intellij/publishing-plugin.html#specifying-a-release-channel
-        channels = providers.gradleProperty("pluginVersion").map { listOf(it.substringAfter('-', "").substringBefore('.').ifEmpty { "default" }) }
+        channels = providers.gradleProperty("pluginVersion")
+            .map { listOf(it.substringAfter('-', "").substringBefore('.').ifEmpty { "default" }) }
     }
 
     pluginVerification {
@@ -165,4 +165,56 @@ sourceSets {
 
 tasks.withType<Test> {
     enabled = false
+}
+
+tasks.register("runIdeClean") {
+    group = "puotek"
+    description = "build.clean and than intellij_platform.runIde"
+
+    dependsOn("clean")
+    finalizedBy("runIde")
+}
+
+tasks.register("bumpVersion") {
+    group = "puotek"
+    description = "Increment pluginVersion property by 1"
+
+    doLast {
+        val propsFile = file("gradle.properties")
+        val text = propsFile.readText()
+
+        val regex = Regex("""pluginVersion\s*=\s*([0-9]+(?:\.[0-9]+)*)""")
+        val match = regex.find(text) ?: error("pluginVersion not found in gradle.properties")
+
+        val current = match.groupValues[1]
+        val parts = current.split(".").toMutableList()
+
+        val last = parts.last().toInt()
+        parts[parts.lastIndex] = (last + 1).toString()
+
+        val next = parts.joinToString(".")
+        val newText = text.replace(regex, "pluginVersion=$next")
+
+        propsFile.writeText(newText)
+
+        println("pluginVersion bumped: $current -> $next")
+    }
+}
+
+
+tasks.register<Copy>("buildToDownloads") {
+    group = "puotek"
+    description = "Build plugin and copy its ZIP to ~/Downloads"
+
+    // Get the buildPlugin task (type-safe)
+    val buildPlugin = tasks.named<BuildPluginTask>("buildPlugin")
+
+    // Ensure the ZIP is created first
+    dependsOn(buildPlugin)
+
+    // Copy exactly the archive produced by buildPlugin
+    from(buildPlugin.flatMap { it.archiveFile })
+
+    // Target: ~/Downloads
+    into(File(System.getProperty("user.home"), "Downloads"))
 }
