@@ -16,6 +16,8 @@ multiline
 //todo works?
 //fixme works as well?
 
+
+
 class 30Rnd_556x45_Stanag;
 class NoBodyClass;
 class ErrorsShouldBeShowingHere {
@@ -24,6 +26,9 @@ class ErrorsShouldBeShowingHere {
     arrayWrond2[] = test;
 }
 class TestClass {
+    condition = Q(count TAG(targets) > 0);
+    condition = Q(!(_target in TAG(targets)));
+
 	indentifier = anotherIdentifer;
 	array[] = {}; //inline comment
 	arrayMultiline[] = {

@@ -6,11 +6,10 @@ and this project loosely adheres to [Semantic Versioning](https://semver.org/spe
 Format: `[MAJOR.MINOR.PATCH] - YYYY-MM-DD`
 
 ### TODO
-- Code refactoring via `CTRL`+`ALT`+`L`
-- Working file structure
-
-### FIXME
-- See error in config.cpp example, where there is an issue with < in a Q() macro and also !
+- Code reformatting (that would work with default IntelliJ ctrl+alt+l keybind)
+- Working file structure (the intellij structure window)
+- Fix errors for > and ! or similar operators inside macros such as Q()
+- Inspection for duplicate parameter assignment in same class
 
 ## [Unreleased]
 
