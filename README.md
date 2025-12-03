@@ -1,15 +1,8 @@
 # Arma 3 Config IntelliJ Plugin
 
 ![Build](https://github.com/Puotek/arma-config-plugin/workflows/Build/badge.svg)
-[![Version](https://img.shields.io/jetbrains/plugin/v/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
-[![Downloads](https://img.shields.io/jetbrains/plugin/d/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
-
-## Template ToDo list
-- [ ] Adjust the [pluginGroup](./gradle.properties) and [pluginName](./gradle.properties), as well as the [id](./src/main/resources/META-INF/plugin.xml) and [sources package](./src/main/kotlin).
-- [ ] [Publish a plugin manually](https://plugins.jetbrains.com/docs/intellij/publishing-plugin.html?from=IJPluginTemplate) for the first time.
-- [ ] Set the `MARKETPLACE_ID` in the above README badges. You can obtain it once the plugin is published to JetBrains Marketplace.
-- [ ] Set the [Plugin Signing](https://plugins.jetbrains.com/docs/intellij/plugin-signing.html?from=IJPluginTemplate) related [secrets](https://github.com/JetBrains/intellij-platform-plugin-template#environment-variables).
-- [ ] Set the [Deployment Token](https://plugins.jetbrains.com/docs/marketplace/plugin-upload.html?from=IJPluginTemplate).
+[![Version](https://img.shields.io/jetbrains/plugin/v/29234-arma-config-support.svg)](https://plugins.jetbrains.com/plugin/29234-arma-config-support)
+[![Downloads](https://img.shields.io/jetbrains/plugin/d/29234-arma-config-support.svg)](https://plugins.jetbrains.com/plugin/29234-arma-config-support)
 
 <!-- Plugin description -->
 Language support for Arma 3-style configuration files (`config.cpp`, `.hpp`, etc.) in IntelliJ-based IDEs.
@@ -23,7 +16,7 @@ Language support for Arma 3-style configuration files (`config.cpp`, `.hpp`, etc
 - Array parameter bracket / brace mismatch (warning).</li>
 - Custom color settings page to fine-tune highlighting for Arma Config code.</li>
 - Support for macro invocations in class names and values.</li>
-
+<br>
 Designed for myself, since I like working in IntelliJ instead of VS Code, and the current existing arma plugin was old and didnt support some of the nicer newer IntelliJ features like breadcrumbs and sticky lines.
 
 <!-- Plugin description end -->
@@ -37,9 +30,9 @@ Designed for myself, since I like working in IntelliJ instead of VS Code, and th
 
 - Using JetBrains Marketplace:
 
-  Go to [JetBrains Marketplace](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID) and install it by clicking the <kbd>Install to ...</kbd> button in case your IDE is running.
+  Go to [JetBrains Marketplace](https://plugins.jetbrains.com/plugin/29234-arma-config-support) and install it by clicking the <kbd>Install to ...</kbd> button in case your IDE is running.
 
-  You can also download the [latest release](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID/versions) from JetBrains Marketplace and install it manually using
+  You can also download the [latest release](https://plugins.jetbrains.com/plugin/29234-arma-config-support/versions) from JetBrains Marketplace and install it manually using
   <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
 
 - Manually:
