@@ -7,6 +7,7 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
+        <!--suppress KotlinObjectExtensionRegistration -->
         <fileType
                 name="Arma Config"
                 implementationClass="arma.config.ArmaConfigFileType"
@@ -45,6 +46,9 @@
         <lang.commenter
                 language="ArmaConfig"
                 implementationClass="arma.config.ArmaConfigCommenter"/>
+        <lang.psiStructureViewFactory
+                language="ArmaConfig"
+                implementationClass="arma.config.structure.ArmaConfigStructureViewFactory"/>
 
     </extensions>
 </idea-plugin>

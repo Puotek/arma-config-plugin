@@ -21,7 +21,7 @@ import com.intellij.psi.util.PsiTreeUtil
  * So our rule is:
  *   - If a COMMA token has a MacroInner ancestor -> show a WEAK_WARNING.
  */
-@Suppress("InspectionDescriptionNotFoundInspection")
+@Suppress("InspectionDescriptionNotFoundInspection", "DialogTitleCapitalization")
 class CommaInParenthesesInspection : LocalInspectionTool() {
 
     override fun getDisplayName(): String =
