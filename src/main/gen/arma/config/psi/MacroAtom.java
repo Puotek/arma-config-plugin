@@ -5,9 +5,12 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface MacroInner extends PsiElement {
+public interface MacroAtom extends PsiElement {
 
-  @NotNull
-  List<MacroAtom> getMacroAtomList();
+  @Nullable
+  MacroInner getMacroInner();
+
+  @Nullable
+  MacroInnerToken getMacroInnerToken();
 
 }

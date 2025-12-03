@@ -106,7 +106,10 @@ valueList ::= value (COMMA value)*
 
 macroInvocation ::= IDENT LPAREN macroInner? RPAREN
 
-macroInner ::= macroInnerToken*
+macroInner ::= macroAtom*
+
+macroAtom ::= macroInnerToken
+            | LPAREN macroInner? RPAREN
 
 macroInnerToken ::= IDENT
                   | NUMBER
@@ -118,6 +121,7 @@ macroInnerToken ::= IDENT
                   | COMMA
                   | EQUAL
                   | COLON
+                  | SEMICOLON
                   | LINE_COMMENT
                   | BLOCK_COMMENT
 

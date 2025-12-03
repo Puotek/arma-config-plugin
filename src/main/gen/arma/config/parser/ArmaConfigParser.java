@@ -395,13 +395,45 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // macroInnerToken*
+  // macroInnerToken
+  //             | LPAREN macroInner? RPAREN
+  public static boolean macroAtom(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "macroAtom")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, MACRO_ATOM, "<macro atom>");
+    r = macroInnerToken(b, l + 1);
+    if (!r) r = macroAtom_1(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // LPAREN macroInner? RPAREN
+  private static boolean macroAtom_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "macroAtom_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, LPAREN);
+    r = r && macroAtom_1_1(b, l + 1);
+    r = r && consumeToken(b, RPAREN);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // macroInner?
+  private static boolean macroAtom_1_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "macroAtom_1_1")) return false;
+    macroInner(b, l + 1);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // macroAtom*
   public static boolean macroInner(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "macroInner")) return false;
     Marker m = enter_section_(b, l, _NONE_, MACRO_INNER, "<macro inner>");
     while (true) {
       int c = current_position_(b);
-      if (!macroInnerToken(b, l + 1)) break;
+      if (!macroAtom(b, l + 1)) break;
       if (!empty_element_parsed_guard_(b, "macroInner", c)) break;
     }
     exit_section_(b, l, m, true, false, null);
@@ -419,6 +451,7 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
   //                   | COMMA
   //                   | EQUAL
   //                   | COLON
+  //                   | SEMICOLON
   //                   | LINE_COMMENT
   //                   | BLOCK_COMMENT
   public static boolean macroInnerToken(PsiBuilder b, int l) {
@@ -437,6 +470,7 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, COMMA);
     if (!r) r = consumeToken(b, EQUAL);
     if (!r) r = consumeToken(b, COLON);
+    if (!r) r = consumeToken(b, SEMICOLON);
     if (!r) r = consumeToken(b, LINE_COMMENT);
     if (!r) r = consumeToken(b, BLOCK_COMMENT);
     exit_section_(b, l, m, r, false, null);

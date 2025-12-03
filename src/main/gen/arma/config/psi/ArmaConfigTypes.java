@@ -21,6 +21,7 @@ public interface ArmaConfigTypes {
   IElementType EXPR_MUL = new ArmaConfigElementType("EXPR_MUL");
   IElementType EXPR_POWER = new ArmaConfigElementType("EXPR_POWER");
   IElementType EXPR_UNARY = new ArmaConfigElementType("EXPR_UNARY");
+  IElementType MACRO_ATOM = new ArmaConfigElementType("MACRO_ATOM");
   IElementType MACRO_INNER = new ArmaConfigElementType("MACRO_INNER");
   IElementType MACRO_INNER_TOKEN = new ArmaConfigElementType("MACRO_INNER_TOKEN");
   IElementType MACRO_INVOCATION = new ArmaConfigElementType("MACRO_INVOCATION");
@@ -98,6 +99,9 @@ public interface ArmaConfigTypes {
       }
       else if (type == EXPR_UNARY) {
         return new ExprUnaryImpl(node);
+      }
+      else if (type == MACRO_ATOM) {
+        return new MacroAtomImpl(node);
       }
       else if (type == MACRO_INNER) {
         return new MacroInnerImpl(node);

@@ -59,6 +59,10 @@ public class Visitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitMacroAtom(@NotNull MacroAtom o) {
+    visitPsiElement(o);
+  }
+
   public void visitMacroInner(@NotNull MacroInner o) {
     visitPsiElement(o);
   }

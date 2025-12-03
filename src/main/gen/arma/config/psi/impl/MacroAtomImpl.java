@@ -11,14 +11,14 @@ import static arma.config.psi.ArmaConfigTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import arma.config.psi.*;
 
-public class MacroInnerImpl extends ASTWrapperPsiElement implements MacroInner {
+public class MacroAtomImpl extends ASTWrapperPsiElement implements MacroAtom {
 
-  public MacroInnerImpl(@NotNull ASTNode node) {
+  public MacroAtomImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull Visitor visitor) {
-    visitor.visitMacroInner(this);
+    visitor.visitMacroAtom(this);
   }
 
   @Override
@@ -28,9 +28,15 @@ public class MacroInnerImpl extends ASTWrapperPsiElement implements MacroInner {
   }
 
   @Override
-  @NotNull
-  public List<MacroAtom> getMacroAtomList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MacroAtom.class);
+  @Nullable
+  public MacroInner getMacroInner() {
+    return findChildByClass(MacroInner.class);
+  }
+
+  @Override
+  @Nullable
+  public MacroInnerToken getMacroInnerToken() {
+    return findChildByClass(MacroInnerToken.class);
   }
 
 }

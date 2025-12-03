@@ -12,9 +12,8 @@ We are implementing a full IntelliJ language plugin with:
 
 Here is the current TODO list (start with easiest to implement after reading the files I upload):
 
-- I would like to have weak warnings on any , inside of any ()
-- Add semantic check: array[] must match {} and vice versa.
 - Fix Folding - It does not work currently
+- At some point breadcrumbs broke, fix them, currently just a empty breadcrumb bar shows
 
 I will now upload the files you need. Please parse them and reconstruct the full plugin state before continuing.
 
