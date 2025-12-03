@@ -6,20 +6,23 @@ and this project loosely adheres to [Semantic Versioning](https://semver.org/spe
 Format: `[MAJOR.MINOR.PATCH] - YYYY-MM-DD`
 
 ### TODO
+
 - Code reformatting (that would work with default IntelliJ ctrl+alt+l keybind)
 - Working file structure (the intellij structure window)
-- Fix errors for > and ! or similar operators inside macros such as Q()
+- Fix errors for > and ! or similar operators inside macros such as Q() //see example.hpp file
 - Inspection for duplicate parameter assignment in same class
 
 ## [Unreleased]
 
-### Fixed
-- Support for classnames starting with numbers, like `30Rnd_556x45_Stanag`
+### Added
 
+- Support for IntelliJ comment keybinds, so that ctrl+/ comments out the whole line with single line comment
+- Support for classnames starting with numbers, like `30Rnd_556x45_Stanag`
 
 ## [1.0.1] - 2025-12-03
 
 ### Changed
+
 - Filled `CHANGELOG.md` with info
 - Updated `README.md` with plugin id for links
 

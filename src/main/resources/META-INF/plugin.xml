@@ -42,6 +42,9 @@
                 enabledByDefault="true"
                 level="WARNING"
                 implementationClass="arma.config.inspections.ArrayBraceMismatchInspection"/>
+        <lang.commenter
+                language="ArmaConfig"
+                implementationClass="arma.config.ArmaConfigCommenter"/>
 
     </extensions>
 </idea-plugin>
