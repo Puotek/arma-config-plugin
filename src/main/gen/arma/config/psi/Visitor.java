@@ -31,6 +31,10 @@ public class Visitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitClassIdent(@NotNull ClassIdent o) {
+    visitPsiElement(o);
+  }
+
   public void visitClassName(@NotNull ClassName o) {
     visitPsiElement(o);
   }

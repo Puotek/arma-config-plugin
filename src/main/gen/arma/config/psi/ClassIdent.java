@@ -5,12 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface ClassForwardDecl extends PsiElement {
+public interface ClassIdent extends PsiElement {
 
   @Nullable
-  ClassExt getClassExt();
-
-  @NotNull
-  ClassIdent getClassIdent();
+  MacroInvocation getMacroInvocation();
 
 }

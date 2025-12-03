@@ -92,13 +92,14 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // CLASS_KEYWORD IDENT classExt? LBRACE item* RBRACE SEMICOLON?
+  // CLASS_KEYWORD classIdent classExt? LBRACE item* RBRACE SEMICOLON?
   public static boolean classDecl(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "classDecl")) return false;
     if (!nextTokenIs(b, CLASS_KEYWORD)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, CLASS_KEYWORD, IDENT);
+    r = consumeToken(b, CLASS_KEYWORD);
+    r = r && classIdent(b, l + 1);
     r = r && classDecl_2(b, l + 1);
     r = r && consumeToken(b, LBRACE);
     r = r && classDecl_4(b, l + 1);
@@ -147,13 +148,14 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // CLASS_KEYWORD IDENT classExt? SEMICOLON
+  // CLASS_KEYWORD classIdent classExt? SEMICOLON
   public static boolean classForwardDecl(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "classForwardDecl")) return false;
     if (!nextTokenIs(b, CLASS_KEYWORD)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, CLASS_KEYWORD, IDENT);
+    r = consumeToken(b, CLASS_KEYWORD);
+    r = r && classIdent(b, l + 1);
     r = r && classForwardDecl_2(b, l + 1);
     r = r && consumeToken(b, SEMICOLON);
     exit_section_(b, m, CLASS_FORWARD_DECL, r);
@@ -168,14 +170,29 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IDENT | macroInvocation
+  // macroInvocation
+  //                   | IDENT
+  public static boolean classIdent(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "classIdent")) return false;
+    if (!nextTokenIs(b, IDENT)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = macroInvocation(b, l + 1);
+    if (!r) r = consumeToken(b, IDENT);
+    exit_section_(b, m, CLASS_IDENT, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // macroInvocation
+  //                   | IDENT
   public static boolean className(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "className")) return false;
     if (!nextTokenIs(b, IDENT)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, IDENT);
-    if (!r) r = macroInvocation(b, l + 1);
+    r = macroInvocation(b, l + 1);
+    if (!r) r = consumeToken(b, IDENT);
     exit_section_(b, m, CLASS_NAME, r);
     return r;
   }

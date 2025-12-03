@@ -53,13 +53,18 @@ private item ::= classDecl
                | macroStmt
                | ';'
 
-classDecl ::= CLASS_KEYWORD IDENT classExt? LBRACE item* RBRACE SEMICOLON?
+classDecl       ::= CLASS_KEYWORD classIdent classExt? LBRACE item* RBRACE SEMICOLON?
+classForwardDecl ::= CLASS_KEYWORD classIdent classExt? SEMICOLON
 
-classForwardDecl ::= CLASS_KEYWORD IDENT classExt? SEMICOLON
+// NOTE: macroInvocation comes FIRST
+classIdent      ::= macroInvocation
+                  | IDENT
 
-classExt ::= COLON className
+classExt        ::= COLON className
 
-className ::= IDENT | macroInvocation
+// NOTE: macroInvocation comes FIRST here as well
+className       ::= macroInvocation
+                  | IDENT
 
 assignment ::= IDENT arraySuffix? EQUAL value SEMICOLON
 

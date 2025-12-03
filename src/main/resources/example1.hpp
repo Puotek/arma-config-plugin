@@ -36,14 +36,14 @@ class TestClass {
 	float = 2.20;
 	number = 12;
     preprocessorThing = Q(path\to\file.paa);
-    complexPreprocessor = Q(_target setObjectTextureGlobal [0, 'PATH(textures\ipsc_vertical.paa)'];); //<- here at the end <macro atom> or ArmaConfigTokenType.) expected, got ';'
-	class NestedClass : extendClass {
+    complexPreprocessor = Q(_target setObjectTextureGlobal [0, 'PATH(textures\ipsc_vertical.paa)'];);
+    class NestedClass : extendClass {
 		/*Another block comment*/
 		array[] = {var, 1, 1, "", 42, 43};
 		math = 1 + 69 * 1;
 	};
-    class TAG(preprocessorClass) : TAG(extensionAlso) {}; //<- here we have an error on TAG( -> ArmaConfigTokenType.:, ArmaConfigTokenType.; or ArmaConfigTokenType.{ expected, got '('
-	thingy = 0;
+    class TAG(preprocessorClass) : TAG(extensionAlso) {};
+    thingy = 0;
 	delete DeleteIsAKeywordTooClass;
 	PREPROCESSOR_USED_FOR_PARAMS(something);
 	JUST_A_PREPROCESSOR_THING;

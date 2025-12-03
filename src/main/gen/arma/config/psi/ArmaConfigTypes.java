@@ -14,6 +14,7 @@ public interface ArmaConfigTypes {
   IElementType CLASS_DECL = new ArmaConfigElementType("CLASS_DECL");
   IElementType CLASS_EXT = new ArmaConfigElementType("CLASS_EXT");
   IElementType CLASS_FORWARD_DECL = new ArmaConfigElementType("CLASS_FORWARD_DECL");
+  IElementType CLASS_IDENT = new ArmaConfigElementType("CLASS_IDENT");
   IElementType CLASS_NAME = new ArmaConfigElementType("CLASS_NAME");
   IElementType DELETE_STMT = new ArmaConfigElementType("DELETE_STMT");
   IElementType EXPR = new ArmaConfigElementType("EXPR");
@@ -78,6 +79,9 @@ public interface ArmaConfigTypes {
       }
       else if (type == CLASS_FORWARD_DECL) {
         return new ClassForwardDeclImpl(node);
+      }
+      else if (type == CLASS_IDENT) {
+        return new ClassIdentImpl(node);
       }
       else if (type == CLASS_NAME) {
         return new ClassNameImpl(node);

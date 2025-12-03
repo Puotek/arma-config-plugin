@@ -20,6 +20,9 @@ public interface ClassDecl extends PsiElement {
   List<ClassForwardDecl> getClassForwardDeclList();
 
   @NotNull
+  ClassIdent getClassIdent();
+
+  @NotNull
   List<DeleteStmt> getDeleteStmtList();
 
   @NotNull

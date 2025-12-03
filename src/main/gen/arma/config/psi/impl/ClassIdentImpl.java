@@ -11,14 +11,14 @@ import static arma.config.psi.ArmaConfigTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import arma.config.psi.*;
 
-public class ClassForwardDeclImpl extends ASTWrapperPsiElement implements ClassForwardDecl {
+public class ClassIdentImpl extends ASTWrapperPsiElement implements ClassIdent {
 
-  public ClassForwardDeclImpl(@NotNull ASTNode node) {
+  public ClassIdentImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull Visitor visitor) {
-    visitor.visitClassForwardDecl(this);
+    visitor.visitClassIdent(this);
   }
 
   @Override
@@ -29,14 +29,8 @@ public class ClassForwardDeclImpl extends ASTWrapperPsiElement implements ClassF
 
   @Override
   @Nullable
-  public ClassExt getClassExt() {
-    return findChildByClass(ClassExt.class);
-  }
-
-  @Override
-  @NotNull
-  public ClassIdent getClassIdent() {
-    return findNotNullChildByClass(ClassIdent.class);
+  public MacroInvocation getMacroInvocation() {
+    return findChildByClass(MacroInvocation.class);
   }
 
 }

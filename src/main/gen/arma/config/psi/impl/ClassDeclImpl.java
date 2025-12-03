@@ -53,6 +53,12 @@ public class ClassDeclImpl extends ASTWrapperPsiElement implements ClassDecl {
 
   @Override
   @NotNull
+  public ClassIdent getClassIdent() {
+    return findNotNullChildByClass(ClassIdent.class);
+  }
+
+  @Override
+  @NotNull
   public List<DeleteStmt> getDeleteStmtList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, DeleteStmt.class);
   }
