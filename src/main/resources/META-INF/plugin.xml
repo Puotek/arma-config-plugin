@@ -18,15 +18,25 @@
         <lang.parserDefinition
                 language="ArmaConfig"
                 implementationClass="arma.config.ArmaConfigParserDefinition"/>
-        <breadcrumbsInfoProvider
-                implementation="arma.config.breadcrumbs.ArmaBreadcrumbsProvider"/>
         <lang.syntaxHighlighterFactory
                 language="ArmaConfig"
                 implementationClass="arma.config.highlighting.ArmaConfigSyntaxHighlighterFactory"/>
         <lang.foldingBuilder
                 language="ArmaConfig"
                 implementationClass="arma.config.folding.ArmaConfigFoldingBuilder"/>
+        <lang.commenter
+                language="ArmaConfig"
+                implementationClass="arma.config.ArmaConfigCommenter"/>
+        <lang.psiStructureViewFactory
+                language="ArmaConfig"
+                implementationClass="arma.config.structure.ArmaConfigStructureViewFactory"/>
+
+        <breadcrumbsInfoProvider
+                implementation="arma.config.breadcrumbs.ArmaBreadcrumbsProvider"/>
+
         <colorSettingsPage implementation="arma.config.highlighting.ArmaConfigColorSettingsPage"/>
+
+<!-- INSPECTIONS -->
         <localInspection
                 language="ArmaConfig"
                 shortName="ArmaCommaInParentheses"
@@ -43,12 +53,14 @@
                 enabledByDefault="true"
                 level="WARNING"
                 implementationClass="arma.config.inspections.ArrayBraceMismatchInspection"/>
-        <lang.commenter
+        <localInspection
                 language="ArmaConfig"
-                implementationClass="arma.config.ArmaConfigCommenter"/>
-        <lang.psiStructureViewFactory
-                language="ArmaConfig"
-                implementationClass="arma.config.structure.ArmaConfigStructureViewFactory"/>
+                shortName="ArmaDuplicateAssignment"
+                displayName="Duplicate parameter assignment in class"
+                groupName="Arma Config"
+                enabledByDefault="true"
+                level="WARNING"
+                implementationClass="arma.config.inspections.DuplicateAssignmentInspection"/>
 
     </extensions>
 </idea-plugin>

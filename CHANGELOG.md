@@ -8,7 +8,6 @@ Format: `[MAJOR.MINOR.PATCH] - YYYY-MM-DD`
 ### TODO
 
 - Code reformatting (that would work with default IntelliJ ctrl+alt+l keybind)
-- Inspection for duplicate parameter assignment in same class
 
 ## [Unreleased]
 
@@ -16,6 +15,7 @@ Format: `[MAJOR.MINOR.PATCH] - YYYY-MM-DD`
 
 - Support for IntelliJ comment keybinds, so that ctrl+/ comments out the whole line with single line comment
 - Working file structure IntelliJ window
+- Inspection for duplicate parameter assignment in same class
 
 ### Fixed
 

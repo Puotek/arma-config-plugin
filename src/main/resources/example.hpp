@@ -24,10 +24,12 @@ class ErrorsShouldBeShowingHere {
     TEST(var,var);
     arrayWrong = {};
     arrayWrond2[] = test;
+    duplicatedParam = 1;
+    duplicatedParam = 1;
 }
 class TestClass {
     condition = Q(count TAG(targets) > 0);
-    condition = Q(!(_target in TAG(targets))); 
+    condition2 = Q(!(_target in TAG(targets)));
 
 	indentifier = anotherIdentifer;
 	array[] = {}; //inline comment
