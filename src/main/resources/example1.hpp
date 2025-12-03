@@ -16,6 +16,7 @@ multiline
 //todo works?
 //fixme works as well?
 
+class 30Rnd_556x45_Stanag;
 class NoBodyClass;
 class ErrorsShouldBeShowingHere {
     TEST(var,var);
@@ -42,6 +43,8 @@ class TestClass {
 		array[] = {var, 1, 1, "", 42, 43};
 		math = 1 + 69 * 1;
 	};
+	class 30Rnd_556x45_Stanag;
+	class test : 30Rnd_556x45_Stanag {};
     class TAG(preprocessorClass) : TAG(extensionAlso) {};
     thingy = 0;
 	delete DeleteIsAKeywordTooClass;

@@ -184,10 +184,12 @@ class ArmaConfigLexer : LexerBase() {
             return
         }
 
-        // NUMBER or FLOAT token
+        // NUMBER, FLOAT, or identifier starting with a digit
+        // e.g. "30Rnd_556x45_Stanag" should be a single IDENT, not NUMBER("30") + IDENT("Rnd_...")
         if (c.isDigit()) {
             var j = i
             var seenDot = false
+            var isIdentLike = false
 
             while (j < endOffset) {
                 val ch = buffer[j]
@@ -196,10 +198,17 @@ class ArmaConfigLexer : LexerBase() {
                         j++
                     }
 
+                    // first dot followed by a digit -> part of a FLOAT literal
                     !seenDot && ch == '.' && j + 1 < endOffset && buffer[j + 1].isDigit() -> {
-                        // first dot followed by digit -> start FLOAT
                         seenDot = true
                         j++ // consume '.'
+                    }
+
+                    // Any char that is valid *inside* an identifier but not a pure number
+                    // means we should treat the whole run as IDENT, not NUMBER/FLOAT.
+                    ch.isIdentPart() -> {
+                        isIdentLike = true
+                        j++
                     }
 
                     else -> break
@@ -207,7 +216,19 @@ class ArmaConfigLexer : LexerBase() {
             }
 
             tokenEnd = j
-            tokenType = if (seenDot) ArmaConfigTypes.FLOAT else ArmaConfigTypes.NUMBER
+
+            if (isIdentLike) {
+                val text = buffer.subSequence(tokenStart, tokenEnd).toString()
+                tokenType = when (text) {
+                    "class" -> ArmaConfigTypes.CLASS_KEYWORD
+                    "delete" -> ArmaConfigTypes.DELETE_KEYWORD
+                    "min" -> ArmaConfigTypes.MIN_KEYWORD
+                    "max" -> ArmaConfigTypes.MAX_KEYWORD
+                    else   -> ArmaConfigTypes.IDENT
+                }
+            } else {
+                tokenType = if (seenDot) ArmaConfigTypes.FLOAT else ArmaConfigTypes.NUMBER
+            }
             return
         }
 
