@@ -9,6 +9,12 @@ and this project loosely adheres to [Semantic Versioning](https://semver.org/spe
 
 ## [Unreleased]
 
+## [1.0.1] - 2025-12-03
+
+### Changed
+- Filled `CHANGELOG.md` with info
+- Updated `README.md` with plugin id for links
+
 ## [1.0.0] - 2025-12-03
 
 ### Added
