@@ -17,6 +17,9 @@ Format: `[MAJOR.MINOR.PATCH] - YYYY-MM-DD`
 - Working file structure IntelliJ window
 - Inspection for duplicate parameter assignment in same class
 
+### Changed
+- `README.md` added a new guide on how to manually make a build of the plugin
+
 ### Fixed
 
 - Support for classnames starting with numbers, like `30Rnd_556x45_Stanag`

@@ -40,6 +40,24 @@ Designed for myself, since I like working in IntelliJ instead of VS Code, and th
   Download the [latest release](https://github.com/Puotek/arma-config-plugin/releases/latest) and install it manually using
   <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
 
+- Manual Build:
+
+  Open project in IntelliJ
+
+  You will need plugins: 
+  - [Plugin DevKit](https://plugins.jetbrains.com/plugin/22851-plugin-devkit)
+  - [Grammar-Kit](https://plugins.jetbrains.com/plugin/6606-grammar-kit)
+  
+  Make sure to set an SDK to `openjdk-21 Oracle OpenSDK 21.0.1` in `File` > `Project Structure`
+
+  Delete `src/main/gen/arma` folder and rebuild it by `RMB` on `src/main/grammar/ArmaConfig.bnf` and select `Generate Parser Code`
+
+  In right panel open gradle and run task `arma-config-plugin/Tasks/puotek/buildDownloads`
+
+  You should get a plugin build in your User/Downloads Folder
+
+  Install it manually using
+  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
 
 ---
 Plugin based on the [IntelliJ Platform Plugin Template][template].
