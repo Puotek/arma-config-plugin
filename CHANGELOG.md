@@ -5,11 +5,12 @@ and this project loosely adheres to [Semantic Versioning](https://semver.org/spe
 
 Format: `[MAJOR.MINOR.PATCH] - YYYY-MM-DD`
 
-- todo :: Code refactoring via `CTRL`+`ALT`+`L`
-- todo :: Add working file structure
-- todo :: Add code refactoring
-- fixme :: See error in config.cpp example, where there is an issue with < in a Q() macro and also !
-- fixme :: Consider fixing classnames that start with a number, seems like they are broken, check `30Rnd_556x45_Stanag`
+### TODO
+- Code refactoring via `CTRL`+`ALT`+`L`
+- Working file structure
+
+### FIXME
+- See error in config.cpp example, where there is an issue with < in a Q() macro and also !
 
 ## [Unreleased]
 

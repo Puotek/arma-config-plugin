@@ -175,34 +175,34 @@ tasks.register("runIdeClean") {
     finalizedBy("runIde")
 }
 
-tasks.register("bumpVersion") {
-    group = "puotek"
-    description = "Increment pluginVersion property by 1"
+//tasks.register("bumpVersion") {
+//    group = "puotek"
+//    description = "Increment pluginVersion property by 1"
+//
+//    doLast {
+//        val propsFile = file("gradle.properties")
+//        val text = propsFile.readText()
+//
+//        val regex = Regex("""pluginVersion\s*=\s*([0-9]+(?:\.[0-9]+)*)""")
+//        val match = regex.find(text) ?: error("pluginVersion not found in gradle.properties")
+//
+//        val current = match.groupValues[1]
+//        val parts = current.split(".").toMutableList()
+//
+//        val last = parts.last().toInt()
+//        parts[parts.lastIndex] = (last + 1).toString()
+//
+//        val next = parts.joinToString(".")
+//        val newText = text.replace(regex, "pluginVersion=$next")
+//
+//        propsFile.writeText(newText)
+//
+//        println("pluginVersion bumped: $current -> $next")
+//    }
+//}
 
-    doLast {
-        val propsFile = file("gradle.properties")
-        val text = propsFile.readText()
 
-        val regex = Regex("""pluginVersion\s*=\s*([0-9]+(?:\.[0-9]+)*)""")
-        val match = regex.find(text) ?: error("pluginVersion not found in gradle.properties")
-
-        val current = match.groupValues[1]
-        val parts = current.split(".").toMutableList()
-
-        val last = parts.last().toInt()
-        parts[parts.lastIndex] = (last + 1).toString()
-
-        val next = parts.joinToString(".")
-        val newText = text.replace(regex, "pluginVersion=$next")
-
-        propsFile.writeText(newText)
-
-        println("pluginVersion bumped: $current -> $next")
-    }
-}
-
-
-tasks.register<Copy>("buildToDownloads") {
+tasks.register<Copy>("buildDownloads") {
     group = "puotek"
     description = "Build plugin and copy its ZIP to ~/Downloads"
 
