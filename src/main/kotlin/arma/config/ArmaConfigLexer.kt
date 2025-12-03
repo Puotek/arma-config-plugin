@@ -164,14 +164,12 @@ class ArmaConfigLexer : LexerBase() {
             }
         }
 
-        // IDENT or keyword: starts with letter or underscore, continues with letters/digits/underscore
-        if (c.isLetter() || c == '_') {
+        // IDENT or keyword (also used for path-like tokens inside macros):
+        // starts with letter / '_' / path chars, continues with letters/digits/underscore/path chars
+        if (c.isIdentStart()) {
             var j = i + 1
-            while (j < endOffset) {
-                val ch = buffer[j]
-                if (ch.isLetterOrDigit() || ch == '_') {
-                    j++
-                } else break
+            while (j < endOffset && buffer[j].isIdentPart()) {
+                j++
             }
             tokenEnd = j
             val text = buffer.subSequence(tokenStart, tokenEnd).toString()
@@ -179,6 +177,8 @@ class ArmaConfigLexer : LexerBase() {
             tokenType = when (text) {
                 "class" -> ArmaConfigTypes.CLASS_KEYWORD
                 "delete" -> ArmaConfigTypes.DELETE_KEYWORD
+                "min" -> ArmaConfigTypes.MIN_KEYWORD
+                "max" -> ArmaConfigTypes.MAX_KEYWORD
                 else -> ArmaConfigTypes.IDENT
             }
             return
@@ -249,11 +249,25 @@ class ArmaConfigLexer : LexerBase() {
             ':' -> ArmaConfigTypes.COLON
             '(' -> ArmaConfigTypes.LPAREN
             ')' -> ArmaConfigTypes.RPAREN
+            '+' -> ArmaConfigTypes.PLUS
+            '-' -> ArmaConfigTypes.MINUS
+            '*' -> ArmaConfigTypes.STAR
+            '/' -> ArmaConfigTypes.SLASH
+            '%' -> ArmaConfigTypes.PERCENT
+            '^' -> ArmaConfigTypes.CARET
             else -> TokenType.BAD_CHARACTER  // Unknown/invalid char
         }
     }
 
     // Helper: we don’t use the built-in isLetterOrDigit for this Char type,
-    // so we define it via isLetter()+isDigit()
-    private fun Char.isLetterOrDigit(): Boolean = isLetter() || isDigit()
+// so we define it via isLetter()+isDigit()
+    private fun Char.isLetterOrDigitCompat(): Boolean = isLetter() || isDigit()
+
+    // Characters allowed at start of an IDENT (also used for path-ish macros)
+    private fun Char.isIdentStart(): Boolean =
+        isLetter() || this == '_' || this == '\\' || this == '/' || this == '.' || this == '\''
+
+    // Characters allowed *inside* an IDENT
+    private fun Char.isIdentPart(): Boolean =
+        isLetterOrDigitCompat() || this == '_' || this == '\\' || this == '/' || this == '.' || this == '\''
 }

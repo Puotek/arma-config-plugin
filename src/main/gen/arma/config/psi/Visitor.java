@@ -39,6 +39,26 @@ public class Visitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitExpr(@NotNull Expr o) {
+    visitPsiElement(o);
+  }
+
+  public void visitExprAdd(@NotNull ExprAdd o) {
+    visitPsiElement(o);
+  }
+
+  public void visitExprMul(@NotNull ExprMul o) {
+    visitPsiElement(o);
+  }
+
+  public void visitExprPower(@NotNull ExprPower o) {
+    visitPsiElement(o);
+  }
+
+  public void visitExprUnary(@NotNull ExprUnary o) {
+    visitPsiElement(o);
+  }
+
   public void visitMacroInner(@NotNull MacroInner o) {
     visitPsiElement(o);
   }
@@ -52,6 +72,10 @@ public class Visitor extends PsiElementVisitor {
   }
 
   public void visitMacroStmt(@NotNull MacroStmt o) {
+    visitPsiElement(o);
+  }
+
+  public void visitPrimary(@NotNull Primary o) {
     visitPsiElement(o);
   }
 

@@ -18,15 +18,15 @@ Here is the current TODO list (start with easiest to implement after reading the
 
 I will now upload the files you need. Please parse them and reconstruct the full plugin state before continuing.
 
-plugin.xml
-ArmaConfigLexer.kt
-ArmaConfigParserDefinition.kt
-ArmaConfigSyntaxHighlighter.kt
-ArmaConfigColorSettingsPage.kt
-ArmaConfigFile.kt
 ArmaBreadcrumbsProvider.kt
 ArmaConfigFoldingBuilder.kt
+ArmaConfigColorSettingsPage.kt
+ArmaConfigSyntaxHighlighter.kt
+ArmaConfigFile.kt
 ArmaConfigTokenType.kt
+ArmaConfigLexer.kt
+ArmaConfigParserDefinition.kt
+plugin.xml
 
 ArmaConfig.bnf below in text:
 ---INSERT ME---

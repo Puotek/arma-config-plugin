@@ -16,14 +16,21 @@ public interface ArmaConfigTypes {
   IElementType CLASS_FORWARD_DECL = new ArmaConfigElementType("CLASS_FORWARD_DECL");
   IElementType CLASS_NAME = new ArmaConfigElementType("CLASS_NAME");
   IElementType DELETE_STMT = new ArmaConfigElementType("DELETE_STMT");
+  IElementType EXPR = new ArmaConfigElementType("EXPR");
+  IElementType EXPR_ADD = new ArmaConfigElementType("EXPR_ADD");
+  IElementType EXPR_MUL = new ArmaConfigElementType("EXPR_MUL");
+  IElementType EXPR_POWER = new ArmaConfigElementType("EXPR_POWER");
+  IElementType EXPR_UNARY = new ArmaConfigElementType("EXPR_UNARY");
   IElementType MACRO_INNER = new ArmaConfigElementType("MACRO_INNER");
   IElementType MACRO_INNER_TOKEN = new ArmaConfigElementType("MACRO_INNER_TOKEN");
   IElementType MACRO_INVOCATION = new ArmaConfigElementType("MACRO_INVOCATION");
   IElementType MACRO_STMT = new ArmaConfigElementType("MACRO_STMT");
+  IElementType PRIMARY = new ArmaConfigElementType("PRIMARY");
   IElementType VALUE = new ArmaConfigElementType("VALUE");
   IElementType VALUE_LIST = new ArmaConfigElementType("VALUE_LIST");
 
   IElementType BLOCK_COMMENT = new ArmaConfigTokenType("regex:/\\\\*([^*]|\\\\*+[^*/])*\\\\*+/");
+  IElementType CARET = new ArmaConfigTokenType("^");
   IElementType CLASS_KEYWORD = new ArmaConfigTokenType("class");
   IElementType COLON = new ArmaConfigTokenType(":");
   IElementType COMMA = new ArmaConfigTokenType(",");
@@ -35,12 +42,19 @@ public interface ArmaConfigTypes {
   IElementType LBRACKET = new ArmaConfigTokenType("[");
   IElementType LINE_COMMENT = new ArmaConfigTokenType("regex://.*");
   IElementType LPAREN = new ArmaConfigTokenType("(");
+  IElementType MAX_KEYWORD = new ArmaConfigTokenType("max");
+  IElementType MINUS = new ArmaConfigTokenType("-");
+  IElementType MIN_KEYWORD = new ArmaConfigTokenType("min");
   IElementType NUMBER = new ArmaConfigTokenType("regex:\\\\d+");
+  IElementType PERCENT = new ArmaConfigTokenType("%");
+  IElementType PLUS = new ArmaConfigTokenType("+");
   IElementType PREPROCESSOR = new ArmaConfigTokenType("regex:#.*");
   IElementType RBRACE = new ArmaConfigTokenType("}");
   IElementType RBRACKET = new ArmaConfigTokenType("]");
   IElementType RPAREN = new ArmaConfigTokenType(")");
   IElementType SEMICOLON = new ArmaConfigTokenType(";");
+  IElementType SLASH = new ArmaConfigTokenType("/");
+  IElementType STAR = new ArmaConfigTokenType("*");
   IElementType STRING = new ArmaConfigTokenType("regex:\"([^\"\\\\\\\\n]|\\\\\\\\.)*\"");
 
   class Factory {
@@ -70,6 +84,21 @@ public interface ArmaConfigTypes {
       else if (type == DELETE_STMT) {
         return new DeleteStmtImpl(node);
       }
+      else if (type == EXPR) {
+        return new ExprImpl(node);
+      }
+      else if (type == EXPR_ADD) {
+        return new ExprAddImpl(node);
+      }
+      else if (type == EXPR_MUL) {
+        return new ExprMulImpl(node);
+      }
+      else if (type == EXPR_POWER) {
+        return new ExprPowerImpl(node);
+      }
+      else if (type == EXPR_UNARY) {
+        return new ExprUnaryImpl(node);
+      }
       else if (type == MACRO_INNER) {
         return new MacroInnerImpl(node);
       }
@@ -81,6 +110,9 @@ public interface ArmaConfigTypes {
       }
       else if (type == MACRO_STMT) {
         return new MacroStmtImpl(node);
+      }
+      else if (type == PRIMARY) {
+        return new PrimaryImpl(node);
       }
       else if (type == VALUE) {
         return new ValueImpl(node);

@@ -11,14 +11,14 @@ import static arma.config.psi.ArmaConfigTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import arma.config.psi.*;
 
-public class ValueImpl extends ASTWrapperPsiElement implements Value {
+public class PrimaryImpl extends ASTWrapperPsiElement implements Primary {
 
-  public ValueImpl(@NotNull ASTNode node) {
+  public PrimaryImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull Visitor visitor) {
-    visitor.visitValue(this);
+    visitor.visitPrimary(this);
   }
 
   @Override
@@ -29,20 +29,8 @@ public class ValueImpl extends ASTWrapperPsiElement implements Value {
 
   @Override
   @Nullable
-  public Array getArray() {
-    return findChildByClass(Array.class);
-  }
-
-  @Override
-  @Nullable
-  public Expr getExpr() {
-    return findChildByClass(Expr.class);
-  }
-
-  @Override
-  @Nullable
-  public MacroInvocation getMacroInvocation() {
-    return findChildByClass(MacroInvocation.class);
+  public ExprAdd getExprAdd() {
+    return findChildByClass(ExprAdd.class);
   }
 
 }

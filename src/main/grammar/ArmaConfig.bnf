@@ -6,30 +6,43 @@
   elementTypeClass="arma.config.psi.ArmaConfigElementType"
   tokenTypeClass="arma.config.psi.ArmaConfigTokenType"
 
-    tokens = [
-        CLASS_KEYWORD  = 'class'
-        DELETE_KEYWORD = 'delete'
-        LBRACE         = '{'
-        RBRACE         = '}'
-        LBRACKET       = '['
-        RBRACKET       = ']'
-        EQUAL          = '='
-        SEMICOLON      = ';'
-        COMMA          = ','
-        COLON          = ':'
-        LPAREN       = '('
-        RPAREN       = ')'
+  tokens = [
+      CLASS_KEYWORD  = 'class'
+      DELETE_KEYWORD = 'delete'
+      LBRACE         = '{'
+      RBRACE         = '}'
+      LBRACKET       = '['
+      RBRACKET       = ']'
+      EQUAL          = '='
+      SEMICOLON      = ';'
+      COMMA          = ','
+      COLON          = ':'
+      LPAREN         = '('
+      RPAREN         = ')'
 
-        LINE_COMMENT  = 'regex://.*'
-        BLOCK_COMMENT = 'regex:/\\*([^*]|\\*+[^*/])*\\*+/'
-        PREPROCESSOR  = 'regex:#.*'
+      // NEW: operators
+      PLUS           = '+'
+      MINUS          = '-'
+      STAR           = '*'
+      SLASH          = '/'
+      PERCENT        = '%'
+      CARET          = '^'
 
-        IDENT  = "regex:[A-Za-z_][A-Za-z0-9_]*"
-        FLOAT  = "regex:\\d+\\.\\d+"
-        NUMBER = "regex:\\d+"
-        STRING = "regex:\"([^\"\\\\n]|\\\\.)*\""
-    ]
+      // NEW: word operators
+      MIN_KEYWORD    = 'min'
+      MAX_KEYWORD    = 'max'
+
+      LINE_COMMENT   = 'regex://.*'
+      BLOCK_COMMENT  = 'regex:/\\*([^*]|\\*+[^*/])*\\*+/'
+      PREPROCESSOR   = 'regex:#.*'
+
+      IDENT          = "regex:[A-Za-z_][A-Za-z0-9_]*"
+      FLOAT          = "regex:\\d+\\.\\d+"
+      NUMBER         = "regex:\\d+"
+      STRING         = "regex:\"([^\"\\\\n]|\\\\.)*\""
+  ]
 }
+
 
 configFile ::= item*
 
@@ -54,12 +67,39 @@ arraySuffix ::= LBRACKET RBRACKET
 
 deleteStmt ::= DELETE_KEYWORD IDENT SEMICOLON
 
-value ::= IDENT
-        | FLOAT
-        | NUMBER
+value ::= macroInvocation
+        | IDENT
         | STRING
         | array
-        | macroInvocation
+        | expr
+
+// ========================
+// Numeric expressions
+// ========================
+
+// Lowest level: full expression
+expr ::= expr_add
+
+// Addition / subtraction / min / max
+expr_add ::= expr_mul ( (PLUS | MINUS | MIN_KEYWORD | MAX_KEYWORD) expr_mul )*
+
+// Multiplication / division / modulo
+expr_mul ::= expr_power ( (STAR | SLASH | PERCENT) expr_power )*
+
+// Power (right-assoc-ish, left is fine for tooling)
+expr_power ::= expr_unary (CARET expr_unary)*
+
+// Unary + / -
+expr_unary ::= primary
+             | PLUS expr_unary
+             | MINUS expr_unary
+
+// Primary elements
+primary ::= NUMBER
+          | FLOAT
+          | IDENT          // we allow any identifier here (safeZoneX etc. are just a subset)
+          | LPAREN expr_add RPAREN
+
 
 array ::= LBRACE valueList? RBRACE
 valueList ::= value (COMMA value)*

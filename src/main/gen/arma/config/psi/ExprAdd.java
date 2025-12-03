@@ -5,15 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface Value extends PsiElement {
+public interface ExprAdd extends PsiElement {
 
-  @Nullable
-  Array getArray();
-
-  @Nullable
-  Expr getExpr();
-
-  @Nullable
-  MacroInvocation getMacroInvocation();
+  @NotNull
+  List<ExprMul> getExprMulList();
 
 }

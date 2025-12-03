@@ -205,6 +205,177 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // expr_add
+  public static boolean expr(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "expr")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, EXPR, "<expr>");
+    r = expr_add(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // expr_mul ( (PLUS | MINUS | MIN_KEYWORD | MAX_KEYWORD) expr_mul )*
+  public static boolean expr_add(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "expr_add")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, EXPR_ADD, "<expr add>");
+    r = expr_mul(b, l + 1);
+    r = r && expr_add_1(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // ( (PLUS | MINUS | MIN_KEYWORD | MAX_KEYWORD) expr_mul )*
+  private static boolean expr_add_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "expr_add_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!expr_add_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "expr_add_1", c)) break;
+    }
+    return true;
+  }
+
+  // (PLUS | MINUS | MIN_KEYWORD | MAX_KEYWORD) expr_mul
+  private static boolean expr_add_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "expr_add_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = expr_add_1_0_0(b, l + 1);
+    r = r && expr_mul(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // PLUS | MINUS | MIN_KEYWORD | MAX_KEYWORD
+  private static boolean expr_add_1_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "expr_add_1_0_0")) return false;
+    boolean r;
+    r = consumeToken(b, PLUS);
+    if (!r) r = consumeToken(b, MINUS);
+    if (!r) r = consumeToken(b, MIN_KEYWORD);
+    if (!r) r = consumeToken(b, MAX_KEYWORD);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // expr_power ( (STAR | SLASH | PERCENT) expr_power )*
+  public static boolean expr_mul(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "expr_mul")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, EXPR_MUL, "<expr mul>");
+    r = expr_power(b, l + 1);
+    r = r && expr_mul_1(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // ( (STAR | SLASH | PERCENT) expr_power )*
+  private static boolean expr_mul_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "expr_mul_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!expr_mul_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "expr_mul_1", c)) break;
+    }
+    return true;
+  }
+
+  // (STAR | SLASH | PERCENT) expr_power
+  private static boolean expr_mul_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "expr_mul_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = expr_mul_1_0_0(b, l + 1);
+    r = r && expr_power(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // STAR | SLASH | PERCENT
+  private static boolean expr_mul_1_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "expr_mul_1_0_0")) return false;
+    boolean r;
+    r = consumeToken(b, STAR);
+    if (!r) r = consumeToken(b, SLASH);
+    if (!r) r = consumeToken(b, PERCENT);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // expr_unary (CARET expr_unary)*
+  public static boolean expr_power(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "expr_power")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, EXPR_POWER, "<expr power>");
+    r = expr_unary(b, l + 1);
+    r = r && expr_power_1(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // (CARET expr_unary)*
+  private static boolean expr_power_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "expr_power_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!expr_power_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "expr_power_1", c)) break;
+    }
+    return true;
+  }
+
+  // CARET expr_unary
+  private static boolean expr_power_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "expr_power_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, CARET);
+    r = r && expr_unary(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // primary
+  //              | PLUS expr_unary
+  //              | MINUS expr_unary
+  public static boolean expr_unary(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "expr_unary")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, EXPR_UNARY, "<expr unary>");
+    r = primary(b, l + 1);
+    if (!r) r = expr_unary_1(b, l + 1);
+    if (!r) r = expr_unary_2(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // PLUS expr_unary
+  private static boolean expr_unary_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "expr_unary_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, PLUS);
+    r = r && expr_unary(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // MINUS expr_unary
+  private static boolean expr_unary_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "expr_unary_2")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, MINUS);
+    r = r && expr_unary(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // classDecl
   //                | classForwardDecl
   //                | assignment
@@ -319,22 +490,49 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IDENT
-  //         | FLOAT
-  //         | NUMBER
+  // NUMBER
+  //           | FLOAT
+  //           | IDENT          // we allow any identifier here (safeZoneX etc. are just a subset)
+  //           | LPAREN expr_add RPAREN
+  public static boolean primary(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "primary")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, PRIMARY, "<primary>");
+    r = consumeToken(b, NUMBER);
+    if (!r) r = consumeToken(b, FLOAT);
+    if (!r) r = consumeToken(b, IDENT);
+    if (!r) r = primary_3(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // LPAREN expr_add RPAREN
+  private static boolean primary_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "primary_3")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, LPAREN);
+    r = r && expr_add(b, l + 1);
+    r = r && consumeToken(b, RPAREN);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // macroInvocation
+  //         | IDENT
   //         | STRING
   //         | array
-  //         | macroInvocation
+  //         | expr
   public static boolean value(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "value")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, VALUE, "<value>");
-    r = consumeToken(b, IDENT);
-    if (!r) r = consumeToken(b, FLOAT);
-    if (!r) r = consumeToken(b, NUMBER);
+    r = macroInvocation(b, l + 1);
+    if (!r) r = consumeToken(b, IDENT);
     if (!r) r = consumeToken(b, STRING);
     if (!r) r = array(b, l + 1);
-    if (!r) r = macroInvocation(b, l + 1);
+    if (!r) r = expr(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }

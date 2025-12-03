@@ -17,6 +17,11 @@ multiline
 //fixme works as well?
 
 class NoBodyClass;
+class ErrorsShouldBeShowingHere {
+    TEST(var,var);
+    arrayWrong = {};
+    arrayWrond2[] = test;
+}
 class TestClass {
 	indentifier = anotherIdentifer;
 	array[] = {}; //inline comment
@@ -26,11 +31,12 @@ class TestClass {
         ,"test"
 	}; //inline comment
 	string = "hallo from the other siiide";
+    TEST(var,var);
 	math = 1 + 1 + (42 - 2);
 	float = 2.20;
 	number = 12;
     preprocessorThing = Q(path\to\file.paa);
-    complexPreprocessor = Q(_target setObjectTextureGlobal [0, 'PATH(textures\ipsc_vertical.paa)'];);
+    complexPreprocessor = Q(_target setObjectTextureGlobal [0, 'PATH(textures\ipsc_vertical.paa)'];); //<- here on PATH( now we have an error <macro inner token> or ArmaConfigTokenType.) expected, got '('
 	class NestedClass : extendClass {
 		/*Another block comment*/
 		array[] = {var, 1, 1e1, "", 42, 43};

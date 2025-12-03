@@ -33,7 +33,7 @@ class ArmaConfigSyntaxHighlighter : SyntaxHighlighter {
 
         ArmaConfigTypes.LPAREN, ArmaConfigTypes.RPAREN -> PAREN_KEYS
 
-        ArmaConfigTypes.EQUAL, ArmaConfigTypes.SEMICOLON, ArmaConfigTypes.COMMA, ArmaConfigTypes.COLON -> OPERATOR_KEYS
+        ArmaConfigTypes.PLUS, ArmaConfigTypes.MINUS, ArmaConfigTypes.STAR, ArmaConfigTypes.SLASH, ArmaConfigTypes.PERCENT, ArmaConfigTypes.CARET, ArmaConfigTypes.MIN_KEYWORD, ArmaConfigTypes.MAX_KEYWORD, ArmaConfigTypes.EQUAL, ArmaConfigTypes.SEMICOLON, ArmaConfigTypes.COMMA, ArmaConfigTypes.COLON -> OPERATOR_KEYS
 
         ArmaConfigTypes.LINE_COMMENT, ArmaConfigTypes.BLOCK_COMMENT -> COMMENT_KEYS
 

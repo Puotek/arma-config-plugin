@@ -26,6 +26,22 @@
                 language="ArmaConfig"
                 implementationClass="arma.config.folding.ArmaConfigFoldingBuilder"/>
         <colorSettingsPage implementation="arma.config.highlighting.ArmaConfigColorSettingsPage"/>
+        <localInspection
+                language="ArmaConfig"
+                shortName="ArmaCommaInParentheses"
+                displayName="Comma inside parentheses"
+                groupName="Arma Config"
+                enabledByDefault="true"
+                level="WEAK WARNING"
+                implementationClass="arma.config.inspections.CommaInParenthesesInspection"/>
+        <localInspection
+                language="ArmaConfig"
+                shortName="ArmaArrayBraceMismatch"
+                displayName="Array brackets and braces must match"
+                groupName="Arma Config"
+                enabledByDefault="true"
+                level="WARNING"
+                implementationClass="arma.config.inspections.ArrayBraceMismatchInspection"/>
 
     </extensions>
 </idea-plugin>
