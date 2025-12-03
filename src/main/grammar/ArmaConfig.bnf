@@ -20,7 +20,6 @@
       LPAREN         = '('
       RPAREN         = ')'
 
-      // NEW: operators
       PLUS           = '+'
       MINUS          = '-'
       STAR           = '*'
@@ -28,9 +27,12 @@
       PERCENT        = '%'
       CARET          = '^'
 
-      // NEW: word operators
       MIN_KEYWORD    = 'min'
       MAX_KEYWORD    = 'max'
+
+      GT = '>'
+      LT = '<'
+      EXCL = '!'
 
       LINE_COMMENT   = 'regex://.*'
       BLOCK_COMMENT  = 'regex:/\\*([^*]|\\*+[^*/])*\\*+/'
@@ -42,7 +44,7 @@
       STRING         = "regex:\"([^\"\\\\n]|\\\\.)*\""
   ]
 }
-
+// Char names can be based on https://www.ascii-code.com/
 
 configFile ::= item*
 
@@ -127,6 +129,9 @@ macroInnerToken ::= IDENT
                   | EQUAL
                   | COLON
                   | SEMICOLON
+                  | GT
+                  | LT
+                  | EXCL
                   | LINE_COMMENT
                   | BLOCK_COMMENT
 

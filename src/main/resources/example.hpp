@@ -26,8 +26,8 @@ class ErrorsShouldBeShowingHere {
     arrayWrond2[] = test;
 }
 class TestClass {
-    condition = Q(count TAG(targets) > 0);  //fixme error on >
-    condition = Q(!(_target in TAG(targets))); //fixme error on !
+    condition = Q(count TAG(targets) > 0);
+    condition = Q(!(_target in TAG(targets))); 
 
 	indentifier = anotherIdentifer;
 	array[] = {}; //inline comment

@@ -38,12 +38,15 @@ public interface ArmaConfigTypes {
   IElementType COMMA = new ArmaConfigTokenType(",");
   IElementType DELETE_KEYWORD = new ArmaConfigTokenType("delete");
   IElementType EQUAL = new ArmaConfigTokenType("=");
+  IElementType EXCL = new ArmaConfigTokenType("!");
   IElementType FLOAT = new ArmaConfigTokenType("regex:\\\\d+\\\\.\\\\d+");
+  IElementType GT = new ArmaConfigTokenType(">");
   IElementType IDENT = new ArmaConfigTokenType("regex:[A-Za-z_][A-Za-z0-9_]*");
   IElementType LBRACE = new ArmaConfigTokenType("{");
   IElementType LBRACKET = new ArmaConfigTokenType("[");
   IElementType LINE_COMMENT = new ArmaConfigTokenType("regex://.*");
   IElementType LPAREN = new ArmaConfigTokenType("(");
+  IElementType LT = new ArmaConfigTokenType("<");
   IElementType MAX_KEYWORD = new ArmaConfigTokenType("max");
   IElementType MINUS = new ArmaConfigTokenType("-");
   IElementType MIN_KEYWORD = new ArmaConfigTokenType("min");

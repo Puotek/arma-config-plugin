@@ -9,7 +9,6 @@ Format: `[MAJOR.MINOR.PATCH] - YYYY-MM-DD`
 
 - Code reformatting (that would work with default IntelliJ ctrl+alt+l keybind)
 - Working file structure (the intellij structure window)
-- Fix errors for > and ! or similar operators inside macros such as Q() //see example.hpp file
 - Inspection for duplicate parameter assignment in same class
 
 ## [Unreleased]
@@ -17,7 +16,11 @@ Format: `[MAJOR.MINOR.PATCH] - YYYY-MM-DD`
 ### Added
 
 - Support for IntelliJ comment keybinds, so that ctrl+/ comments out the whole line with single line comment
+
+### Fixed
+
 - Support for classnames starting with numbers, like `30Rnd_556x45_Stanag`
+- Errors for `>`, `<` and `!` operators inside macros
 
 ## [1.0.1] - 2025-12-03
 

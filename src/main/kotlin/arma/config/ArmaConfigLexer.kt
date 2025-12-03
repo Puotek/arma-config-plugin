@@ -276,6 +276,9 @@ class ArmaConfigLexer : LexerBase() {
             '/' -> ArmaConfigTypes.SLASH
             '%' -> ArmaConfigTypes.PERCENT
             '^' -> ArmaConfigTypes.CARET
+            '<' -> ArmaConfigTypes.GT
+            '>' -> ArmaConfigTypes.LT
+            '!' -> ArmaConfigTypes.EXCL
             else -> TokenType.BAD_CHARACTER  // Unknown/invalid char
         }
     }
