@@ -70,7 +70,6 @@ class TestClass {
     """.trimIndent()
 
     // Which named attributes the user can configure in the Color Scheme UI
-    @Suppress("DialogTitleCapitalization")
     override fun getAttributeDescriptors(): Array<AttributesDescriptor> = arrayOf(
         AttributesDescriptor("Keyword", ArmaConfigSyntaxHighlighter.KEYWORD),
         AttributesDescriptor("String", ArmaConfigSyntaxHighlighter.STRING),
@@ -78,7 +77,8 @@ class TestClass {
         AttributesDescriptor("Braces / Brackets", ArmaConfigSyntaxHighlighter.BRACES),
         AttributesDescriptor("Operators / Punctuation", ArmaConfigSyntaxHighlighter.OPERATOR),
         AttributesDescriptor("Comment", ArmaConfigSyntaxHighlighter.COMMENT),
-        AttributesDescriptor("Preprocessor Keyword", ArmaConfigSyntaxHighlighter.PREPROCESSOR),
+        AttributesDescriptor("Preprocessor keyword", ArmaConfigSyntaxHighlighter.PREPROCESSOR),
+        AttributesDescriptor("Single-quote block", ArmaConfigSyntaxHighlighter.SINGLE_QUOTE_BLOCK),
         AttributesDescriptor("Bad character", ArmaConfigSyntaxHighlighter.BAD_CHAR),
     )
 

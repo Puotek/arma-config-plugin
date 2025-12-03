@@ -1,50 +1,52 @@
 {
-  parserClass="arma.config.parser.ArmaConfigParser"
-  psiPackage="arma.config.psi"
-  psiImplPackage="arma.config.psi.impl"
-  elementTypeHolderClass="arma.config.psi.ArmaConfigTypes"
-  elementTypeClass="arma.config.psi.ArmaConfigElementType"
-  tokenTypeClass="arma.config.psi.ArmaConfigTokenType"
+    parserClass="arma.config.parser.ArmaConfigParser"
+    psiPackage="arma.config.psi"
+    psiImplPackage="arma.config.psi.impl"
+    elementTypeHolderClass="arma.config.psi.ArmaConfigTypes"
+    elementTypeClass="arma.config.psi.ArmaConfigElementType"
+    tokenTypeClass="arma.config.psi.ArmaConfigTokenType"
 
-  tokens = [
-      CLASS_KEYWORD  = 'class'
-      DELETE_KEYWORD = 'delete'
-      LBRACE         = '{'
-      RBRACE         = '}'
-      LBRACKET       = '['
-      RBRACKET       = ']'
-      EQUAL          = '='
-      SEMICOLON      = ';'
-      COMMA          = ','
-      COLON          = ':'
-      LPAREN         = '('
-      RPAREN         = ')'
+    tokens = [
+        CLASS_KEYWORD  = 'class'
+        DELETE_KEYWORD = 'delete'
+        LBRACE         = '{'
+        RBRACE         = '}'
+        LBRACKET       = '['
+        RBRACKET       = ']'
+        EQUAL          = '='
+        SEMICOLON      = ';'
+        COMMA          = ','
+        COLON          = ':'
+        LPAREN         = '('
+        RPAREN         = ')'
 
-      PLUS           = '+'
-      MINUS          = '-'
-      STAR           = '*'
-      SLASH          = '/'
-      PERCENT        = '%'
-      CARET          = '^'
+        PLUS           = '+'
+        MINUS          = '-'
+        STAR           = '*'
+        SLASH          = '/'
+        PERCENT        = '%'
+        CARET          = '^'
 
-      MIN_KEYWORD    = 'min'
-      MAX_KEYWORD    = 'max'
+        MIN_KEYWORD    = 'min'
+        MAX_KEYWORD    = 'max'
 
-      GT = '>'
-      LT = '<'
-      EXCL = '!'
+        GT = '>'
+        LT = '<'
+        EXCL = '!'
 
-      LINE_COMMENT   = 'regex://.*'
-      BLOCK_COMMENT  = 'regex:/\\*([^*]|\\*+[^*/])*\\*+/'
-      PREPROCESSOR   = 'regex:#.*'
+        LINE_COMMENT   = 'regex://.*'
+        BLOCK_COMMENT  = 'regex:/\\*([^*]|\\*+[^*/])*\\*+/'
+        PREPROCESSOR   = 'regex:#.*'
 
-      IDENT          = "regex:[A-Za-z_][A-Za-z0-9_]*"
-      FLOAT          = "regex:\\d+\\.\\d+"
-      NUMBER         = "regex:\\d+"
-      STRING         = "regex:\"([^\"\\\\n]|\\\\.)*\""
-  ]
+        IDENT          = "regex:[A-Za-z_][A-Za-z0-9_]*"
+        FLOAT          = "regex:\\d+\\.\\d+"
+        NUMBER         = "regex:\\d+"
+        STRING         = "regex:\"([^\"\\\\n\\\\r]|\"\")*\""
+
+        SINGLE_QUOTE_BLOCK_TOKEN  = "singleQuoteBlock"
+        // Char names can be based on https://www.ascii-code.com/
+    ]
 }
-// Char names can be based on https://www.ascii-code.com/
 
 configFile ::= item*
 
@@ -55,18 +57,19 @@ private item ::= classDecl
                | macroStmt
                | ';'
 
-classDecl       ::= CLASS_KEYWORD classIdent classExt? LBRACE item* RBRACE SEMICOLON?
+classDecl ::= CLASS_KEYWORD classIdent classExt? LBRACE item* RBRACE SEMICOLON
+
 classForwardDecl ::= CLASS_KEYWORD classIdent classExt? SEMICOLON
 
 // NOTE: macroInvocation comes FIRST
-classIdent      ::= macroInvocation
-                  | IDENT
+classIdent ::= macroInvocation
+             | IDENT
 
-classExt        ::= COLON className
+classExt ::= COLON className
 
 // NOTE: macroInvocation comes FIRST here as well
-className       ::= macroInvocation
-                  | IDENT
+className ::= macroInvocation
+            | IDENT
 
 assignment ::= IDENT arraySuffix? EQUAL value SEMICOLON
 
@@ -79,6 +82,8 @@ value ::= macroInvocation
         | STRING
         | array
         | expr
+        | preprocValue
+        | singleQuoteBlock
 
 // ========================
 // Numeric expressions
@@ -104,7 +109,7 @@ expr_unary ::= primary
 // Primary elements
 primary ::= NUMBER
           | FLOAT
-          | IDENT          // we allow any identifier here (safeZoneX etc. are just a subset)
+          | IDENT // we allow any identifier here (safeZoneX etc. are just a subset)
           | LPAREN expr_add RPAREN
 
 
@@ -117,6 +122,7 @@ macroInner ::= macroAtom*
 
 macroAtom ::= macroInnerToken
             | LPAREN macroInner? RPAREN
+            | singleQuoteBlock
 
 macroInnerToken ::= IDENT
                   | NUMBER
@@ -137,3 +143,30 @@ macroInnerToken ::= IDENT
 
 macroStmt ::= macroInvocation SEMICOLON
             | IDENT SEMICOLON
+
+// A loose "blob" of tokens used for preprocessor-style constructs like
+//   'Here is a "substring"'
+// We allow identifiers, strings and some punctuation — but NOT SEMICOLON.
+preprocValueToken ::= IDENT
+                    | STRING
+                    | NUMBER
+                    | FLOAT
+                    | PREPROCESSOR
+                    | LBRACE | RBRACE
+                    | LBRACKET | RBRACKET
+                    | COMMA
+                    | EQUAL
+                    | COLON
+                    | GT
+                    | LT
+                    | EXCL
+                    | LPAREN | RPAREN
+                    | LINE_COMMENT
+                    | BLOCK_COMMENT
+
+preprocValue ::= preprocValueToken+
+
+// A special '' block used by the preprocessor-like syntax.
+// It starts with ' and ends with a matching ',
+// and can contain anything that preprocValueToken allows, including normal STRING tokens.
+singleQuoteBlock ::= SINGLE_QUOTE_BLOCK_TOKEN

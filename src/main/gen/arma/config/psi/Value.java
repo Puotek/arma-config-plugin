@@ -16,4 +16,10 @@ public interface Value extends PsiElement {
   @Nullable
   MacroInvocation getMacroInvocation();
 
+  @Nullable
+  PreprocValue getPreprocValue();
+
+  @Nullable
+  SingleQuoteBlock getSingleQuoteBlock();
+
 }

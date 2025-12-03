@@ -233,27 +233,86 @@ class ArmaConfigLexer : LexerBase() {
         }
 
 
-        // STRING: " ... ", supports \" and escapes, stops at newline or closing quote
+        // STRING:
+        //  - only " ... "
+        //  - NO multiline (newline ends the token, leaving it unterminated)
+        //  - "" inside acts as an escaped quote and does NOT terminate the string
+        //  - backslash has NO special meaning here
         if (c == '"') {
             var j = i + 1
+
             while (j < endOffset) {
                 val ch = buffer[j]
-                if (ch == '\\') {
-                    // Skip escaped character after backslash
-                    j += 2
-                } else if (ch == '"') {
-                    j++  // include closing quote
+
+                if (ch == '\n' || ch == '\r') {
                     break
-                } else if (ch == '\n' || ch == '\r') {
-                    // Unterminated string: stop at newline
-                    break
-                } else {
-                    j++
                 }
+
+                if (ch == '"') {
+                    // Handle doubled quote "" inside the string
+                    if (j + 1 < endOffset && buffer[j + 1] == '"') {
+                        j += 2
+                        continue
+                    }
+
+                    // Single " -> close string
+                    j++
+                    break
+                }
+
+                j++
             }
+
             if (j > endOffset) j = endOffset
             tokenEnd = j
             tokenType = ArmaConfigTypes.STRING
+            return
+        }
+
+        // SINGLE_QUOTE_BLOCK_TOKEN:
+        //  - starts with '
+        //  - ends at the last ' before a comment or newline
+        //  - everything between is opaque (can contain ;, (), macros, "" strings, etc.)
+        //  - no multiline: we stop scanning at newline; if we never find a closing ', treat as bad
+        if (c == '\'') {
+            val start = i
+            var j = i + 1
+            var lastQuote = -1
+
+            while (j < endOffset) {
+                val ch = buffer[j]
+
+                // Stop at newline: single-quote blocks cannot be multiline
+                if (ch == '\n' || ch == '\r') {
+                    break
+                }
+
+                // Stop scanning before comments: // or /* start
+                if (ch == '/' && j + 1 < endOffset) {
+                    val next = buffer[j + 1]
+                    if (next == '/' || next == '*') {
+                        break
+                    }
+                }
+
+                if (ch == '\'') {
+                    lastQuote = j
+                }
+
+                j++
+            }
+
+            if (lastQuote == -1) {
+                // No closing ' found on this line before comment/newline -> stray quote
+                tokenStart = start
+                tokenEnd = start + 1
+                tokenType = TokenType.BAD_CHARACTER
+                return
+            }
+
+            tokenStart = start
+            tokenEnd = lastQuote + 1 // include the closing '
+            tokenType = ArmaConfigTypes.SINGLE_QUOTE_BLOCK_TOKEN
             return
         }
 
@@ -289,9 +348,9 @@ class ArmaConfigLexer : LexerBase() {
 
     // Characters allowed at start of an IDENT (also used for path-ish macros)
     private fun Char.isIdentStart(): Boolean =
-        isLetter() || this == '_' || this == '\\' || this == '/' || this == '.' || this == '\''
+        isLetter() || this == '_' || this == '\\' || this == '/' || this == '.'
 
     // Characters allowed *inside* an IDENT
     private fun Char.isIdentPart(): Boolean =
-        isLetterOrDigitCompat() || this == '_' || this == '\\' || this == '/' || this == '.' || this == '\''
+        isLetterOrDigitCompat() || this == '_' || this == '\\' || this == '/' || this == '.'
 }

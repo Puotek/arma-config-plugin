@@ -27,7 +27,10 @@ public interface ArmaConfigTypes {
   IElementType MACRO_INNER_TOKEN = new ArmaConfigElementType("MACRO_INNER_TOKEN");
   IElementType MACRO_INVOCATION = new ArmaConfigElementType("MACRO_INVOCATION");
   IElementType MACRO_STMT = new ArmaConfigElementType("MACRO_STMT");
+  IElementType PREPROC_VALUE = new ArmaConfigElementType("PREPROC_VALUE");
+  IElementType PREPROC_VALUE_TOKEN = new ArmaConfigElementType("PREPROC_VALUE_TOKEN");
   IElementType PRIMARY = new ArmaConfigElementType("PRIMARY");
+  IElementType SINGLE_QUOTE_BLOCK = new ArmaConfigElementType("SINGLE_QUOTE_BLOCK");
   IElementType VALUE = new ArmaConfigElementType("VALUE");
   IElementType VALUE_LIST = new ArmaConfigElementType("VALUE_LIST");
 
@@ -58,9 +61,10 @@ public interface ArmaConfigTypes {
   IElementType RBRACKET = new ArmaConfigTokenType("]");
   IElementType RPAREN = new ArmaConfigTokenType(")");
   IElementType SEMICOLON = new ArmaConfigTokenType(";");
+  IElementType SINGLE_QUOTE_BLOCK_TOKEN = new ArmaConfigTokenType("singleQuoteBlock");
   IElementType SLASH = new ArmaConfigTokenType("/");
   IElementType STAR = new ArmaConfigTokenType("*");
-  IElementType STRING = new ArmaConfigTokenType("regex:\"([^\"\\\\\\\\n]|\\\\\\\\.)*\"");
+  IElementType STRING = new ArmaConfigTokenType("regex:\"([^\"\\\\\\\\n\\\\\\\\r]|\"\")*\"");
 
   class Factory {
     public static PsiElement createElement(ASTNode node) {
@@ -122,8 +126,17 @@ public interface ArmaConfigTypes {
       else if (type == MACRO_STMT) {
         return new MacroStmtImpl(node);
       }
+      else if (type == PREPROC_VALUE) {
+        return new PreprocValueImpl(node);
+      }
+      else if (type == PREPROC_VALUE_TOKEN) {
+        return new PreprocValueTokenImpl(node);
+      }
       else if (type == PRIMARY) {
         return new PrimaryImpl(node);
+      }
+      else if (type == SINGLE_QUOTE_BLOCK) {
+        return new SingleQuoteBlockImpl(node);
       }
       else if (type == VALUE) {
         return new ValueImpl(node);

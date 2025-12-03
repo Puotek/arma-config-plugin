@@ -13,4 +13,7 @@ public interface MacroAtom extends PsiElement {
   @Nullable
   MacroInnerToken getMacroInnerToken();
 
+  @Nullable
+  SingleQuoteBlock getSingleQuoteBlock();
+
 }

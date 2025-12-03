@@ -25,6 +25,8 @@ class ArmaConfigSyntaxHighlighter : SyntaxHighlighter {
 
         ArmaConfigTypes.STRING -> STRING_KEYS
 
+        ArmaConfigTypes.SINGLE_QUOTE_BLOCK_TOKEN -> SINGLE_QUOTE_BLOCK_KEYS
+
         ArmaConfigTypes.NUMBER, ArmaConfigTypes.FLOAT -> NUMBER_KEYS
 
         ArmaConfigTypes.LBRACE, ArmaConfigTypes.RBRACE -> BRACES_KEYS
@@ -98,6 +100,14 @@ class ArmaConfigSyntaxHighlighter : SyntaxHighlighter {
             "ARMA_CONFIG_PREPROCESSOR", DefaultLanguageHighlighterColors.METADATA
         )
 
+        @JvmField
+        val SINGLE_QUOTE_BLOCK: TextAttributesKey = TextAttributesKey.createTextAttributesKey(
+            "ARMA_CONFIG_SINGLE_QUOTE_BLOCK",
+            // Base it on STRING so theme inheritance is nice, but user can change it separately
+            DefaultLanguageHighlighterColors.VALID_STRING_ESCAPE
+        )
+
+
         // Bad characters -> use the global “Bad character” style (red by default)
         @JvmField
         val BAD_CHAR: TextAttributesKey = TextAttributesKey.createTextAttributesKey(
@@ -116,11 +126,13 @@ class ArmaConfigSyntaxHighlighter : SyntaxHighlighter {
         val PREPROCESSOR_KEYS = arrayOf(PREPROCESSOR)
         val BAD_CHAR_KEYS = arrayOf(BAD_CHAR)
         val EMPTY_KEYS = emptyArray<TextAttributesKey>()
+        val SINGLE_QUOTE_BLOCK_KEYS = arrayOf(SINGLE_QUOTE_BLOCK)
     }
 }
 
 // Factory that IntelliJ calls when it needs a SyntaxHighlighter for this file type
 class ArmaConfigSyntaxHighlighterFactory : SyntaxHighlighterFactory() {
-    override fun getSyntaxHighlighter(project: Project?, virtualFile: VirtualFile?): SyntaxHighlighter =
-        ArmaConfigSyntaxHighlighter()
+    override fun getSyntaxHighlighter(
+        project: Project?, virtualFile: VirtualFile?
+    ): SyntaxHighlighter = ArmaConfigSyntaxHighlighter()
 }

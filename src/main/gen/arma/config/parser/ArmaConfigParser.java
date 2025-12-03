@@ -92,7 +92,7 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // CLASS_KEYWORD classIdent classExt? LBRACE item* RBRACE SEMICOLON?
+  // CLASS_KEYWORD classIdent classExt? LBRACE item* RBRACE SEMICOLON
   public static boolean classDecl(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "classDecl")) return false;
     if (!nextTokenIs(b, CLASS_KEYWORD)) return false;
@@ -103,8 +103,7 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
     r = r && classDecl_2(b, l + 1);
     r = r && consumeToken(b, LBRACE);
     r = r && classDecl_4(b, l + 1);
-    r = r && consumeToken(b, RBRACE);
-    r = r && classDecl_6(b, l + 1);
+    r = r && consumeTokens(b, 0, RBRACE, SEMICOLON);
     exit_section_(b, m, CLASS_DECL, r);
     return r;
   }
@@ -124,13 +123,6 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
       if (!item(b, l + 1)) break;
       if (!empty_element_parsed_guard_(b, "classDecl_4", c)) break;
     }
-    return true;
-  }
-
-  // SEMICOLON?
-  private static boolean classDecl_6(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "classDecl_6")) return false;
-    consumeToken(b, SEMICOLON);
     return true;
   }
 
@@ -171,7 +163,7 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // macroInvocation
-  //                   | IDENT
+  //              | IDENT
   public static boolean classIdent(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "classIdent")) return false;
     if (!nextTokenIs(b, IDENT)) return false;
@@ -185,7 +177,7 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // macroInvocation
-  //                   | IDENT
+  //             | IDENT
   public static boolean className(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "className")) return false;
     if (!nextTokenIs(b, IDENT)) return false;
@@ -414,12 +406,14 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
   /* ********************************************************** */
   // macroInnerToken
   //             | LPAREN macroInner? RPAREN
+  //             | singleQuoteBlock
   public static boolean macroAtom(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "macroAtom")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, MACRO_ATOM, "<macro atom>");
     r = macroInnerToken(b, l + 1);
     if (!r) r = macroAtom_1(b, l + 1);
+    if (!r) r = singleQuoteBlock(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
@@ -547,9 +541,69 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // preprocValueToken+
+  public static boolean preprocValue(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "preprocValue")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, PREPROC_VALUE, "<preproc value>");
+    r = preprocValueToken(b, l + 1);
+    while (r) {
+      int c = current_position_(b);
+      if (!preprocValueToken(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "preprocValue", c)) break;
+    }
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // IDENT
+  //                     | STRING
+  //                     | NUMBER
+  //                     | FLOAT
+  //                     | PREPROCESSOR
+  //                     | LBRACE | RBRACE
+  //                     | LBRACKET | RBRACKET
+  //                     | COMMA
+  //                     | EQUAL
+  //                     | COLON
+  //                     | GT
+  //                     | LT
+  //                     | EXCL
+  //                     | LPAREN | RPAREN
+  //                     | LINE_COMMENT
+  //                     | BLOCK_COMMENT
+  public static boolean preprocValueToken(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "preprocValueToken")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, PREPROC_VALUE_TOKEN, "<preproc value token>");
+    r = consumeToken(b, IDENT);
+    if (!r) r = consumeToken(b, STRING);
+    if (!r) r = consumeToken(b, NUMBER);
+    if (!r) r = consumeToken(b, FLOAT);
+    if (!r) r = consumeToken(b, PREPROCESSOR);
+    if (!r) r = consumeToken(b, LBRACE);
+    if (!r) r = consumeToken(b, RBRACE);
+    if (!r) r = consumeToken(b, LBRACKET);
+    if (!r) r = consumeToken(b, RBRACKET);
+    if (!r) r = consumeToken(b, COMMA);
+    if (!r) r = consumeToken(b, EQUAL);
+    if (!r) r = consumeToken(b, COLON);
+    if (!r) r = consumeToken(b, GT);
+    if (!r) r = consumeToken(b, LT);
+    if (!r) r = consumeToken(b, EXCL);
+    if (!r) r = consumeToken(b, LPAREN);
+    if (!r) r = consumeToken(b, RPAREN);
+    if (!r) r = consumeToken(b, LINE_COMMENT);
+    if (!r) r = consumeToken(b, BLOCK_COMMENT);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
   // NUMBER
   //           | FLOAT
-  //           | IDENT          // we allow any identifier here (safeZoneX etc. are just a subset)
+  //           | IDENT // we allow any identifier here (safeZoneX etc. are just a subset)
   //           | LPAREN expr_add RPAREN
   public static boolean primary(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "primary")) return false;
@@ -576,11 +630,25 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // SINGLE_QUOTE_BLOCK_TOKEN
+  public static boolean singleQuoteBlock(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "singleQuoteBlock")) return false;
+    if (!nextTokenIs(b, SINGLE_QUOTE_BLOCK_TOKEN)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, SINGLE_QUOTE_BLOCK_TOKEN);
+    exit_section_(b, m, SINGLE_QUOTE_BLOCK, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // macroInvocation
   //         | IDENT
   //         | STRING
   //         | array
   //         | expr
+  //         | preprocValue
+  //         | singleQuoteBlock
   public static boolean value(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "value")) return false;
     boolean r;
@@ -590,6 +658,8 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, STRING);
     if (!r) r = array(b, l + 1);
     if (!r) r = expr(b, l + 1);
+    if (!r) r = preprocValue(b, l + 1);
+    if (!r) r = singleQuoteBlock(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }

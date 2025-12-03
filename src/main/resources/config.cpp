@@ -8,6 +8,16 @@
 // Single-line define
 #define MY_SINGLE TEST_SINGLE
 
+class CfgPatches {
+    class ADDON {
+        name = "QPRETTY";
+        author = "Puotek";
+        requiredAddons[] = {};
+        requiredVersion = 2.20;
+        units[] = {};
+        weapons[] = {};
+    };
+};
 // line comment
 
 /*

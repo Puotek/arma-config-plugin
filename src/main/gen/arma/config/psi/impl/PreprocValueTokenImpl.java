@@ -11,38 +11,20 @@ import static arma.config.psi.ArmaConfigTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import arma.config.psi.*;
 
-public class MacroAtomImpl extends ASTWrapperPsiElement implements MacroAtom {
+public class PreprocValueTokenImpl extends ASTWrapperPsiElement implements PreprocValueToken {
 
-  public MacroAtomImpl(@NotNull ASTNode node) {
+  public PreprocValueTokenImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull Visitor visitor) {
-    visitor.visitMacroAtom(this);
+    visitor.visitPreprocValueToken(this);
   }
 
   @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof Visitor) accept((Visitor)visitor);
     else super.accept(visitor);
-  }
-
-  @Override
-  @Nullable
-  public MacroInner getMacroInner() {
-    return findChildByClass(MacroInner.class);
-  }
-
-  @Override
-  @Nullable
-  public MacroInnerToken getMacroInnerToken() {
-    return findChildByClass(MacroInnerToken.class);
-  }
-
-  @Override
-  @Nullable
-  public SingleQuoteBlock getSingleQuoteBlock() {
-    return findChildByClass(SingleQuoteBlock.class);
   }
 
 }

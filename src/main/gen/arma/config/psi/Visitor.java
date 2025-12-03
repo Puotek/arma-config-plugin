@@ -83,7 +83,19 @@ public class Visitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitPreprocValue(@NotNull PreprocValue o) {
+    visitPsiElement(o);
+  }
+
+  public void visitPreprocValueToken(@NotNull PreprocValueToken o) {
+    visitPsiElement(o);
+  }
+
   public void visitPrimary(@NotNull Primary o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSingleQuoteBlock(@NotNull SingleQuoteBlock o) {
     visitPsiElement(o);
   }
 

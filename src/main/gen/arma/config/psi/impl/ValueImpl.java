@@ -45,4 +45,16 @@ public class ValueImpl extends ASTWrapperPsiElement implements Value {
     return findChildByClass(MacroInvocation.class);
   }
 
+  @Override
+  @Nullable
+  public PreprocValue getPreprocValue() {
+    return findChildByClass(PreprocValue.class);
+  }
+
+  @Override
+  @Nullable
+  public SingleQuoteBlock getSingleQuoteBlock() {
+    return findChildByClass(SingleQuoteBlock.class);
+  }
+
 }

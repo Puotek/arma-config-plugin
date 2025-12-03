@@ -30,6 +30,13 @@
         <lang.psiStructureViewFactory
                 language="ArmaConfig"
                 implementationClass="arma.config.structure.ArmaConfigStructureViewFactory"/>
+        <lang.formatter
+                language="ArmaConfig"
+                implementationClass="arma.config.formatting.ArmaConfigFormattingModelBuilder"/>
+
+        <annotator
+                language="ArmaConfig"
+                implementationClass="arma.config.highlighting.SingleQuoteInnerStringAnnotator"/>
 
         <breadcrumbsInfoProvider
                 implementation="arma.config.breadcrumbs.ArmaBreadcrumbsProvider"/>
