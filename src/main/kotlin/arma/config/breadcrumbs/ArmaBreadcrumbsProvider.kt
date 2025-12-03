@@ -2,6 +2,7 @@ package arma.config.breadcrumbs
 
 import arma.config.ArmaConfigLanguage
 import arma.config.psi.ArmaConfigTypes
+import arma.config.psi.ClassDecl
 import com.intellij.lang.Language
 import com.intellij.psi.PsiElement
 import com.intellij.ui.breadcrumbs.BreadcrumbsProvider
@@ -34,10 +35,25 @@ class ArmaBreadcrumbsProvider : BreadcrumbsProvider {
 
         return when (type) {
             ArmaConfigTypes.CLASS_DECL -> {
-                // `class Name` → show "class Name"
-                val ident = e.node.findChildByType(ArmaConfigTypes.IDENT)
-                val name = ident?.text ?: "class"
-                name
+                // Grammar:
+                //   classDecl ::= CLASS_KEYWORD classIdent classExt? LBRACE ...
+                //   classIdent ::= macroInvocation | IDENT
+                //
+                // So the name is inside the ClassIdent child now.
+                val classDecl = e as? ClassDecl
+
+                // This will be either:
+                //  - plain identifier: "MyClass"
+                //  - macro invocation: "TAG(MyClass)"
+                val fromPsi = classDecl
+                    ?.classIdent
+                    ?.text
+                    ?.takeIf { it.isNotBlank() }
+
+                // Fallback to old behaviour if something is weird
+                fromPsi
+                    ?: e.node.findChildByType(ArmaConfigTypes.IDENT)?.text
+                    ?: "class"
             }
 
             ArmaConfigTypes.ASSIGNMENT -> {

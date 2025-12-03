@@ -12,8 +12,7 @@ We are implementing a full IntelliJ language plugin with:
 
 Here is the current TODO list (start with easiest to implement after reading the files I upload):
 
-- Fix Folding - It does not work currently
-- At some point breadcrumbs broke, fix them, currently just a empty breadcrumb bar shows
+- At some point breadcrumbs broke and display "class" instead of the actual class names, fix them, sticky lines work correctly and parameter names display correctly
 
 I will now upload the files you need. Please parse them and reconstruct the full plugin state before continuing.
 
@@ -30,5 +29,5 @@ plugin.xml
 ArmaConfig.bnf below in text:
 ---INSERT ME---
 
-Project File Structure below in text:
+Project Source File Structure below in text:
 ---INSERT ME---
