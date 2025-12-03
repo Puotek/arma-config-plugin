@@ -53,12 +53,16 @@ class ArmaConfigFoldingBuilder : FoldingBuilderEx(), DumbAware {
     ) {
         val node = element.node
 
+        // Look for left and right brace tokens as direct children
         val lbrace = node.findChildByType(ArmaConfigTypes.LBRACE)
         val rbrace = node.findChildByType(ArmaConfigTypes.RBRACE)
 
+        // Only create a folding region if both braces exist
         if (lbrace != null && rbrace != null) {
-            val start = lbrace.textRange.endOffset   // right after '{'
-            val end = rbrace.textRange.startOffset   // right before '}'
+            // Fold INCLUDING the braces:
+            // from the '{' itself to the '}' itself
+            val start = lbrace.textRange.startOffset
+            val end = rbrace.textRange.endOffset
 
             if (end > start) {
                 result.add(FoldingDescriptor(node, TextRange(start, end)))
@@ -68,8 +72,8 @@ class ArmaConfigFoldingBuilder : FoldingBuilderEx(), DumbAware {
 
     override fun getPlaceholderText(node: ASTNode): String =
         when (node.elementType) {
-            ArmaConfigTypes.CLASS_DECL -> "{ ... }"
-            ArmaConfigTypes.ARRAY      -> "{ ... }"
+            ArmaConfigTypes.CLASS_DECL -> "{...}"
+            ArmaConfigTypes.ARRAY      -> "{...}"
             else                       -> "..."
         }
 
