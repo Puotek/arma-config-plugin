@@ -8,7 +8,7 @@ Format: `[MAJOR.MINOR.PATCH] - YYYY-MM-DD`
 ### TODO
 Classes with no body are basically imports so thats what im gonna call them
 
-- Code reformatting (that would work with default IntelliJ ctrl+alt+l keybind)
+- Code reformatting
   - Option for `{` bracket opening class body on same line or newline
   - class import should stick (no blank line) to class below if the class below inherits from the import, this also excludes the import class from sticking to other import classes (it should have a blank line separating them)
   - option for amount of blank lines between import classes and a normal class. import classes can be next to eachother (on first reformat we keep any blank lines between, on second reformat we make sure there is no blank lines between import classes)
@@ -23,9 +23,6 @@ Classes with no body are basically imports so thats what im gonna call them
   - for arrays I also want an option to have , at the start of each line or at the end of each line when arrays are multiline
   - for multiline arrays first item should be on newline compared to `{` and the closing `}` should also be on a newline alinged with the indent of the line where `{` was
   - option for amount of blank lines between any preprocessor (#include or #define) stuff and a class
-- Support for {} and () so that when you place start it auto places second part like it usually does in other file types in IntelliJ
-  - for any {} outside of strings we also want to make it so it auto adds a `;` at the end like `{};`
-- Support for line autocompletion adding auto ; (IntelliJ thing that is under ctrl+enter normally i think)
 - Working grayout for unused classes, as in if a class has no body and is not used anywhere for inheritance than we gray out
 - Support for usages, basically if any class is called anywhere for inheritance than we cound that as usage (ik intellij has some framework for usages) and this should also support ctrl+click on the class to navigate to original import or to usage
 - Optimize imports IntelliJ support, where imports are classes with no body, and we optimize by removing unused ones (ones never used for inheritance)
@@ -47,6 +44,9 @@ Classes with no body are basically imports so thats what im gonna call them
 - Working file structure IntelliJ window
 - Inspection for duplicate parameter assignment in same class
 - Simple implementation for formatting
+- Editor completion matcher for `[]` `{}` `""` pairing
+- Automatic `;` autocompletion for `{}` when typing
+- Smart enter processor
 
 ### Changed
 - `README.md` added a new guide on how to manually make a build of the plugin

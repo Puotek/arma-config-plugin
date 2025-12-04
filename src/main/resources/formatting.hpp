@@ -5,6 +5,21 @@
 #define MULTI_LINE_DEFINE MULTI_LINE_DEFINE\
 MULTI_LINE_DEFINE
 
+//Single line comment
+/* Block comment one line */
+/*
+Block
+comment
+multiline
+*/
+
+class test {
+    arr[] = {
+        "",
+        ""
+    };
+};
+
 class SingleLineClass { MACRO(include); };
 class 01ClassStartingWithNumber;
 class NoBodyClass;
@@ -16,29 +31,24 @@ class InspectionTestingClass {
     duplicatedParam = 1;
 };
 class NormalClass {
-
-
-
-
     condition = Q(count TAG(targets) > 0);
     condition2 = Q(!(_target in TAG(targets)));
-    indentifier = anotherIdentifer;
-    array[] = {
 
+    class test {
+        var = 1;
     };
-    //inline comment
+
+    indentifier = anotherIdentifer;
+    array[] = {}; //inline comment
     arrayMultiline[] = {
         "test",
         "test"
         , "test"
-    };
-    /*
-block
-comment
-*/
-    string1 = "Here is a ""string""";
-    string2 = 'Here is a "substring"';
-    string3 = "Here is a 'string'";
+    }; //inline comment
+    string = "hallo from the other siiide";
+    string = "Here is a ""substring""";
+    string = 'Here is a "substring"';
+    string = "Here is a 'substring'";
     TEST(var,var);
     math = 1 + 1 + (42 - 2);
     float = 2.20;

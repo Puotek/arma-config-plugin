@@ -33,6 +33,18 @@
         <lang.formatter
                 language="ArmaConfig"
                 implementationClass="arma.config.formatting.ArmaConfigFormattingModelBuilder"/>
+        <lang.braceMatcher
+                language="ArmaConfig"
+                implementationClass="arma.config.editor.ArmaConfigBraceMatcher"/>
+        <lang.quoteHandler
+                language="ArmaConfig"
+                implementationClass="arma.config.editor.ArmaConfigQuoteHandler"/>
+        <lang.smartEnterProcessor
+                language="ArmaConfig"
+                implementationClass="arma.config.editor.ArmaConfigSmartEnterProcessor"/>
+
+        <typedHandler
+                implementation="arma.config.editor.ArmaConfigTypedHandler"/>
 
         <annotator
                 language="ArmaConfig"
@@ -43,7 +55,7 @@
 
         <colorSettingsPage implementation="arma.config.highlighting.ArmaConfigColorSettingsPage"/>
 
-<!-- INSPECTIONS -->
+        <!-- INSPECTIONS -->
         <localInspection
                 language="ArmaConfig"
                 shortName="ArmaCommaInParentheses"

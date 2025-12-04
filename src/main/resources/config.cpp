@@ -112,6 +112,7 @@ class CfgEditorSubcategories {
 	};
 };
 
+
 class CfgVehicles {
 x = Q((safeZoneW * 0.5) + safeZoneX - (26 * GRID_W));
 allowedHTMLLoadURIs[] += {
