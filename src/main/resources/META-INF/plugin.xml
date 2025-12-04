@@ -56,6 +56,11 @@
 
         <colorSettingsPage implementation="arma.config.highlighting.ArmaConfigColorSettingsPage"/>
 
+        <liveTemplateContext
+                contextId="ARMA_CONFIG"
+                implementation="arma.config.liveTemplates.ArmaConfigTemplateContextType"/>
+        <defaultLiveTemplates file="/liveTemplates/ArmaConfig.xml"/>
+
         <!-- INSPECTIONS -->
         <localInspection
                 language="ArmaConfig"

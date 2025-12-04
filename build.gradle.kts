@@ -2,6 +2,7 @@ import org.jetbrains.changelog.Changelog
 import org.jetbrains.changelog.markdownToHTML
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 import org.jetbrains.intellij.platform.gradle.tasks.BuildPluginTask
+import org.jetbrains.intellij.platform.gradle.tasks.RunIdeTask
 
 plugins {
     id("java") // Java support
@@ -230,4 +231,19 @@ tasks.register<Copy>("buildDownloads") {
     into(File(System.getProperty("user.home"), "Downloads"))
 
     finalizedBy("bumpVersion")
+}
+
+
+tasks.named<RunIdeTask>("runIde") {
+    // This is the directory the IDE should open as a project
+    args = listOf(
+        "C:/Ctrl/Folder Główny/Projects/arma-config-plugin/src/test/resources"
+    )
+
+    // Optional but handy: trust all projects in the sandbox so it doesn't ask
+    jvmArgumentProviders += CommandLineArgumentProvider {
+        listOf(
+            "-Didea.trust.all.projects=true"
+        )
+    }
 }

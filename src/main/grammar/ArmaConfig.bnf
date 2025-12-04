@@ -39,12 +39,13 @@
         PREPROCESSOR   = 'regex:#.*'
 
         IDENT          = "regex:[A-Za-z_][A-Za-z0-9_]*"
-        FLOAT          = "regex:\\d+\\.\\d+"
+        FLOAT          = "regex:\\d+(\\.\\d+)?([eE][+-]?\\d+)?"
         NUMBER         = "regex:\\d+"
         STRING         = "regex:\"([^\"\\\\n\\\\r]|\"\")*\""
 
         SINGLE_QUOTE_BLOCK_TOKEN  = "singleQuoteBlock"
         // Char names can be based on https://www.ascii-code.com/
+        // Stuff after = is basically just documentation/suggestion on what they are and doesnt do anything
     ]
 }
 
@@ -61,13 +62,11 @@ classDecl ::= CLASS_KEYWORD classIdent classExt? LBRACE item* RBRACE SEMICOLON
 
 classForwardDecl ::= CLASS_KEYWORD classIdent classExt? SEMICOLON
 
-// NOTE: macroInvocation comes FIRST
 classIdent ::= macroInvocation
              | IDENT
 
 classExt ::= COLON className
 
-// NOTE: macroInvocation comes FIRST here as well
 className ::= macroInvocation
             | IDENT
 

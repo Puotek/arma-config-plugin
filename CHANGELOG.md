@@ -41,10 +41,6 @@ Classes with no body are basically imports so thats what im gonna call them
   ones never used for inheritance)
 - Highlighting for MACROS with variables eg `MACRO(var)`
 
-
-- Add a group to IntelliJ Live Templates specifically for Arma Config Files
-- Fix add `9e-006` weird math expression support
-
 ## [Unreleased]
 
 ### Added
@@ -59,6 +55,10 @@ Classes with no body are basically imports so thats what im gonna call them
 - Smart enter processor
 - Support for `+=` with array assignment and related inspection for non-array use
 - Support for use of macros in parameter names
+- Support for exponent in math expressions, like `999e-006`
+- Support for IntelliJ Live Templates and some basic templates
+- Configurations saved to project
+- Added auto-open of `src/test/resources` as project when testing with `runIdeClean`
 
 ### Changed
 

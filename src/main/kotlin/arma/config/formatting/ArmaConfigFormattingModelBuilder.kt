@@ -2,18 +2,7 @@ package arma.config.formatting
 
 import arma.config.ArmaConfigLanguage
 import arma.config.psi.ArmaConfigTypes
-import com.intellij.formatting.Alignment
-import com.intellij.formatting.Block
-import com.intellij.formatting.ChildAttributes
-import com.intellij.formatting.FormattingContext
-import com.intellij.formatting.FormattingModel
-import com.intellij.formatting.FormattingModelBuilder
-import com.intellij.formatting.FormattingModelProvider
-import com.intellij.formatting.Indent
-import com.intellij.formatting.Spacing
-import com.intellij.formatting.SpacingBuilder
-import com.intellij.formatting.Wrap
-import com.intellij.formatting.WrapType
+import com.intellij.formatting.*
 import com.intellij.lang.ASTNode
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiFile
@@ -28,48 +17,26 @@ class ArmaConfigFormattingModelBuilder : FormattingModelBuilder {
         val spacingBuilder = createSpacingBuilder(settings)
 
         val rootBlock = ArmaConfigBlock(
-            node = formattingContext.node,
-            wrap = null,
-            alignment = null,
-            spacingBuilder = spacingBuilder
+            node = formattingContext.node, wrap = null, alignment = null, spacingBuilder = spacingBuilder
         )
 
         return FormattingModelProvider.createFormattingModelForPsiFile(
-            formattingContext.containingFile,
-            rootBlock,
-            settings
+            formattingContext.containingFile, rootBlock, settings
         )
     }
 
     override fun getRangeAffectingIndent(
-        file: PsiFile,
-        offset: Int,
-        nodeAtOffset: ASTNode
+        file: PsiFile, offset: Int, nodeAtOffset: ASTNode
     ): TextRange? = null
 
-    private fun createSpacingBuilder(settings: CodeStyleSettings): SpacingBuilder =
-        SpacingBuilder(settings, ArmaConfigLanguage)
-            // assignment
-            .around(ArmaConfigTypes.EQUAL).spaces(1)
-
-            // arithmetic and min/max
-            .around(ArmaConfigTypes.PLUS).spaces(1)
-            .around(ArmaConfigTypes.MINUS).spaces(1)
-            .around(ArmaConfigTypes.STAR).spaces(1)
-            .around(ArmaConfigTypes.SLASH).spaces(1)
-            .around(ArmaConfigTypes.PERCENT).spaces(1)
-            .around(ArmaConfigTypes.CARET).spaces(1)
-            .around(ArmaConfigTypes.MIN_KEYWORD).spaces(1)
-            .around(ArmaConfigTypes.MAX_KEYWORD).spaces(1)
-
-            // spaces around ':' (class inheritance)
-            .around(ArmaConfigTypes.COLON).spaces(1)
-
-            // commas: a, b
-            .after(ArmaConfigTypes.COMMA).spaces(1)
-
-            // no space before ;
-            .before(ArmaConfigTypes.SEMICOLON).spaces(0)
+    private fun createSpacingBuilder(settings: CodeStyleSettings): SpacingBuilder = SpacingBuilder(
+        settings, ArmaConfigLanguage
+    ).around(ArmaConfigTypes.EQUAL).spaces(1).around(ArmaConfigTypes.PLUS).spaces(1).around(ArmaConfigTypes.MINUS)
+        .spaces(1).around(ArmaConfigTypes.STAR).spaces(1).around(ArmaConfigTypes.SLASH).spaces(1)
+        .around(ArmaConfigTypes.PERCENT).spaces(1).around(ArmaConfigTypes.CARET).spaces(1)
+        .around(ArmaConfigTypes.MIN_KEYWORD).spaces(1).around(ArmaConfigTypes.MAX_KEYWORD).spaces(1)
+        .around(ArmaConfigTypes.COLON).spaces(1).after(ArmaConfigTypes.COMMA).spaces(1).before(ArmaConfigTypes.COMMA)
+        .spaces(0).before(ArmaConfigTypes.SEMICOLON).spaces(0)
 }
 
 /**
@@ -79,21 +46,14 @@ class ArmaConfigFormattingModelBuilder : FormattingModelBuilder {
  *  - treats SINGLE_QUOTE_BLOCK and MACRO_INVOCATION as opaque
  */
 private class ArmaConfigBlock(
-    node: ASTNode,
-    wrap: Wrap?,
-    alignment: Alignment?,
-    private val spacingBuilder: SpacingBuilder
+    node: ASTNode, wrap: Wrap?, alignment: Alignment?, private val spacingBuilder: SpacingBuilder
 ) : AbstractBlock(node, wrap, alignment) {
 
     override fun buildChildren(): List<Block> {
         val type = myNode.elementType
 
         // Do NOT format inside single-quote blocks or macro invocations
-        if (type == ArmaConfigTypes.SINGLE_QUOTE_BLOCK ||
-            type == ArmaConfigTypes.MACRO_INVOCATION
-        ) {
-            return emptyList()
-        }
+        if (type == ArmaConfigTypes.SINGLE_QUOTE_BLOCK || type == ArmaConfigTypes.MACRO_INVOCATION) return emptyList()
 
         val blocks = mutableListOf<Block>()
         var child = myNode.firstChildNode
@@ -113,96 +73,70 @@ private class ArmaConfigBlock(
         return blocks
     }
 
-    override fun getIndent(): Indent? {
-        val parentType = myNode.treeParent?.elementType
-        val type = myNode.elementType
-
-        // Root: no indent
-        if (parentType == null) {
-            return Indent.getNoneIndent()
-        }
-
-        // Braces / brackets themselves stay flush
-        if (type == ArmaConfigTypes.LBRACE ||
-            type == ArmaConfigTypes.RBRACE ||
-            type == ArmaConfigTypes.LBRACKET ||
-            type == ArmaConfigTypes.RBRACKET
-        ) {
-            return Indent.getNoneIndent()
-        }
-
-        // Inside a class declaration:
-        //  - header stuff stays at class indent
-        //  - body-level constructs + comments get NORMAL indent
-        if (parentType == ArmaConfigTypes.CLASS_DECL) {
-            if (type == ArmaConfigTypes.LINE_COMMENT ||
-                type == ArmaConfigTypes.BLOCK_COMMENT
-            ) {
-                return Indent.getNormalIndent()
-            }
-
-            return when (type) {
-                ArmaConfigTypes.CLASS_DECL,
-                ArmaConfigTypes.CLASS_FORWARD_DECL,
-                ArmaConfigTypes.ASSIGNMENT,
-                ArmaConfigTypes.DELETE_STMT,
-                ArmaConfigTypes.MACRO_STMT -> Indent.getNormalIndent()
-                else -> Indent.getNoneIndent()
-            }
-        }
-
-        // Arrays:
-        //  ARRAY -> children: LBRACE, VALUE_LIST?, RBRACE
-        //  VALUE_LIST -> children: VALUE / COMMA / comments
-        if (parentType == ArmaConfigTypes.ARRAY) {
-            // VALUE_LIST itself does not add extra indent
-            if (type == ArmaConfigTypes.VALUE_LIST) {
-                return Indent.getNoneIndent()
-            }
-            return Indent.getNoneIndent()
-        }
-
-        if (parentType == ArmaConfigTypes.VALUE_LIST) {
-            // Values, commas, and comments inside VALUE_LIST get one level
-            if (type == ArmaConfigTypes.VALUE ||
-                type == ArmaConfigTypes.COMMA ||
-                type == ArmaConfigTypes.LINE_COMMENT ||
-                type == ArmaConfigTypes.BLOCK_COMMENT
-            ) {
-                return Indent.getNormalIndent()
-            }
-            return Indent.getNoneIndent()
-        }
-
-        return Indent.getNoneIndent()
-    }
-
-    /**
-     * This is what the editor uses when you press Enter.
-     * Children of CLASS_DECL / ARRAY are one level deeper.
-     */
-    override fun getChildAttributes(newChildIndex: Int): ChildAttributes {
-        val type = myNode.elementType
-        val indent =
-            if (type == ArmaConfigTypes.CLASS_DECL || type == ArmaConfigTypes.ARRAY)
-                Indent.getNormalIndent()
-            else
-                Indent.getNoneIndent()
-
-        return ChildAttributes(indent, null)
-    }
-
-    override fun getChildIndent(): Indent? = Indent.getNoneIndent()
-
     override fun isLeaf(): Boolean {
         val type = myNode.elementType
         return when (type) {
-            ArmaConfigTypes.SINGLE_QUOTE_BLOCK,
-            ArmaConfigTypes.MACRO_INVOCATION -> true
+            ArmaConfigTypes.SINGLE_QUOTE_BLOCK, ArmaConfigTypes.MACRO_INVOCATION -> true
             else -> myNode.firstChildNode == null
         }
     }
 
-    override fun getSpacing(child1: Block?, child2: Block): Spacing? =
-        spacingBuilder.getSpacing(this, child1, child2)
+    override fun getIndent(): Indent? {
+        val parent = myNode.treeParent ?: return Indent.getNoneIndent()
+        val parentType = parent.elementType
+        val type = myNode.elementType
+
+        // 1) Top-level: direct children of file → NO INDENT
+        if (parent.treeParent == null) {
+            return Indent.getNoneIndent()
+        }
+
+        // 2) Braces themselves are never indented
+        if (type == ArmaConfigTypes.LBRACE ||
+            type == ArmaConfigTypes.RBRACE ||
+            type == ArmaConfigTypes.LBRACKET ||
+            type == ArmaConfigTypes.RBRACKET) {
+            return Indent.getNoneIndent()
+        }
+
+        // 3) Inside class bodies → indent normally
+        if (parentType == ArmaConfigTypes.CLASS_DECL) {
+            return Indent.getNormalIndent()
+        }
+
+        // 4) Inside arrays or value lists → indent normally
+        if (parentType == ArmaConfigTypes.ARRAY ||
+            parentType == ArmaConfigTypes.VALUE_LIST) {
+            return Indent.getNormalIndent()
+        }
+
+        // Default: no indent
+        return Indent.getNoneIndent()
+    }
+
+    override fun getChildAttributes(newChildIndex: Int): ChildAttributes {
+        // When pressing Enter after '{', indent one level
+        val indent = if (myNode.elementType == ArmaConfigTypes.LBRACE) {
+            Indent.getNormalIndent()
+        } else {
+            Indent.getNoneIndent()
+        }
+
+        return ChildAttributes(indent, null)
+    }
+
+
+    override fun getSpacing(child1: Block?, child2: Block): Spacing? {
+        // SPECIAL CASE: keep "+=" glued together
+        if (child1 is ArmaConfigBlock && child2 is ArmaConfigBlock) {
+            val t1 = child1.node.elementType
+            val t2 = child2.node.elementType
+            if (t1 == ArmaConfigTypes.PLUS && t2 == ArmaConfigTypes.EQUAL) {
+                // no spaces between '+' and '='
+                return Spacing.createSpacing(0, 0, 0, false, 0)
+            }
+        }
+
+        return spacingBuilder.getSpacing(this, child1, child2)
+    }
 }

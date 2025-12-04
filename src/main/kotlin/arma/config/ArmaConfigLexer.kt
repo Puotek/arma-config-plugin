@@ -189,6 +189,7 @@ class ArmaConfigLexer : LexerBase() {
         if (c.isDigit()) {
             var j = i
             var seenDot = false
+            var seenExponent = false
             var isIdentLike = false
 
             while (j < endOffset) {
@@ -202,6 +203,28 @@ class ArmaConfigLexer : LexerBase() {
                     !seenDot && ch == '.' && j + 1 < endOffset && buffer[j + 1].isDigit() -> {
                         seenDot = true
                         j++ // consume '.'
+                    }
+
+                    // exponent part: e[+/-]?digits  (e.g. 9.999e-006)
+                    !seenExponent && (ch == 'e' || ch == 'E') && j > i -> {
+                        var k = j + 1
+                        // optional sign
+                        if (k < endOffset && (buffer[k] == '+' || buffer[k] == '-')) {
+                            k++
+                        }
+                        val digitsStart = k
+                        while (k < endOffset && buffer[k].isDigit()) {
+                            k++
+                        }
+
+                        if (k == digitsStart) {
+                            // no digits after e / e+ / e- → treat 'e' as ident char
+                            isIdentLike = true
+                            j++
+                        } else {
+                            seenExponent = true
+                            j = k
+                        }
                     }
 
                     // Any char that is valid *inside* an identifier but not a pure number
@@ -224,10 +247,12 @@ class ArmaConfigLexer : LexerBase() {
                     "delete" -> ArmaConfigTypes.DELETE_KEYWORD
                     "min" -> ArmaConfigTypes.MIN_KEYWORD
                     "max" -> ArmaConfigTypes.MAX_KEYWORD
-                    else   -> ArmaConfigTypes.IDENT
+                    else -> ArmaConfigTypes.IDENT
                 }
             } else {
-                tokenType = if (seenDot) ArmaConfigTypes.FLOAT else ArmaConfigTypes.NUMBER
+                // exponent or dot => FLOAT, otherwise NUMBER
+                tokenType = if (seenDot || seenExponent) ArmaConfigTypes.FLOAT
+                else ArmaConfigTypes.NUMBER
             }
             return
         }
@@ -347,10 +372,8 @@ class ArmaConfigLexer : LexerBase() {
     private fun Char.isLetterOrDigitCompat(): Boolean = isLetter() || isDigit()
 
     // Characters allowed at start of an IDENT (also used for path-ish macros)
-    private fun Char.isIdentStart(): Boolean =
-        isLetter() || this == '_' || this == '\\' || this == '/' || this == '.'
+    private fun Char.isIdentStart(): Boolean = isLetter() || this == '_' || this == '\\' || this == '/' || this == '.'
 
     // Characters allowed *inside* an IDENT
-    private fun Char.isIdentPart(): Boolean =
-        isLetterOrDigitCompat() || this == '_' || this == '\\' || this == '/' || this == '.'
+    private fun Char.isIdentPart(): Boolean = isLetterOrDigitCompat() || this == '_' || this == '\\' || this == '/' || this == '.'
 }
