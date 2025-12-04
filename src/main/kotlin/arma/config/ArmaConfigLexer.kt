@@ -1,9 +1,9 @@
 package arma.config
 
-import com.intellij.lexer.LexerBase          // Base class for implementing your own lexer
-import com.intellij.psi.TokenType            // Contains generic token types like WHITE_SPACE, BAD_CHARACTER
-import com.intellij.psi.tree.IElementType   // Base type for all token types
-import arma.config.psi.ArmaConfigTypes      // Generated constants for token/element types
+import arma.config.psi.ArmaConfigTypes
+import com.intellij.lexer.LexerBase
+import com.intellij.psi.TokenType
+import com.intellij.psi.tree.IElementType
 
 class ArmaConfigLexer : LexerBase() {
 

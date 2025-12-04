@@ -7,43 +7,41 @@
     tokenTypeClass="arma.config.psi.ArmaConfigTokenType"
 
     tokens = [
-        CLASS_KEYWORD  = 'class'
-        DELETE_KEYWORD = 'delete'
-        LBRACE         = '{'
-        RBRACE         = '}'
-        LBRACKET       = '['
-        RBRACKET       = ']'
-        EQUAL          = '='
-        SEMICOLON      = ';'
-        COMMA          = ','
-        COLON          = ':'
-        LPAREN         = '('
-        RPAREN         = ')'
+        CLASS_KEYWORD   = 'class'
+        DELETE_KEYWORD  = 'delete'
+        MIN_KEYWORD     = 'min'
+        MAX_KEYWORD     = 'max'
 
-        PLUS           = '+'
-        MINUS          = '-'
-        STAR           = '*'
-        SLASH          = '/'
-        PERCENT        = '%'
-        CARET          = '^'
+        LBRACE      = '{'
+        RBRACE      = '}'
+        LBRACKET    = '['
+        RBRACKET    = ']'
+        EQUAL       = '='
+        SEMICOLON   = ';'
+        COMMA       = ','
+        COLON       = ':'
+        LPAREN      = '('
+        RPAREN      = ')'
+        PLUS        = '+'
+        MINUS       = '-'
+        STAR        = '*'
+        SLASH       = '/'
+        PERCENT     = '%'
+        CARET       = '^'
+        GT          = '>'
+        LT          = '<'
+        EXCL        = '!'
 
-        MIN_KEYWORD    = 'min'
-        MAX_KEYWORD    = 'max'
+        LINE_COMMENT    = "//comment"
+        BLOCK_COMMENT   = "/*comment*/"
+        PREPROCESSOR    = "#preprocessor"
 
-        GT = '>'
-        LT = '<'
-        EXCL = '!'
+        IDENT   = "identifier"
+        FLOAT   = "float"
+        NUMBER  = "number"
+        STRING  = "quoted string using double quote"
+        SINGLE_QUOTE_BLOCK_TOKEN = "singleQuoteBlock"
 
-        LINE_COMMENT   = 'regex://.*'
-        BLOCK_COMMENT  = 'regex:/\\*([^*]|\\*+[^*/])*\\*+/'
-        PREPROCESSOR   = 'regex:#.*'
-
-        IDENT          = "regex:[A-Za-z_][A-Za-z0-9_]*"
-        FLOAT          = "regex:\\d+(\\.\\d+)?([eE][+-]?\\d+)?"
-        NUMBER         = "regex:\\d+"
-        STRING         = "regex:\"([^\"\\\\n\\\\r]|\"\")*\""
-
-        SINGLE_QUOTE_BLOCK_TOKEN  = "singleQuoteBlock"
         // Char names can be based on https://www.ascii-code.com/
         // Stuff after = is basically just documentation/suggestion on what they are and doesnt do anything
     ]
