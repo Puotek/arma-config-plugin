@@ -138,6 +138,12 @@ macroInnerToken ::= IDENT
                   | GT
                   | LT
                   | EXCL
+                  | PLUS
+                  | MINUS
+                  | STAR
+                  | SLASH
+                  | PERCENT
+                  | CARET
                   | LINE_COMMENT
                   | BLOCK_COMMENT
 

@@ -466,6 +466,12 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
   //                   | GT
   //                   | LT
   //                   | EXCL
+  //                   | PLUS
+  //                   | MINUS
+  //                   | STAR
+  //                   | SLASH
+  //                   | PERCENT
+  //                   | CARET
   //                   | LINE_COMMENT
   //                   | BLOCK_COMMENT
   public static boolean macroInnerToken(PsiBuilder b, int l) {
@@ -488,6 +494,12 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, GT);
     if (!r) r = consumeToken(b, LT);
     if (!r) r = consumeToken(b, EXCL);
+    if (!r) r = consumeToken(b, PLUS);
+    if (!r) r = consumeToken(b, MINUS);
+    if (!r) r = consumeToken(b, STAR);
+    if (!r) r = consumeToken(b, SLASH);
+    if (!r) r = consumeToken(b, PERCENT);
+    if (!r) r = consumeToken(b, CARET);
     if (!r) r = consumeToken(b, LINE_COMMENT);
     if (!r) r = consumeToken(b, BLOCK_COMMENT);
     exit_section_(b, l, m, r, false, null);

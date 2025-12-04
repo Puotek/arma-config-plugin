@@ -19,7 +19,8 @@ class NormalClass {
 
 
 
-
+    displayName = Q(AN/PRC-163 1);
+    x = Q((safeZoneW * 0.5) + safeZoneX - (26 * GRID_W));
     condition = Q(count TAG(targets) > 0);
     condition2 = Q(!(_target in TAG(targets)));
     indentifier = anotherIdentifer;
