@@ -14,6 +14,7 @@ class InspectionTestingClass {
     arrayWrond2[] = test;
     duplicatedParam = 1;
     duplicatedParam = 1;
+    value += 2;
 };
 class NormalClass {
 
@@ -48,7 +49,7 @@ comment
     complexPreprocessor = Q(_target setObjectTextureGlobal [0, 'PATH(textures\ipsc_vertical.paa)'];);
     class NestedClass : extendClass {
         /*Another block comment*/
-        array[] = {var, 1, 1, "", 42, 43};
+        array[] = {var, 1, 1e1, "", 42, 43};
         math = 1 + 69 * 1;
     };
     class 30Rnd_556x45_Stanag;

@@ -1,8 +1,8 @@
 package arma.config.inspections
 
-import arma.config.psi.ClassDecl
-import arma.config.psi.Assignment
 import arma.config.psi.ArmaConfigTypes
+import arma.config.psi.Assignment
+import arma.config.psi.ClassDecl
 import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElement
@@ -10,12 +10,6 @@ import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.util.PsiTreeUtil
 
 class DuplicateAssignmentInspection : LocalInspectionTool() {
-
-    override fun getDisplayName(): String =
-        "Duplicate parameter assignment in class"
-
-    override fun getShortName(): String =
-        "ArmaDuplicateAssignment"
 
     override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor {
         return object : PsiElementVisitor() {
@@ -52,8 +46,7 @@ class DuplicateAssignmentInspection : LocalInspectionTool() {
                 // Duplicate: register a problem on the *identifier* of this assignment
                 val problemTarget = identNode.psi ?: assignment
                 holder.registerProblem(
-                    problemTarget,
-                    "Duplicate assignment to '$name' in this class"
+                    problemTarget, "Duplicate assignment to '$name' in this class"
                 )
             }
         }

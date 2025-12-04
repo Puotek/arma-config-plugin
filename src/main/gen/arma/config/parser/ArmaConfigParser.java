@@ -69,7 +69,7 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IDENT arraySuffix? EQUAL value SEMICOLON
+  // IDENT arraySuffix? (EQUAL | PLUS EQUAL) value SEMICOLON
   public static boolean assignment(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "assignment")) return false;
     if (!nextTokenIs(b, IDENT)) return false;
@@ -77,7 +77,7 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = consumeToken(b, IDENT);
     r = r && assignment_1(b, l + 1);
-    r = r && consumeToken(b, EQUAL);
+    r = r && assignment_2(b, l + 1);
     r = r && value(b, l + 1);
     r = r && consumeToken(b, SEMICOLON);
     exit_section_(b, m, ASSIGNMENT, r);
@@ -89,6 +89,17 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "assignment_1")) return false;
     arraySuffix(b, l + 1);
     return true;
+  }
+
+  // EQUAL | PLUS EQUAL
+  private static boolean assignment_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "assignment_2")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, EQUAL);
+    if (!r) r = parseTokens(b, 0, PLUS, EQUAL);
+    exit_section_(b, m, null, r);
+    return r;
   }
 
   /* ********************************************************** */

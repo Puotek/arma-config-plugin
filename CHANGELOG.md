@@ -40,11 +40,11 @@ Classes with no body are basically imports so thats what im gonna call them
 - Optimize imports IntelliJ support, where imports are classes with no body, and we optimize by removing unused ones (
   ones never used for inheritance)
 - Highlighting for MACROS with variables eg `MACRO(var)`
+- Add a group to IntelliJ Live Templates specifically for Arma Config Files
 
-
-- Fix allow `+=` for array assignment
 - Fix allow parameter names to use macros
 - Fix add `9e-006` weird math expression support
+
 
 - Move test stuff from `/resources` to `/test`
 
@@ -60,6 +60,7 @@ Classes with no body are basically imports so thats what im gonna call them
 - Editor completion matcher for `[]` `{}` `""` pairing
 - Automatic `;` autocompletion for `{}` when typing
 - Smart enter processor
+- Support for `+=` with array assignment and related inspection for non-array use
 
 ### Changed
 
@@ -71,6 +72,11 @@ Classes with no body are basically imports so thats what im gonna call them
 - Support for classnames starting with numbers, like `30Rnd_556x45_Stanag`
 - Errors for `>`, `<` and `!` operators inside macros
 - Support for math tokens inside of macros `+-*/%^`
+- Suppressed some localization and text format warnings in `plugin.xml`
+
+### Removed
+
+- Some overrides inside Inspection classes as they are duplicated in plugin.xml
 
 ## [1.0.1] - 2025-12-03
 

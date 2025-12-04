@@ -25,16 +25,7 @@ import com.intellij.psi.util.PsiTreeUtil
  * Because of the grammar, a "{ }" initializer may be parsed either as an Array
  * or as a PreprocValue containing "{...}". We treat both as "array-like".
  */
-@Suppress("InspectionDescriptionNotFoundInspection")
 class ArrayBraceMismatchInspection : LocalInspectionTool() {
-
-    override fun getDisplayName(): String = "Array brackets and braces must match"
-
-    override fun getShortName(): String = "ArmaArrayBraceMismatch"
-
-    override fun getGroupDisplayName(): String = "Arma Config"
-
-    override fun isEnabledByDefault(): Boolean = true
 
     override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor {
         return object : arma.config.psi.Visitor() {
@@ -66,7 +57,7 @@ class ArrayBraceMismatchInspection : LocalInspectionTool() {
                     if (nameElement != null) {
                         holder.registerProblem(
                             nameElement,
-                            "Array assignment '[]' must use '{ }' array initializer",
+                            "Array property '[]' must use '{ }' array value",
                             ProblemHighlightType.GENERIC_ERROR_OR_WARNING
                         )
                     }
@@ -76,8 +67,8 @@ class ArrayBraceMismatchInspection : LocalInspectionTool() {
                 // Case 2: name = { ... };
                 if (!hasBrackets && hasBracesArray) {
                     holder.registerProblem(
-                        arrayLikeElement!!,
-                        "Array initializer '{ }' requires '[]' on the left-hand side",
+                        arrayLikeElement,
+                        "Array value '{ }' requires '[]' array property suffix",
                         ProblemHighlightType.GENERIC_ERROR_OR_WARNING
                     )
                 }
