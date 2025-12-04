@@ -175,6 +175,17 @@ tasks.register("runIdeClean") {
     finalizedBy("runIde")
 }
 
+tasks.register<Copy>("copyExample") {
+    group = "puotek"
+    description = "Copies example.hpp to formatting.hpp in src/main/resources"
+
+    from("src/main/resources/example.hpp")
+    into("src/main/resources")
+
+    // Always name the output file formatting.hpp
+    rename { "formatting.hpp" }
+}
+
 tasks.register("bumpVersion") {
     group = "puotek"
     description = "Increment pluginVersion PATCH property by 1"

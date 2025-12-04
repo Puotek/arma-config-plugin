@@ -29,6 +29,14 @@ Classes with no body are basically imports so thats what im gonna call them
 - Working grayout for unused classes, as in if a class has no body and is not used anywhere for inheritance than we gray out
 - Support for usages, basically if any class is called anywhere for inheritance than we cound that as usage (ik intellij has some framework for usages) and this should also support ctrl+click on the class to navigate to original import or to usage
 - Optimize imports IntelliJ support, where imports are classes with no body, and we optimize by removing unused ones (ones never used for inheritance)
+- Highlighting for MACROS with variables eg `MACRO(var)`
+
+
+- Fix allow `+=` for array assignment
+- Fix allow for `-` inside of macros
+- Fix allow parameter names to use macros
+- Fix allow use of `*` inside macros, actually in general math expressions in macros
+- Fix add `9e-006` weird math expression support
 
 ## [Unreleased]
 

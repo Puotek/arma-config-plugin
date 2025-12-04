@@ -113,14 +113,6 @@ class CfgEditorSubcategories {
 };
 
 class CfgVehicles {
-x = Q((safeZoneW * 0.5) + safeZoneX - (26 * GRID_W));
-allowedHTMLLoadURIs[] += {
-"https://discord.gg/*"
-};
-displayName = Q(AN/PRC-163 1);
-MAWLCLS(IR_AIM) = 1;
-animPeriod=9.9999997e-006;
-
     class Man;
     class CAManBase: Man {
         class ACE_SelfActions {

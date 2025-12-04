@@ -2,8 +2,8 @@
 
 // Multiline define with backslashes
 #define MYTEST EDERERE \
-    EDERERE \
-    AETNO
+EDERERE \
+AETNO
 
 // Single-line define
 #define MY_SINGLE TEST_SINGLE
@@ -22,10 +22,10 @@ class CfgPatches {
 
 /*
 big comment
-    class MyCarBase {
-        displayName = "Base Car";
-        maxSpeed = 100;
-    };
+class MyCarBase {
+displayName = "Base Car";
+maxSpeed = 100;
+};
 */
 class NoBodyClass;
 class CfgPatches {
@@ -51,12 +51,12 @@ class CfgVehicles : BaseCfg {
         maxSpeed = 120;
 
         class Turrets {
-            class MainTurret {
+            class MainTurret{
                 weapons = HMG_127;
                 magazines[] = {Mag_127, Mag_127_Tracer};
             };
 
-            class CommanderTurret : MainTurret {
+            class CommanderTurret: MainTurret{
                 weapons = GMG_40mm;
                 magazines[] = {Mag_40mm_HE, Mag_40mm_SMK};
             };
@@ -107,20 +107,12 @@ class Extended_PostInit_EventHandlers { XEH(postInit); };
 class Extended_PreInit_EventHandlers { XEH(preInit); };
 
 class CfgEditorSubcategories {
-	class targets_tacdevsqdn4 {
-		displayName = "Targets (TACDEVSQDN4)";
-	};
+    class targets_tacdevsqdn4 {
+        displayName = "Targets (TACDEVSQDN4)";
+    };
 };
 
 class CfgVehicles {
-x = Q((safeZoneW * 0.5) + safeZoneX - (26 * GRID_W));
-allowedHTMLLoadURIs[] += {
-"https://discord.gg/*"
-};
-displayName = Q(AN/PRC-163 1);
-MAWLCLS(IR_AIM) = 1;
-animPeriod=9.9999997e-006;
-
     class Man;
     class CAManBase: Man {
         class ACE_SelfActions {
