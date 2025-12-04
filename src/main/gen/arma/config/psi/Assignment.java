@@ -10,6 +10,9 @@ public interface Assignment extends PsiElement {
   @Nullable
   ArraySuffix getArraySuffix();
 
+  @Nullable
+  MacroInvocation getMacroInvocation();
+
   @NotNull
   Value getValue();
 

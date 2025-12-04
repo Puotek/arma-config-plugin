@@ -34,6 +34,12 @@ public class AssignmentImpl extends ASTWrapperPsiElement implements Assignment {
   }
 
   @Override
+  @Nullable
+  public MacroInvocation getMacroInvocation() {
+    return findChildByClass(MacroInvocation.class);
+  }
+
+  @Override
   @NotNull
   public Value getValue() {
     return findNotNullChildByClass(Value.class);

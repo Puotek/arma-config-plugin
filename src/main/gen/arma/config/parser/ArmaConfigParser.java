@@ -69,18 +69,27 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IDENT arraySuffix? (EQUAL | PLUS EQUAL) value SEMICOLON
+  // (macroInvocation | IDENT) arraySuffix? (EQUAL | PLUS EQUAL) value SEMICOLON
   public static boolean assignment(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "assignment")) return false;
     if (!nextTokenIs(b, IDENT)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, IDENT);
+    r = assignment_0(b, l + 1);
     r = r && assignment_1(b, l + 1);
     r = r && assignment_2(b, l + 1);
     r = r && value(b, l + 1);
     r = r && consumeToken(b, SEMICOLON);
     exit_section_(b, m, ASSIGNMENT, r);
+    return r;
+  }
+
+  // macroInvocation | IDENT
+  private static boolean assignment_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "assignment_0")) return false;
+    boolean r;
+    r = macroInvocation(b, l + 1);
+    if (!r) r = consumeToken(b, IDENT);
     return r;
   }
 

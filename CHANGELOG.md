@@ -30,7 +30,7 @@ Classes with no body are basically imports so thats what im gonna call them
     - for arrays I also want an option to have , at the start of each line or at the end of each line when arrays are
       multiline
     - for multiline arrays first item should be on newline compared to `{` and the closing `}` should also be on a
-      newline alinged with the indent of the line where `{` was
+      newline aligned with the indent of the line where `{` was
     - option for amount of blank lines between any preprocessor (#include or #define) stuff and a class
 - Working grayout for unused classes, as in if a class has no body and is not used anywhere for inheritance than we gray
   out
@@ -40,13 +40,12 @@ Classes with no body are basically imports so thats what im gonna call them
 - Optimize imports IntelliJ support, where imports are classes with no body, and we optimize by removing unused ones (
   ones never used for inheritance)
 - Highlighting for MACROS with variables eg `MACRO(var)`
-- Add a group to IntelliJ Live Templates specifically for Arma Config Files
 
-- Fix allow parameter names to use macros
+
+- Add a group to IntelliJ Live Templates specifically for Arma Config Files
 - Fix add `9e-006` weird math expression support
 
-
-- Move test stuff from `/resources` to `/test`
+- Maybe move test stuff from `/resources` to `/test`
 
 ## [Unreleased]
 
@@ -61,6 +60,7 @@ Classes with no body are basically imports so thats what im gonna call them
 - Automatic `;` autocompletion for `{}` when typing
 - Smart enter processor
 - Support for `+=` with array assignment and related inspection for non-array use
+- Support for use of macros in parameter names
 
 ### Changed
 

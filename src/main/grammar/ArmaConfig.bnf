@@ -71,7 +71,7 @@ classExt ::= COLON className
 className ::= macroInvocation
             | IDENT
 
-assignment ::= IDENT arraySuffix? (EQUAL | PLUS EQUAL) value SEMICOLON
+assignment ::= (macroInvocation | IDENT) arraySuffix? (EQUAL | PLUS EQUAL) value SEMICOLON
 
 arraySuffix ::= LBRACKET RBRACKET
 
