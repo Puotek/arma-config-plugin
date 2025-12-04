@@ -35,6 +35,8 @@ Classes with no body are basically imports so thats what im gonna call them
 - Fix allow use of `*` inside macros, actually in general math expressions in macros
 - Fix add `9e-006` weird math expression support
 
+- Move test stuff from `/resources` to `/test`  
+
 ## [Unreleased]
 
 ### Added
@@ -50,6 +52,7 @@ Classes with no body are basically imports so thats what im gonna call them
 
 ### Changed
 - `README.md` added a new guide on how to manually make a build of the plugin
+- `README.md` updated plugin description
 
 ### Fixed
 
