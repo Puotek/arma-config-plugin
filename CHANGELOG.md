@@ -40,6 +40,7 @@ Classes with no body are basically imports so thats what im gonna call them
 - Optimize imports IntelliJ support, where imports are classes with no body, and we optimize by removing unused ones (
   ones never used for inheritance)
 - Highlighting for MACROS with variables eg `MACRO(var)`
+- Improve macro parsing and also allow for checking for strings inside
 
 ## [Unreleased]
 
