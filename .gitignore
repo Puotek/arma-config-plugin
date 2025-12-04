@@ -5,4 +5,5 @@
 .kotlin
 .qodana
 build
-src/main/resources/todo.txt
+src/test/resources/_prompt.txt
+src/test/resources/test_formatting.hpp

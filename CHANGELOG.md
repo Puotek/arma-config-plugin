@@ -45,8 +45,6 @@ Classes with no body are basically imports so thats what im gonna call them
 - Add a group to IntelliJ Live Templates specifically for Arma Config Files
 - Fix add `9e-006` weird math expression support
 
-- Maybe move test stuff from `/resources` to `/test`
-
 ## [Unreleased]
 
 ### Added
@@ -66,6 +64,7 @@ Classes with no body are basically imports so thats what im gonna call them
 
 - `README.md` added a new guide on how to manually make a build of the plugin
 - `README.md` updated plugin description
+- Moved test resources from `src/main` to `src/test`
 
 ### Fixed
 

@@ -177,13 +177,13 @@ tasks.register("runIdeClean") {
 
 tasks.register<Copy>("copyExample") {
     group = "puotek"
-    description = "Copies example.hpp to formatting.hpp in src/main/resources"
+    description = "Copies example.hpp to formatting.hpp in src/test/resources"
 
-    from("src/main/resources/example.hpp")
-    into("src/main/resources")
+    from("src/test/resources/example.hpp")
+    into("src/test/resources")
 
     // Always name the output file formatting.hpp
-    rename { "formatting.hpp" }
+    rename { "test_formatting.hpp" }
 }
 
 tasks.register("bumpVersion") {
