@@ -46,6 +46,7 @@ Classes with no body are basically imports so thats what im gonna call them
 - Support for IntelliJ comment keybinds, so that ctrl+/ comments out the whole line with single line comment
 - Working file structure IntelliJ window
 - Inspection for duplicate parameter assignment in same class
+- Simple implementation for formatting
 
 ### Changed
 - `README.md` added a new guide on how to manually make a build of the plugin
