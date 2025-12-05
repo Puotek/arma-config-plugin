@@ -1,7 +1,6 @@
 package arma.config.structure
 
 import arma.config.psi.ClassBlock
-import arma.config.psi.ClassName
 import com.intellij.ide.structureView.StructureViewTreeElement
 import com.intellij.ide.structureView.impl.common.PsiTreeElementBase
 import com.intellij.psi.util.PsiTreeUtil
@@ -10,9 +9,26 @@ class ArmaConfigClassTreeElement(element: ClassBlock) : PsiTreeElementBase<Class
 
     override fun getPresentableText(): String {
         val classDecl = value ?: return "<class>"
-        val ident: ClassName? = classDecl.className
-        // className may be TEXT or a macroBlock – text is fine for both
-        return ident?.text ?: "<class>"
+
+        // Own class name (can be TEXT or macroBlock; using .text covers both)
+        val ownName = classDecl.className
+            ?.text
+            ?.takeIf { it.isNotBlank() }
+            ?: "<class>"
+
+        // Inheritance part: : ParentName
+        // Grammar: classExtension ::= COLON className
+        // so we can grab classExtension.className.text
+        val parentName = classDecl.classExtension
+            ?.className
+            ?.text
+            ?.takeIf { it.isNotBlank() }
+
+        return if (parentName != null) {
+            "$ownName : $parentName"
+        } else {
+            ownName
+        }
     }
 
     override fun getChildrenBase(): Collection<StructureViewTreeElement> {
