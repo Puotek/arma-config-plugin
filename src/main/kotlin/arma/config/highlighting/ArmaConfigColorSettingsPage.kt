@@ -20,6 +20,7 @@ class ArmaConfigColorSettingsPage : ColorSettingsPage {
     override fun getHighlighter(): SyntaxHighlighter =
         SyntaxHighlighterFactory.getSyntaxHighlighter(ArmaConfigLanguage, null, null)
 
+    //fixme update sample
     // Sample text shown in the preview pane inside color settings
     override fun getDemoText(): String = """
 #include "file.hpp"

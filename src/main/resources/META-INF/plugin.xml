@@ -44,6 +44,11 @@
                 language="ArmaConfig"
                 implementationClass="arma.config.editor.ArmaConfigSmartEnterProcessor"/>
 
+        <langCodeStyleSettingsProvider
+                implementation="arma.config.formatting.ArmaConfigLanguageCodeStyleSettingsProvider"/>
+        <codeStyleSettingsProvider
+                implementation="arma.config.formatting.ui.ArmaConfigCodeStyleSettingsProvider"/>
+
         <typedHandler
                 implementation="arma.config.editor.ArmaConfigTypedHandler"/>
 

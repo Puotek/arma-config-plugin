@@ -47,6 +47,10 @@ Format: `[MAJOR.MINOR.PATCH] - YYYY-MM-DD`
 
 - Maybe support for trailing `,` in arrays after all with an inspection (hemmt=ok, biTools=invalid)
 
+- fixme add better samples for settings pages `ArmaConfigColorSettingsPage` and `ArmaConfigLanguageCodeStyleSettingProvider`
+
+- rename all `ArmaConfig...` files to `Cfg...`
+
 ## [Unreleased]
 
 ### Added
