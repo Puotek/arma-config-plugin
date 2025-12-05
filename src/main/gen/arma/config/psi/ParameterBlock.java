@@ -5,9 +5,12 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface ClassName extends PsiElement {
+public interface ParameterBlock extends PsiElement {
+
+  @NotNull
+  ParameterName getParameterName();
 
   @Nullable
-  MacroBlock getMacroBlock();
+  ParameterValue getParameterValue();
 
 }

@@ -7,11 +7,6 @@
     tokenTypeClass="arma.config.psi.ArmaConfigTokenType"
 
     tokens = [
-        CLASS_KEYWORD   = 'class'
-        DELETE_KEYWORD  = 'delete'
-        MIN_KEYWORD     = 'min'
-        MAX_KEYWORD     = 'max'
-
         LBRACE      = '{'
         RBRACE      = '}'
         LBRACKET    = '['
@@ -28,150 +23,139 @@
         SLASH       = '/'
         PERCENT     = '%'
         CARET       = '^'
-        GT          = '>'
         LT          = '<'
+        GT          = '>'
         EXCL        = '!'
         SINGLE_HASH = '#'
         DOUBLE_HASH = '##'
 
-        LINE_COMMENT    = "//comment"
-        BLOCK_COMMENT   = "/*comment*/"
-        PREPROCESSOR    = "#preprocessor"
 
-        IDENT   = "identifier"
-        FLOAT   = "float"
-        NUMBER  = "number"
-        STRING  = "quoted string using double quote"
-        SINGLE_QUOTE_BLOCK_TOKEN = "singleQuoteBlock"
+        CLASS_KEYWORD   = 'class'
+        DELETE_KEYWORD  = 'delete'
+        MIN_KEYWORD     = 'min'
+        MAX_KEYWORD     = 'max'
+
+        LINE_COMMENT    = "LINE_COMMENT"
+        BLOCK_COMMENT   = "BLOCK_COMMENT"
+        PREPROCESSOR    = "PREPROCESSOR"
+        TEXT            = "TEXT"
+        FLOAT           = "FLOAT"
+        NUMBER          = "NUMBER"
+        STRING          = "STRING"
+        SINGLE_QUOTE    = "SINGLE_QUOTE"
 
         // Char names can be based on https://www.ascii-code.com/
         // Stuff after = is basically just documentation/suggestion on what they are and doesnt do anything
     ]
 }
 
-configFile ::= item*
 
-private item ::= classDecl
-               | classForwardDecl
-               | assignment
-               | deleteStmt
-               | macroStmt
-               | ';'
+root ::= item*
 
-classDecl ::= CLASS_KEYWORD classIdent classExt? LBRACE item* RBRACE SEMICOLON
+private item ::= macroBlock SEMICOLON
+               | classBlock
+               | deleteBlock
+               | PREPROCESSOR
+               | TEXT SEMICOLON
+               | LINE_COMMENT
+               | BLOCK_COMMENT
 
-classForwardDecl ::= CLASS_KEYWORD classIdent classExt? SEMICOLON
+///////// MACRO /////////
 
-classIdent ::= macroInvocation
-             | IDENT
+private macroElement ::= LBRACE
+                       | RBRACE
+                       | LBRACKET
+                       | RBRACKET
+                       | EQUAL
+                       | SEMICOLON
+                       | COLON
+                       | PLUS
+                       | MINUS
+                       | STAR
+                       | SLASH
+                       | PERCENT
+                       | CARET
+                       | GT
+                       | LT
+                       | EXCL
+                       | SINGLE_HASH
+                       | DOUBLE_HASH
+                       | CLASS_KEYWORD
+                       | DELETE_KEYWORD
+                       | MIN_KEYWORD
+                       | MAX_KEYWORD
+                       | BLOCK_COMMENT
+                       | TEXT
+                       | FLOAT
+                       | NUMBER
+                       | STRING
+                       | SINGLE_QUOTE
+                       | COMMA
 
-classExt ::= COLON className
+private macroAtom ::= macroElement | LPAREN macroAtom+ RPAREN
 
-className ::= macroInvocation
-            | IDENT
+macroBlock ::= TEXT LPAREN macroAtom+ RPAREN
 
-assignment ::= (macroInvocation | IDENT) arraySuffix? (EQUAL | PLUS EQUAL) value SEMICOLON
+///////// CLASS /////////
 
-arraySuffix ::= LBRACKET RBRACKET
+classBody ::= LBRACE classItem* RBRACE
+{pin=1}
 
-deleteStmt ::= DELETE_KEYWORD IDENT SEMICOLON
+classBlock ::= CLASS_KEYWORD className classExtension? classBody? SEMICOLON
+{pin=1}
 
-value ::= macroInvocation
-        | IDENT
-        | STRING
-        | array
-        | expr
-        | preprocValue
-        | singleQuoteBlock
+className ::= macroBlock
+            | TEXT
 
-// ========================
-// Numeric expressions
-// ========================
-
-// Lowest level: full expression
-expr ::= expr_add
-
-// Addition / subtraction / min / max
-expr_add ::= expr_mul ( (PLUS | MINUS | MIN_KEYWORD | MAX_KEYWORD) expr_mul )*
-
-// Multiplication / division / modulo
-expr_mul ::= expr_power ( (STAR | SLASH | PERCENT) expr_power )*
-
-// Power (right-assoc-ish, left is fine for tooling)
-expr_power ::= expr_unary (CARET expr_unary)*
-
-// Unary + / -
-expr_unary ::= primary
-             | PLUS expr_unary
-             | MINUS expr_unary
-
-// Primary elements
-primary ::= NUMBER
-          | FLOAT
-          | IDENT // we allow any identifier here (safeZoneX etc. are just a subset)
-          | LPAREN expr_add RPAREN
+classExtension ::= COLON className
 
 
-array ::= LBRACE valueList? RBRACE
-valueList ::= value (COMMA value)*
+private classItem ::= parameterBlock
+                    | arrayBlock
+                    | item
 
-macroInvocation ::= IDENT LPAREN macroInner? RPAREN
+///////// DELETE /////////
 
-macroInner ::= macroAtom*
+deleteBlock ::= DELETE_KEYWORD className SEMICOLON
 
-macroAtom ::= macroInnerToken
-            | LPAREN macroInner? RPAREN
-            | singleQuoteBlock
+///////// PARAMETER /////////
 
-macroInnerToken ::= IDENT
-                  | NUMBER
-                  | FLOAT
-                  | STRING
-                  | PREPROCESSOR
-                  | LBRACE | RBRACE
-                  | LBRACKET | RBRACKET
-                  | COMMA
-                  | EQUAL
-                  | COLON
-                  | SEMICOLON
-                  | GT
-                  | LT
-                  | EXCL
-                  | PLUS
-                  | MINUS
-                  | STAR
-                  | SLASH
-                  | PERCENT
-                  | CARET
-                  | LINE_COMMENT
-                  | BLOCK_COMMENT
+parameterValue ::= macroBlock
+                 | mathBlock
+                 | TEXT
+                 | STRING
+                 | SINGLE_QUOTE
+                 | NUMBER
+                 | FLOAT
 
-macroStmt ::= macroInvocation SEMICOLON
-            | IDENT SEMICOLON
+parameterName ::= macroBlock
+                | TEXT
 
-// A loose "blob" of tokens used for preprocessor-style constructs like
-//   'Here is a "substring"'
-// We allow identifiers, strings and some punctuation — but NOT SEMICOLON.
-preprocValueToken ::= IDENT
-                    | STRING
-                    | NUMBER
-                    | FLOAT
-                    | PREPROCESSOR
-                    | LBRACE | RBRACE
-                    | LBRACKET | RBRACKET
-                    | COMMA
-                    | EQUAL
-                    | COLON
-                    | GT
-                    | LT
-                    | EXCL
-                    | LPAREN | RPAREN
-                    | LINE_COMMENT
-                    | BLOCK_COMMENT
 
-preprocValue ::= preprocValueToken+
+parameterBlock ::= parameterName EQUAL parameterValue SEMICOLON
+{pin=2}
 
-// A special '' block used by the preprocessor-like syntax.
-// It starts with ' and ends with a matching ',
-// and can contain anything that preprocValueToken allows, including normal STRING tokens.
-singleQuoteBlock ::= SINGLE_QUOTE_BLOCK_TOKEN
+///////// ARRAY /////////
+
+arrayBlock ::= parameterName LBRACKET RBRACKET PLUS? EQUAL LBRACE (parameterValue (COMMA parameterValue)*)? RBRACE SEMICOLON
+{pin=3}
+
+///////// MATH /////////
+
+mathBlock ::= MINUS? mathElement (mathOperator mathElement)*
+
+mathOperator ::= PLUS
+               | MINUS
+               | SLASH
+               | STAR
+               | PERCENT
+               | MIN_KEYWORD
+               | MAX_KEYWORD
+               | CARET
+               | GT
+               | LT
+
+mathElement ::= TEXT
+              | NUMBER
+              | FLOAT
+              | LPAREN mathBlock RPAREN

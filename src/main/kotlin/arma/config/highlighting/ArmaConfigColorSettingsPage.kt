@@ -23,48 +23,31 @@ class ArmaConfigColorSettingsPage : ColorSettingsPage {
     // Sample text shown in the preview pane inside color settings
     override fun getDemoText(): String = """
 #include "file.hpp"
-#include "includes\file.hpp"
 
-#define SINGLE_LINE_DEFINE SINGLE_LINE_DEFINE
-#define MULTI_LINE_DEFINE MULTI_LINE_DEFINE\
-MULTI_LINE_DEFINE
+#define MACRO macro \
+still macro
 
 //Single line comment
 /* Block comment one line */
-/*
-Block
-comment
-multiline
-*/
-
-//todo works?
-//fixme works as well?
 
 class NoBodyClass;
-class TestClass {
+class NormalClass {
     indentifier = anotherIdentifer;
-    array[] = {}; //inline comment
     arrayMultiline[] = {
         "test",
-        "test"
-        ,"test"
-    }; //inline comment
-    string = "hallo from the other siiide";
+        'Here is a "substring"',
+        QUOTE(macro string)
+    };
     math = 1 + 1 + (42 - 2);
     float = 2.20;
-    number = 12;
-    preprocessorThing = Q(path\to\file.paa);
-    complexPreprocessor = Q(_target setObjectTextureGlobal [0, 'PATH(textures\ipsc_vertical.paa)'];);
+    macro_with_var = Q(path\to\file.paa);
+    complex_macro = Q(_target setObjectTextureGlobal [0, 'PATH(textures\ipsc_vertical.paa)'];);
     class NestedClass : extendClass {
-        /*Another block comment*/
-        array[] = {var, 1, 1e1, "", 42, 43};
         math = 1 + 69 * 1;
     };
     class TAG(preprocessorClass) : TAG(extensionAlso) {};
-    thingy = 0;
     delete DeleteIsAKeywordTooClass;
-    PREPROCESSOR_USED_FOR_PARAMS(something);
-    JUST_A_PREPROCESSOR_THING;
+    MACRO;
     class NoBodyClass;
 };
     """.trimIndent()

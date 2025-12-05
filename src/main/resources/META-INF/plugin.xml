@@ -78,15 +78,7 @@
                 groupName="Arma Config"
                 enabledByDefault="true"
                 level="WEAK WARNING"
-                implementationClass="arma.config.inspections.CommaInParenthesesInspection"/>
-        <localInspection
-                language="ArmaConfig"
-                shortName="ArmaArrayBraceMismatch"
-                displayName="Array brackets and braces must match"
-                groupName="Arma Config"
-                enabledByDefault="true"
-                level="ERROR"
-                implementationClass="arma.config.inspections.ArrayBraceMismatchInspection"/>
+                implementationClass="arma.config.inspections.CommaInMacroInspection"/>
         <localInspection
                 language="ArmaConfig"
                 shortName="ArmaDuplicateAssignment"
@@ -95,14 +87,6 @@
                 enabledByDefault="true"
                 level="ERROR"
                 implementationClass="arma.config.inspections.DuplicateAssignmentInspection"/>
-        <localInspection
-                language="ArmaConfig"
-                shortName="NonArrayPlusEquals"
-                displayName="Use of '+=' only allowed for array properties"
-                groupName="Arma Config"
-                enabledByDefault="true"
-                level="ERROR"
-                implementationClass="arma.config.inspections.NonArrayPlusEqualsInspection"/>
 
     </extensions>
 </idea-plugin>

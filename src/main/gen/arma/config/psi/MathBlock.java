@@ -5,9 +5,12 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface ClassName extends PsiElement {
+public interface MathBlock extends PsiElement {
 
-  @Nullable
-  MacroBlock getMacroBlock();
+  @NotNull
+  List<MathElement> getMathElementList();
+
+  @NotNull
+  List<MathOperator> getMathOperatorList();
 
 }

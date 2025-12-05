@@ -7,31 +7,19 @@ import com.intellij.psi.PsiElement;
 
 public class Visitor extends PsiElementVisitor {
 
-  public void visitArray(@NotNull Array o) {
+  public void visitArrayBlock(@NotNull ArrayBlock o) {
     visitPsiElement(o);
   }
 
-  public void visitArraySuffix(@NotNull ArraySuffix o) {
+  public void visitClassBlock(@NotNull ClassBlock o) {
     visitPsiElement(o);
   }
 
-  public void visitAssignment(@NotNull Assignment o) {
+  public void visitClassBody(@NotNull ClassBody o) {
     visitPsiElement(o);
   }
 
-  public void visitClassDecl(@NotNull ClassDecl o) {
-    visitPsiElement(o);
-  }
-
-  public void visitClassExt(@NotNull ClassExt o) {
-    visitPsiElement(o);
-  }
-
-  public void visitClassForwardDecl(@NotNull ClassForwardDecl o) {
-    visitPsiElement(o);
-  }
-
-  public void visitClassIdent(@NotNull ClassIdent o) {
+  public void visitClassExtension(@NotNull ClassExtension o) {
     visitPsiElement(o);
   }
 
@@ -39,71 +27,35 @@ public class Visitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitDeleteStmt(@NotNull DeleteStmt o) {
+  public void visitDeleteBlock(@NotNull DeleteBlock o) {
     visitPsiElement(o);
   }
 
-  public void visitExpr(@NotNull Expr o) {
+  public void visitMacroBlock(@NotNull MacroBlock o) {
     visitPsiElement(o);
   }
 
-  public void visitExprAdd(@NotNull ExprAdd o) {
+  public void visitMathBlock(@NotNull MathBlock o) {
     visitPsiElement(o);
   }
 
-  public void visitExprMul(@NotNull ExprMul o) {
+  public void visitMathElement(@NotNull MathElement o) {
     visitPsiElement(o);
   }
 
-  public void visitExprPower(@NotNull ExprPower o) {
+  public void visitMathOperator(@NotNull MathOperator o) {
     visitPsiElement(o);
   }
 
-  public void visitExprUnary(@NotNull ExprUnary o) {
+  public void visitParameterBlock(@NotNull ParameterBlock o) {
     visitPsiElement(o);
   }
 
-  public void visitMacroAtom(@NotNull MacroAtom o) {
+  public void visitParameterName(@NotNull ParameterName o) {
     visitPsiElement(o);
   }
 
-  public void visitMacroInner(@NotNull MacroInner o) {
-    visitPsiElement(o);
-  }
-
-  public void visitMacroInnerToken(@NotNull MacroInnerToken o) {
-    visitPsiElement(o);
-  }
-
-  public void visitMacroInvocation(@NotNull MacroInvocation o) {
-    visitPsiElement(o);
-  }
-
-  public void visitMacroStmt(@NotNull MacroStmt o) {
-    visitPsiElement(o);
-  }
-
-  public void visitPreprocValue(@NotNull PreprocValue o) {
-    visitPsiElement(o);
-  }
-
-  public void visitPreprocValueToken(@NotNull PreprocValueToken o) {
-    visitPsiElement(o);
-  }
-
-  public void visitPrimary(@NotNull Primary o) {
-    visitPsiElement(o);
-  }
-
-  public void visitSingleQuoteBlock(@NotNull SingleQuoteBlock o) {
-    visitPsiElement(o);
-  }
-
-  public void visitValue(@NotNull Value o) {
-    visitPsiElement(o);
-  }
-
-  public void visitValueList(@NotNull ValueList o) {
+  public void visitParameterValue(@NotNull ParameterValue o) {
     visitPsiElement(o);
   }
 

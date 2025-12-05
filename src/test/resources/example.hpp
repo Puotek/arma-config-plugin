@@ -22,11 +22,8 @@ class 01ClassStartingWithNumber;
 class NoBodyClass;
 class InspectionTestingClass {
     TEST(var,var);
-    arrayWrong = {};
-    arrayWrond2[] = test;
     duplicatedParam = 1;
     duplicatedParam = 1;
-    value += 2;
 };
 class NormalClass {
 

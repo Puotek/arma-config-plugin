@@ -1,7 +1,7 @@
 package arma.config.structure
 
 import arma.config.psi.ArmaConfigFile
-import arma.config.psi.ClassDecl
+import arma.config.psi.ClassBlock
 import com.intellij.ide.structureView.StructureViewModel
 import com.intellij.ide.structureView.StructureViewTreeElement
 import com.intellij.ide.structureView.TextEditorBasedStructureViewModel
@@ -16,7 +16,7 @@ class ArmaConfigStructureViewModel(
 
     override fun getRoot(): StructureViewTreeElement = rootElement
 
-    override fun getSuitableClasses(): Array<Class<out PsiElement>> = arrayOf(ClassDecl::class.java)
+    override fun getSuitableClasses(): Array<Class<out PsiElement>> = arrayOf(ClassBlock::class.java)
 
     override fun isAlwaysShowsPlus(element: StructureViewTreeElement?): Boolean = false
 

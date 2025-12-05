@@ -2,7 +2,7 @@ package arma.config.breadcrumbs
 
 import arma.config.ArmaConfigLanguage
 import arma.config.psi.ArmaConfigTypes
-import arma.config.psi.ClassDecl
+import arma.config.psi.ClassBlock
 import com.intellij.lang.Language
 import com.intellij.psi.PsiElement
 import com.intellij.ui.breadcrumbs.BreadcrumbsProvider
@@ -12,11 +12,10 @@ import javax.swing.Icon
 class ArmaBreadcrumbsProvider : BreadcrumbsProvider {
 
     // Which languages this provider applies to
-    override fun getLanguages(): Array<Language> =
-        arrayOf(
-            // use the registered language instance if possible
-            Language.findLanguageByID("ArmaConfig") ?: ArmaConfigLanguage
-        )
+    override fun getLanguages(): Array<Language> = arrayOf(
+        // use the registered language instance if possible
+        Language.findLanguageByID("ArmaConfig") ?: ArmaConfigLanguage
+    )
 
     // Decide which PSI elements should appear as breadcrumb nodes
     override fun acceptElement(e: PsiElement): Boolean {
@@ -25,8 +24,7 @@ class ArmaBreadcrumbsProvider : BreadcrumbsProvider {
         // Breadcrumb elements (and thus sticky lines) are created for:
         // - class declarations
         // - assignments (e.g. variable = value;)
-        return type == ArmaConfigTypes.CLASS_DECL ||
-                type == ArmaConfigTypes.ASSIGNMENT
+        return type == ArmaConfigTypes.CLASS_BLOCK || type == ArmaConfigTypes.PARAMETER_BLOCK || type == ArmaConfigTypes.ARRAY_BLOCK
     }
 
     // Text shown in breadcrumbs bar
@@ -34,31 +32,26 @@ class ArmaBreadcrumbsProvider : BreadcrumbsProvider {
         val type = e.node?.elementType
 
         return when (type) {
-            ArmaConfigTypes.CLASS_DECL -> {
+            ArmaConfigTypes.CLASS_BLOCK -> {
                 // Grammar:
                 //   classDecl ::= CLASS_KEYWORD classIdent classExt? LBRACE ...
                 //   classIdent ::= macroInvocation | IDENT
                 //
                 // So the name is inside the ClassIdent child now.
-                val classDecl = e as? ClassDecl
+                val classDecl = e as? ClassBlock
 
                 // This will be either:
                 //  - plain identifier: "MyClass"
                 //  - macro invocation: "TAG(MyClass)"
-                val fromPsi = classDecl
-                    ?.classIdent
-                    ?.text
-                    ?.takeIf { it.isNotBlank() }
+                val fromPsi = classDecl?.className?.text?.takeIf { it.isNotBlank() }
 
                 // Fallback to old behaviour if something is weird
-                fromPsi
-                    ?: e.node.findChildByType(ArmaConfigTypes.IDENT)?.text
-                    ?: "class"
+                fromPsi ?: e.node.findChildByType(ArmaConfigTypes.TEXT)?.text ?: "class"
             }
 
-            ArmaConfigTypes.ASSIGNMENT -> {
+            ArmaConfigTypes.PARAMETER_BLOCK -> {
                 // `name = value;` → show "name"
-                val ident = e.node.findChildByType(ArmaConfigTypes.IDENT)
+                val ident = e.node.findChildByType(ArmaConfigTypes.TEXT)
                 ident?.text ?: "<assignment>"
             }
 

@@ -1,32 +1,33 @@
+<!--suppress LiveTemplateI18n -->
 <templateSet group="Arma Config">
 <!--
-- `&#10;` = newline
-- `&#9;` = tab
-- `&quot;` = `"`
+&#10;
+&#9;
+&quot;
 -->
-    <!-- Basic class -->
     <template
             name="class"
             value="class $NAME$ {&#10;&#9;$END$&#10;};"
-            description="Arma 3 config class"
+            description="Class declaration"
             toReformat="true"
             toShortenFQNames="false">
-        <variable name="NAME" expression="" defaultValue="MyClass" alwaysStopAt="true"/>
+        <variable name="NAME" expression="" defaultValue="CfgMyClass" alwaysStopAt="true"/>
         <context>
             <option name="ARMA_CONFIG" value="true"/>
         </context>
     </template>
 
-    <!-- CfgPatches skeleton -->
     <template
-            name="cfgpatches"
-            value="class CfgPatches {&#10;&#9;class $TAG$_$NAME$ {&#10;&#9;&#9;name = &quot;$DISPLAY_NAME$&quot;;&#10;&#9;&#9;units[] = {${END$}};&#10;&#9;&#9;weapons[] = {};&#10;&#9;&#9;requiredVersion = 1.0;&#10;&#9;&#9;requiredAddons[] = {};&#10;&#9;};&#10;};"
-            description="CfgPatches entry"
+            name="CfgPatches"
+            value="class CfgPatches {&#10;&#9;class $PBO_NAME$ {&#10;&#9;&#9;name = &quot;$DISPLAY_NAME$&quot;;&#10;&#9;&#9;author = &quot;$AUTHOR$&quot;;&#10;&#9;&#9;skipWhenMissingDependencies = 1;&#10;&#9;&#9;requiredAddons[] = {$REQUIRED$};&#10;&#9;&#9;requiredVersion = 2.20;&#10;&#9;&#9;units[] = {};&#10;&#9;&#9;weapons[] = {};&#10;&#9;};&#10;};"
+            description="Example of CfgPatches"
             toReformat="true"
             toShortenFQNames="false">
-        <variable name="TAG" expression="" defaultValue="TAG" alwaysStopAt="true"/>
-        <variable name="NAME" expression="" defaultValue="Main" alwaysStopAt="true"/>
-        <variable name="DISPLAY_NAME" expression="" defaultValue="My Mod" alwaysStopAt="true"/>
+        <variable name="PBO_NAME" expression="" defaultValue="tag_pbo_folderName" alwaysStopAt="true"/>
+        <variable name="DISPLAY_NAME" expression="" defaultValue="My Mod Name" alwaysStopAt="true"/>
+        <variable name="AUTHOR" expression="" defaultValue="My Nickname" alwaysStopAt="true"/>
+        <variable name="REQUIRED" expression="" defaultValue="&quot;cba_main&quot;" alwaysStopAt="true"/>
+        <variable name="SKIP" expression="" defaultValue="skipWhenMissingDependencies = 1;" alwaysStopAt="true"/>
         <context>
             <option name="ARMA_CONFIG" value="true"/>
         </context>

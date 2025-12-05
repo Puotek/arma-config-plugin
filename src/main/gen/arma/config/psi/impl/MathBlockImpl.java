@@ -11,14 +11,14 @@ import static arma.config.psi.ArmaConfigTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import arma.config.psi.*;
 
-public class ClassNameImpl extends ASTWrapperPsiElement implements ClassName {
+public class MathBlockImpl extends ASTWrapperPsiElement implements MathBlock {
 
-  public ClassNameImpl(@NotNull ASTNode node) {
+  public MathBlockImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull Visitor visitor) {
-    visitor.visitClassName(this);
+    visitor.visitMathBlock(this);
   }
 
   @Override
@@ -28,9 +28,15 @@ public class ClassNameImpl extends ASTWrapperPsiElement implements ClassName {
   }
 
   @Override
-  @Nullable
-  public MacroBlock getMacroBlock() {
-    return findChildByClass(MacroBlock.class);
+  @NotNull
+  public List<MathElement> getMathElementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MathElement.class);
+  }
+
+  @Override
+  @NotNull
+  public List<MathOperator> getMathOperatorList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MathOperator.class);
   }
 
 }

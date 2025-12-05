@@ -11,14 +11,14 @@ import static arma.config.psi.ArmaConfigTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import arma.config.psi.*;
 
-public class ClassNameImpl extends ASTWrapperPsiElement implements ClassName {
+public class ParameterNameImpl extends ASTWrapperPsiElement implements ParameterName {
 
-  public ClassNameImpl(@NotNull ASTNode node) {
+  public ParameterNameImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull Visitor visitor) {
-    visitor.visitClassName(this);
+    visitor.visitParameterName(this);
   }
 
   @Override

@@ -32,413 +32,232 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
   }
 
   static boolean parse_root_(IElementType t, PsiBuilder b, int l) {
-    return configFile(b, l + 1);
+    return root(b, l + 1);
   }
 
   /* ********************************************************** */
-  // LBRACE valueList? RBRACE
-  public static boolean array(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "array")) return false;
-    if (!nextTokenIs(b, LBRACE)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, LBRACE);
-    r = r && array_1(b, l + 1);
-    r = r && consumeToken(b, RBRACE);
-    exit_section_(b, m, ARRAY, r);
-    return r;
+  // parameterName LBRACKET RBRACKET PLUS? EQUAL LBRACE (parameterValue (COMMA parameterValue)*)? RBRACE SEMICOLON
+  public static boolean arrayBlock(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "arrayBlock")) return false;
+    if (!nextTokenIs(b, TEXT)) return false;
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_, ARRAY_BLOCK, null);
+    r = parameterName(b, l + 1);
+    r = r && consumeTokens(b, 2, LBRACKET, RBRACKET);
+    p = r; // pin = 3
+    r = r && report_error_(b, arrayBlock_3(b, l + 1));
+    r = p && report_error_(b, consumeTokens(b, -1, EQUAL, LBRACE)) && r;
+    r = p && report_error_(b, arrayBlock_6(b, l + 1)) && r;
+    r = p && report_error_(b, consumeTokens(b, -1, RBRACE, SEMICOLON)) && r;
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
   }
 
-  // valueList?
-  private static boolean array_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "array_1")) return false;
-    valueList(b, l + 1);
+  // PLUS?
+  private static boolean arrayBlock_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "arrayBlock_3")) return false;
+    consumeToken(b, PLUS);
     return true;
   }
 
-  /* ********************************************************** */
-  // LBRACKET RBRACKET
-  public static boolean arraySuffix(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "arraySuffix")) return false;
-    if (!nextTokenIs(b, LBRACKET)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, LBRACKET, RBRACKET);
-    exit_section_(b, m, ARRAY_SUFFIX, r);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // (macroInvocation | IDENT) arraySuffix? (EQUAL | PLUS EQUAL) value SEMICOLON
-  public static boolean assignment(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "assignment")) return false;
-    if (!nextTokenIs(b, IDENT)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = assignment_0(b, l + 1);
-    r = r && assignment_1(b, l + 1);
-    r = r && assignment_2(b, l + 1);
-    r = r && value(b, l + 1);
-    r = r && consumeToken(b, SEMICOLON);
-    exit_section_(b, m, ASSIGNMENT, r);
-    return r;
-  }
-
-  // macroInvocation | IDENT
-  private static boolean assignment_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "assignment_0")) return false;
-    boolean r;
-    r = macroInvocation(b, l + 1);
-    if (!r) r = consumeToken(b, IDENT);
-    return r;
-  }
-
-  // arraySuffix?
-  private static boolean assignment_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "assignment_1")) return false;
-    arraySuffix(b, l + 1);
+  // (parameterValue (COMMA parameterValue)*)?
+  private static boolean arrayBlock_6(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "arrayBlock_6")) return false;
+    arrayBlock_6_0(b, l + 1);
     return true;
   }
 
-  // EQUAL | PLUS EQUAL
-  private static boolean assignment_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "assignment_2")) return false;
+  // parameterValue (COMMA parameterValue)*
+  private static boolean arrayBlock_6_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "arrayBlock_6_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, EQUAL);
-    if (!r) r = parseTokens(b, 0, PLUS, EQUAL);
+    r = parameterValue(b, l + 1);
+    r = r && arrayBlock_6_0_1(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // (COMMA parameterValue)*
+  private static boolean arrayBlock_6_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "arrayBlock_6_0_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!arrayBlock_6_0_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "arrayBlock_6_0_1", c)) break;
+    }
+    return true;
+  }
+
+  // COMMA parameterValue
+  private static boolean arrayBlock_6_0_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "arrayBlock_6_0_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, COMMA);
+    r = r && parameterValue(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
   /* ********************************************************** */
-  // CLASS_KEYWORD classIdent classExt? LBRACE item* RBRACE SEMICOLON
-  public static boolean classDecl(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "classDecl")) return false;
+  // CLASS_KEYWORD className classExtension? classBody? SEMICOLON
+  public static boolean classBlock(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "classBlock")) return false;
     if (!nextTokenIs(b, CLASS_KEYWORD)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_, CLASS_BLOCK, null);
     r = consumeToken(b, CLASS_KEYWORD);
-    r = r && classIdent(b, l + 1);
-    r = r && classDecl_2(b, l + 1);
-    r = r && consumeToken(b, LBRACE);
-    r = r && classDecl_4(b, l + 1);
-    r = r && consumeTokens(b, 0, RBRACE, SEMICOLON);
-    exit_section_(b, m, CLASS_DECL, r);
-    return r;
+    p = r; // pin = 1
+    r = r && report_error_(b, className(b, l + 1));
+    r = p && report_error_(b, classBlock_2(b, l + 1)) && r;
+    r = p && report_error_(b, classBlock_3(b, l + 1)) && r;
+    r = p && consumeToken(b, SEMICOLON) && r;
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
   }
 
-  // classExt?
-  private static boolean classDecl_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "classDecl_2")) return false;
-    classExt(b, l + 1);
+  // classExtension?
+  private static boolean classBlock_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "classBlock_2")) return false;
+    classExtension(b, l + 1);
     return true;
   }
 
-  // item*
-  private static boolean classDecl_4(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "classDecl_4")) return false;
+  // classBody?
+  private static boolean classBlock_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "classBlock_3")) return false;
+    classBody(b, l + 1);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // LBRACE classItem* RBRACE
+  public static boolean classBody(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "classBody")) return false;
+    if (!nextTokenIs(b, LBRACE)) return false;
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_, CLASS_BODY, null);
+    r = consumeToken(b, LBRACE);
+    p = r; // pin = 1
+    r = r && report_error_(b, classBody_1(b, l + 1));
+    r = p && consumeToken(b, RBRACE) && r;
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
+  }
+
+  // classItem*
+  private static boolean classBody_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "classBody_1")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!item(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "classDecl_4", c)) break;
+      if (!classItem(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "classBody_1", c)) break;
     }
     return true;
   }
 
   /* ********************************************************** */
   // COLON className
-  public static boolean classExt(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "classExt")) return false;
+  public static boolean classExtension(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "classExtension")) return false;
     if (!nextTokenIs(b, COLON)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, COLON);
     r = r && className(b, l + 1);
-    exit_section_(b, m, CLASS_EXT, r);
+    exit_section_(b, m, CLASS_EXTENSION, r);
     return r;
   }
 
   /* ********************************************************** */
-  // CLASS_KEYWORD classIdent classExt? SEMICOLON
-  public static boolean classForwardDecl(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "classForwardDecl")) return false;
-    if (!nextTokenIs(b, CLASS_KEYWORD)) return false;
+  // parameterBlock
+  //                     | arrayBlock
+  //                     | item
+  static boolean classItem(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "classItem")) return false;
     boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, CLASS_KEYWORD);
-    r = r && classIdent(b, l + 1);
-    r = r && classForwardDecl_2(b, l + 1);
-    r = r && consumeToken(b, SEMICOLON);
-    exit_section_(b, m, CLASS_FORWARD_DECL, r);
-    return r;
-  }
-
-  // classExt?
-  private static boolean classForwardDecl_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "classForwardDecl_2")) return false;
-    classExt(b, l + 1);
-    return true;
-  }
-
-  /* ********************************************************** */
-  // macroInvocation
-  //              | IDENT
-  public static boolean classIdent(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "classIdent")) return false;
-    if (!nextTokenIs(b, IDENT)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = macroInvocation(b, l + 1);
-    if (!r) r = consumeToken(b, IDENT);
-    exit_section_(b, m, CLASS_IDENT, r);
+    r = parameterBlock(b, l + 1);
+    if (!r) r = arrayBlock(b, l + 1);
+    if (!r) r = item(b, l + 1);
     return r;
   }
 
   /* ********************************************************** */
-  // macroInvocation
-  //             | IDENT
+  // macroBlock
+  //             | TEXT
   public static boolean className(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "className")) return false;
-    if (!nextTokenIs(b, IDENT)) return false;
+    if (!nextTokenIs(b, TEXT)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = macroInvocation(b, l + 1);
-    if (!r) r = consumeToken(b, IDENT);
+    r = macroBlock(b, l + 1);
+    if (!r) r = consumeToken(b, TEXT);
     exit_section_(b, m, CLASS_NAME, r);
     return r;
   }
 
   /* ********************************************************** */
-  // item*
-  static boolean configFile(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "configFile")) return false;
-    while (true) {
-      int c = current_position_(b);
-      if (!item(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "configFile", c)) break;
-    }
-    return true;
-  }
-
-  /* ********************************************************** */
-  // DELETE_KEYWORD IDENT SEMICOLON
-  public static boolean deleteStmt(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "deleteStmt")) return false;
+  // DELETE_KEYWORD className SEMICOLON
+  public static boolean deleteBlock(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "deleteBlock")) return false;
     if (!nextTokenIs(b, DELETE_KEYWORD)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, DELETE_KEYWORD, IDENT, SEMICOLON);
-    exit_section_(b, m, DELETE_STMT, r);
+    r = consumeToken(b, DELETE_KEYWORD);
+    r = r && className(b, l + 1);
+    r = r && consumeToken(b, SEMICOLON);
+    exit_section_(b, m, DELETE_BLOCK, r);
     return r;
   }
 
   /* ********************************************************** */
-  // expr_add
-  public static boolean expr(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "expr")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, EXPR, "<expr>");
-    r = expr_add(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // expr_mul ( (PLUS | MINUS | MIN_KEYWORD | MAX_KEYWORD) expr_mul )*
-  public static boolean expr_add(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "expr_add")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, EXPR_ADD, "<expr add>");
-    r = expr_mul(b, l + 1);
-    r = r && expr_add_1(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  // ( (PLUS | MINUS | MIN_KEYWORD | MAX_KEYWORD) expr_mul )*
-  private static boolean expr_add_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "expr_add_1")) return false;
-    while (true) {
-      int c = current_position_(b);
-      if (!expr_add_1_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "expr_add_1", c)) break;
-    }
-    return true;
-  }
-
-  // (PLUS | MINUS | MIN_KEYWORD | MAX_KEYWORD) expr_mul
-  private static boolean expr_add_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "expr_add_1_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = expr_add_1_0_0(b, l + 1);
-    r = r && expr_mul(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // PLUS | MINUS | MIN_KEYWORD | MAX_KEYWORD
-  private static boolean expr_add_1_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "expr_add_1_0_0")) return false;
-    boolean r;
-    r = consumeToken(b, PLUS);
-    if (!r) r = consumeToken(b, MINUS);
-    if (!r) r = consumeToken(b, MIN_KEYWORD);
-    if (!r) r = consumeToken(b, MAX_KEYWORD);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // expr_power ( (STAR | SLASH | PERCENT) expr_power )*
-  public static boolean expr_mul(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "expr_mul")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, EXPR_MUL, "<expr mul>");
-    r = expr_power(b, l + 1);
-    r = r && expr_mul_1(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  // ( (STAR | SLASH | PERCENT) expr_power )*
-  private static boolean expr_mul_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "expr_mul_1")) return false;
-    while (true) {
-      int c = current_position_(b);
-      if (!expr_mul_1_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "expr_mul_1", c)) break;
-    }
-    return true;
-  }
-
-  // (STAR | SLASH | PERCENT) expr_power
-  private static boolean expr_mul_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "expr_mul_1_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = expr_mul_1_0_0(b, l + 1);
-    r = r && expr_power(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // STAR | SLASH | PERCENT
-  private static boolean expr_mul_1_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "expr_mul_1_0_0")) return false;
-    boolean r;
-    r = consumeToken(b, STAR);
-    if (!r) r = consumeToken(b, SLASH);
-    if (!r) r = consumeToken(b, PERCENT);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // expr_unary (CARET expr_unary)*
-  public static boolean expr_power(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "expr_power")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, EXPR_POWER, "<expr power>");
-    r = expr_unary(b, l + 1);
-    r = r && expr_power_1(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  // (CARET expr_unary)*
-  private static boolean expr_power_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "expr_power_1")) return false;
-    while (true) {
-      int c = current_position_(b);
-      if (!expr_power_1_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "expr_power_1", c)) break;
-    }
-    return true;
-  }
-
-  // CARET expr_unary
-  private static boolean expr_power_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "expr_power_1_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, CARET);
-    r = r && expr_unary(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // primary
-  //              | PLUS expr_unary
-  //              | MINUS expr_unary
-  public static boolean expr_unary(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "expr_unary")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, EXPR_UNARY, "<expr unary>");
-    r = primary(b, l + 1);
-    if (!r) r = expr_unary_1(b, l + 1);
-    if (!r) r = expr_unary_2(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  // PLUS expr_unary
-  private static boolean expr_unary_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "expr_unary_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, PLUS);
-    r = r && expr_unary(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // MINUS expr_unary
-  private static boolean expr_unary_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "expr_unary_2")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, MINUS);
-    r = r && expr_unary(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // classDecl
-  //                | classForwardDecl
-  //                | assignment
-  //                | deleteStmt
-  //                | macroStmt
-  //                | ';'
+  // macroBlock SEMICOLON
+  //                | classBlock
+  //                | deleteBlock
+  //                | PREPROCESSOR
+  //                | TEXT SEMICOLON
+  //                | LINE_COMMENT
+  //                | BLOCK_COMMENT
   static boolean item(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item")) return false;
     boolean r;
-    r = classDecl(b, l + 1);
-    if (!r) r = classForwardDecl(b, l + 1);
-    if (!r) r = assignment(b, l + 1);
-    if (!r) r = deleteStmt(b, l + 1);
-    if (!r) r = macroStmt(b, l + 1);
-    if (!r) r = consumeToken(b, SEMICOLON);
+    Marker m = enter_section_(b);
+    r = item_0(b, l + 1);
+    if (!r) r = classBlock(b, l + 1);
+    if (!r) r = deleteBlock(b, l + 1);
+    if (!r) r = consumeToken(b, PREPROCESSOR);
+    if (!r) r = parseTokens(b, 0, TEXT, SEMICOLON);
+    if (!r) r = consumeToken(b, LINE_COMMENT);
+    if (!r) r = consumeToken(b, BLOCK_COMMENT);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // macroBlock SEMICOLON
+  private static boolean item_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "item_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = macroBlock(b, l + 1);
+    r = r && consumeToken(b, SEMICOLON);
+    exit_section_(b, m, null, r);
     return r;
   }
 
   /* ********************************************************** */
-  // macroInnerToken
-  //             | LPAREN macroInner? RPAREN
-  //             | singleQuoteBlock
-  public static boolean macroAtom(PsiBuilder b, int l) {
+  // macroElement | LPAREN macroAtom+ RPAREN
+  static boolean macroAtom(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "macroAtom")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, MACRO_ATOM, "<macro atom>");
-    r = macroInnerToken(b, l + 1);
+    Marker m = enter_section_(b);
+    r = macroElement(b, l + 1);
     if (!r) r = macroAtom_1(b, l + 1);
-    if (!r) r = singleQuoteBlock(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
+    exit_section_(b, m, null, r);
     return r;
   }
 
-  // LPAREN macroInner? RPAREN
+  // LPAREN macroAtom+ RPAREN
   private static boolean macroAtom_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "macroAtom_1")) return false;
     boolean r;
@@ -450,284 +269,278 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // macroInner?
+  // macroAtom+
   private static boolean macroAtom_1_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "macroAtom_1_1")) return false;
-    macroInner(b, l + 1);
-    return true;
-  }
-
-  /* ********************************************************** */
-  // macroAtom*
-  public static boolean macroInner(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "macroInner")) return false;
-    Marker m = enter_section_(b, l, _NONE_, MACRO_INNER, "<macro inner>");
-    while (true) {
+    boolean r;
+    Marker m = enter_section_(b);
+    r = macroAtom(b, l + 1);
+    while (r) {
       int c = current_position_(b);
       if (!macroAtom(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "macroInner", c)) break;
+      if (!empty_element_parsed_guard_(b, "macroAtom_1_1", c)) break;
     }
-    exit_section_(b, l, m, true, false, null);
-    return true;
+    exit_section_(b, m, null, r);
+    return r;
   }
 
   /* ********************************************************** */
-  // IDENT
-  //                   | NUMBER
-  //                   | FLOAT
-  //                   | STRING
-  //                   | PREPROCESSOR
-  //                   | LBRACE | RBRACE
-  //                   | LBRACKET | RBRACKET
-  //                   | COMMA
-  //                   | EQUAL
-  //                   | COLON
-  //                   | SEMICOLON
-  //                   | GT
-  //                   | LT
-  //                   | EXCL
-  //                   | PLUS
-  //                   | MINUS
-  //                   | STAR
-  //                   | SLASH
-  //                   | PERCENT
-  //                   | CARET
-  //                   | LINE_COMMENT
-  //                   | BLOCK_COMMENT
-  public static boolean macroInnerToken(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "macroInnerToken")) return false;
+  // TEXT LPAREN macroAtom+ RPAREN
+  public static boolean macroBlock(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "macroBlock")) return false;
+    if (!nextTokenIs(b, TEXT)) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, MACRO_INNER_TOKEN, "<macro inner token>");
-    r = consumeToken(b, IDENT);
-    if (!r) r = consumeToken(b, NUMBER);
-    if (!r) r = consumeToken(b, FLOAT);
-    if (!r) r = consumeToken(b, STRING);
-    if (!r) r = consumeToken(b, PREPROCESSOR);
-    if (!r) r = consumeToken(b, LBRACE);
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, TEXT, LPAREN);
+    r = r && macroBlock_2(b, l + 1);
+    r = r && consumeToken(b, RPAREN);
+    exit_section_(b, m, MACRO_BLOCK, r);
+    return r;
+  }
+
+  // macroAtom+
+  private static boolean macroBlock_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "macroBlock_2")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = macroAtom(b, l + 1);
+    while (r) {
+      int c = current_position_(b);
+      if (!macroAtom(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "macroBlock_2", c)) break;
+    }
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // LBRACE
+  //                        | RBRACE
+  //                        | LBRACKET
+  //                        | RBRACKET
+  //                        | EQUAL
+  //                        | SEMICOLON
+  //                        | COLON
+  //                        | PLUS
+  //                        | MINUS
+  //                        | STAR
+  //                        | SLASH
+  //                        | PERCENT
+  //                        | CARET
+  //                        | GT
+  //                        | LT
+  //                        | EXCL
+  //                        | SINGLE_HASH
+  //                        | DOUBLE_HASH
+  //                        | CLASS_KEYWORD
+  //                        | DELETE_KEYWORD
+  //                        | MIN_KEYWORD
+  //                        | MAX_KEYWORD
+  //                        | BLOCK_COMMENT
+  //                        | TEXT
+  //                        | FLOAT
+  //                        | NUMBER
+  //                        | STRING
+  //                        | SINGLE_QUOTE
+  //                        | COMMA
+  static boolean macroElement(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "macroElement")) return false;
+    boolean r;
+    r = consumeToken(b, LBRACE);
     if (!r) r = consumeToken(b, RBRACE);
     if (!r) r = consumeToken(b, LBRACKET);
     if (!r) r = consumeToken(b, RBRACKET);
-    if (!r) r = consumeToken(b, COMMA);
     if (!r) r = consumeToken(b, EQUAL);
-    if (!r) r = consumeToken(b, COLON);
     if (!r) r = consumeToken(b, SEMICOLON);
-    if (!r) r = consumeToken(b, GT);
-    if (!r) r = consumeToken(b, LT);
-    if (!r) r = consumeToken(b, EXCL);
+    if (!r) r = consumeToken(b, COLON);
     if (!r) r = consumeToken(b, PLUS);
     if (!r) r = consumeToken(b, MINUS);
     if (!r) r = consumeToken(b, STAR);
     if (!r) r = consumeToken(b, SLASH);
     if (!r) r = consumeToken(b, PERCENT);
     if (!r) r = consumeToken(b, CARET);
-    if (!r) r = consumeToken(b, LINE_COMMENT);
-    if (!r) r = consumeToken(b, BLOCK_COMMENT);
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // IDENT LPAREN macroInner? RPAREN
-  public static boolean macroInvocation(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "macroInvocation")) return false;
-    if (!nextTokenIs(b, IDENT)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, IDENT, LPAREN);
-    r = r && macroInvocation_2(b, l + 1);
-    r = r && consumeToken(b, RPAREN);
-    exit_section_(b, m, MACRO_INVOCATION, r);
-    return r;
-  }
-
-  // macroInner?
-  private static boolean macroInvocation_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "macroInvocation_2")) return false;
-    macroInner(b, l + 1);
-    return true;
-  }
-
-  /* ********************************************************** */
-  // macroInvocation SEMICOLON
-  //             | IDENT SEMICOLON
-  public static boolean macroStmt(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "macroStmt")) return false;
-    if (!nextTokenIs(b, IDENT)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = macroStmt_0(b, l + 1);
-    if (!r) r = parseTokens(b, 0, IDENT, SEMICOLON);
-    exit_section_(b, m, MACRO_STMT, r);
-    return r;
-  }
-
-  // macroInvocation SEMICOLON
-  private static boolean macroStmt_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "macroStmt_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = macroInvocation(b, l + 1);
-    r = r && consumeToken(b, SEMICOLON);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // preprocValueToken+
-  public static boolean preprocValue(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "preprocValue")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, PREPROC_VALUE, "<preproc value>");
-    r = preprocValueToken(b, l + 1);
-    while (r) {
-      int c = current_position_(b);
-      if (!preprocValueToken(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "preprocValue", c)) break;
-    }
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // IDENT
-  //                     | STRING
-  //                     | NUMBER
-  //                     | FLOAT
-  //                     | PREPROCESSOR
-  //                     | LBRACE | RBRACE
-  //                     | LBRACKET | RBRACKET
-  //                     | COMMA
-  //                     | EQUAL
-  //                     | COLON
-  //                     | GT
-  //                     | LT
-  //                     | EXCL
-  //                     | LPAREN | RPAREN
-  //                     | LINE_COMMENT
-  //                     | BLOCK_COMMENT
-  public static boolean preprocValueToken(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "preprocValueToken")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, PREPROC_VALUE_TOKEN, "<preproc value token>");
-    r = consumeToken(b, IDENT);
-    if (!r) r = consumeToken(b, STRING);
-    if (!r) r = consumeToken(b, NUMBER);
-    if (!r) r = consumeToken(b, FLOAT);
-    if (!r) r = consumeToken(b, PREPROCESSOR);
-    if (!r) r = consumeToken(b, LBRACE);
-    if (!r) r = consumeToken(b, RBRACE);
-    if (!r) r = consumeToken(b, LBRACKET);
-    if (!r) r = consumeToken(b, RBRACKET);
-    if (!r) r = consumeToken(b, COMMA);
-    if (!r) r = consumeToken(b, EQUAL);
-    if (!r) r = consumeToken(b, COLON);
     if (!r) r = consumeToken(b, GT);
     if (!r) r = consumeToken(b, LT);
     if (!r) r = consumeToken(b, EXCL);
-    if (!r) r = consumeToken(b, LPAREN);
-    if (!r) r = consumeToken(b, RPAREN);
-    if (!r) r = consumeToken(b, LINE_COMMENT);
+    if (!r) r = consumeToken(b, SINGLE_HASH);
+    if (!r) r = consumeToken(b, DOUBLE_HASH);
+    if (!r) r = consumeToken(b, CLASS_KEYWORD);
+    if (!r) r = consumeToken(b, DELETE_KEYWORD);
+    if (!r) r = consumeToken(b, MIN_KEYWORD);
+    if (!r) r = consumeToken(b, MAX_KEYWORD);
     if (!r) r = consumeToken(b, BLOCK_COMMENT);
-    exit_section_(b, l, m, r, false, null);
+    if (!r) r = consumeToken(b, TEXT);
+    if (!r) r = consumeToken(b, FLOAT);
+    if (!r) r = consumeToken(b, NUMBER);
+    if (!r) r = consumeToken(b, STRING);
+    if (!r) r = consumeToken(b, SINGLE_QUOTE);
+    if (!r) r = consumeToken(b, COMMA);
     return r;
   }
 
   /* ********************************************************** */
-  // NUMBER
-  //           | FLOAT
-  //           | IDENT // we allow any identifier here (safeZoneX etc. are just a subset)
-  //           | LPAREN expr_add RPAREN
-  public static boolean primary(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "primary")) return false;
+  // MINUS? mathElement (mathOperator mathElement)*
+  public static boolean mathBlock(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "mathBlock")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, PRIMARY, "<primary>");
-    r = consumeToken(b, NUMBER);
-    if (!r) r = consumeToken(b, FLOAT);
-    if (!r) r = consumeToken(b, IDENT);
-    if (!r) r = primary_3(b, l + 1);
+    Marker m = enter_section_(b, l, _NONE_, MATH_BLOCK, "<math block>");
+    r = mathBlock_0(b, l + 1);
+    r = r && mathElement(b, l + 1);
+    r = r && mathBlock_2(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
-  // LPAREN expr_add RPAREN
-  private static boolean primary_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "primary_3")) return false;
+  // MINUS?
+  private static boolean mathBlock_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "mathBlock_0")) return false;
+    consumeToken(b, MINUS);
+    return true;
+  }
+
+  // (mathOperator mathElement)*
+  private static boolean mathBlock_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "mathBlock_2")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!mathBlock_2_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "mathBlock_2", c)) break;
+    }
+    return true;
+  }
+
+  // mathOperator mathElement
+  private static boolean mathBlock_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "mathBlock_2_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = mathOperator(b, l + 1);
+    r = r && mathElement(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // TEXT
+  //               | NUMBER
+  //               | FLOAT
+  //               | LPAREN mathBlock RPAREN
+  public static boolean mathElement(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "mathElement")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, MATH_ELEMENT, "<math element>");
+    r = consumeToken(b, TEXT);
+    if (!r) r = consumeToken(b, NUMBER);
+    if (!r) r = consumeToken(b, FLOAT);
+    if (!r) r = mathElement_3(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // LPAREN mathBlock RPAREN
+  private static boolean mathElement_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "mathElement_3")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, LPAREN);
-    r = r && expr_add(b, l + 1);
+    r = r && mathBlock(b, l + 1);
     r = r && consumeToken(b, RPAREN);
     exit_section_(b, m, null, r);
     return r;
   }
 
   /* ********************************************************** */
-  // SINGLE_QUOTE_BLOCK_TOKEN
-  public static boolean singleQuoteBlock(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "singleQuoteBlock")) return false;
-    if (!nextTokenIs(b, SINGLE_QUOTE_BLOCK_TOKEN)) return false;
+  // PLUS
+  //                | MINUS
+  //                | SLASH
+  //                | STAR
+  //                | PERCENT
+  //                | MIN_KEYWORD
+  //                | MAX_KEYWORD
+  //                | CARET
+  //                | GT
+  //                | LT
+  public static boolean mathOperator(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "mathOperator")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, MATH_OPERATOR, "<math operator>");
+    r = consumeToken(b, PLUS);
+    if (!r) r = consumeToken(b, MINUS);
+    if (!r) r = consumeToken(b, SLASH);
+    if (!r) r = consumeToken(b, STAR);
+    if (!r) r = consumeToken(b, PERCENT);
+    if (!r) r = consumeToken(b, MIN_KEYWORD);
+    if (!r) r = consumeToken(b, MAX_KEYWORD);
+    if (!r) r = consumeToken(b, CARET);
+    if (!r) r = consumeToken(b, GT);
+    if (!r) r = consumeToken(b, LT);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // parameterName EQUAL parameterValue SEMICOLON
+  public static boolean parameterBlock(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "parameterBlock")) return false;
+    if (!nextTokenIs(b, TEXT)) return false;
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_, PARAMETER_BLOCK, null);
+    r = parameterName(b, l + 1);
+    r = r && consumeToken(b, EQUAL);
+    p = r; // pin = 2
+    r = r && report_error_(b, parameterValue(b, l + 1));
+    r = p && consumeToken(b, SEMICOLON) && r;
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
+  }
+
+  /* ********************************************************** */
+  // macroBlock
+  //                 | TEXT
+  public static boolean parameterName(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "parameterName")) return false;
+    if (!nextTokenIs(b, TEXT)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, SINGLE_QUOTE_BLOCK_TOKEN);
-    exit_section_(b, m, SINGLE_QUOTE_BLOCK, r);
+    r = macroBlock(b, l + 1);
+    if (!r) r = consumeToken(b, TEXT);
+    exit_section_(b, m, PARAMETER_NAME, r);
     return r;
   }
 
   /* ********************************************************** */
-  // macroInvocation
-  //         | IDENT
-  //         | STRING
-  //         | array
-  //         | expr
-  //         | preprocValue
-  //         | singleQuoteBlock
-  public static boolean value(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "value")) return false;
+  // macroBlock
+  //                  | mathBlock
+  //                  | TEXT
+  //                  | STRING
+  //                  | SINGLE_QUOTE
+  //                  | NUMBER
+  //                  | FLOAT
+  public static boolean parameterValue(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "parameterValue")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, VALUE, "<value>");
-    r = macroInvocation(b, l + 1);
-    if (!r) r = consumeToken(b, IDENT);
+    Marker m = enter_section_(b, l, _NONE_, PARAMETER_VALUE, "<parameter value>");
+    r = macroBlock(b, l + 1);
+    if (!r) r = mathBlock(b, l + 1);
+    if (!r) r = consumeToken(b, TEXT);
     if (!r) r = consumeToken(b, STRING);
-    if (!r) r = array(b, l + 1);
-    if (!r) r = expr(b, l + 1);
-    if (!r) r = preprocValue(b, l + 1);
-    if (!r) r = singleQuoteBlock(b, l + 1);
+    if (!r) r = consumeToken(b, SINGLE_QUOTE);
+    if (!r) r = consumeToken(b, NUMBER);
+    if (!r) r = consumeToken(b, FLOAT);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
   /* ********************************************************** */
-  // value (COMMA value)*
-  public static boolean valueList(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "valueList")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, VALUE_LIST, "<value list>");
-    r = value(b, l + 1);
-    r = r && valueList_1(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  // (COMMA value)*
-  private static boolean valueList_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "valueList_1")) return false;
+  // item*
+  static boolean root(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "root")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!valueList_1_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "valueList_1", c)) break;
+      if (!item(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "root", c)) break;
     }
     return true;
-  }
-
-  // COMMA value
-  private static boolean valueList_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "valueList_1_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, COMMA);
-    r = r && value(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
   }
 
 }

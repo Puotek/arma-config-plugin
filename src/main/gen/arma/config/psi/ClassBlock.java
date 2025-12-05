@@ -5,9 +5,15 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface ClassName extends PsiElement {
+public interface ClassBlock extends PsiElement {
 
   @Nullable
-  MacroBlock getMacroBlock();
+  ClassBody getClassBody();
+
+  @Nullable
+  ClassExtension getClassExtension();
+
+  @Nullable
+  ClassName getClassName();
 
 }

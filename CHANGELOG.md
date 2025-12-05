@@ -7,14 +7,14 @@ Format: `[MAJOR.MINOR.PATCH] - YYYY-MM-DD`
 
 ### TODO
 
-Classes with no body are basically imports so thats what im gonna call them
+Classes with no body are basically imports so that's what im going to call them
 
 - Code reformatting
     - Option for `{` bracket opening class body on same line or newline
     - class import should stick (no blank line) to class below if the class below inherits from the import, this also
       excludes the import class from sticking to other import classes (it should have a blank line separating them)
     - option for amount of blank lines between import classes and a normal class. import classes can be next to
-      eachother (on first reformat we keep any blank lines between, on second reformat we make sure there is no blank
+      each other (on first reformat we keep any blank lines between, on second reformat we make sure there is no blank
       lines between import classes)
     - formatting for : that is used for class inheritance so that it has smart space on both sides
     - make sure to not touch stuff inside preprocessor macros that have () as in like Q() or TAG(nothing touched inside)
@@ -41,7 +41,10 @@ Classes with no body are basically imports so thats what im gonna call them
   ones never used for inheritance)
 - Highlighting for MACROS with variables eg `MACRO(var)`
 - Improve macro parsing and also allow for checking for strings inside
-- If I smart enter on a line that has a collapsed {} than I want it to open and i want to be inside
+- If I smart enter on a line that has a collapsed {} than I want it to open and I want to be inside
+
+- Fix current live templates, especially array
+- fix smart enter adding `;` on line ending with `{` (opening of block)
 
 ## [Unreleased]
 
@@ -55,13 +58,16 @@ Classes with no body are basically imports so thats what im gonna call them
 - Editor completion matcher for `[]` `{}` `""` pairing
 - Automatic `;` autocompletion for `{}` when typing
 - Smart enter processor
-- Support for `+=` with array assignment and related inspection for non-array use
+- Support for `+=` with array assignment
 - Support for use of macros in parameter names
 - Support for exponent in math expressions, like `999e-006`
 - Support for IntelliJ Live Templates and some basic templates
 - Configurations saved to project
 - Auto-open of `src/test/resources` as project when testing with `runIdeClean`
 - Clickable links to files for `#include` and string highlighting for the path
+- Support for classnames starting with numbers, like `30Rnd_556x45_Stanag`
+- Support for `>`, `<` and `!` operators inside macros
+- Support for math tokens inside of macros `+-*/%^`
 
 ### Changed
 
@@ -69,17 +75,12 @@ Classes with no body are basically imports so thats what im gonna call them
 - `README.md` updated plugin description
 - Moved test resources from `src/main` to `src/test`
 - Reworked lexer parsing for macros
+- Significant rework to nearly everything due to large grammar `ArmaConfig.bnf` file changes
 
 ### Fixed
 
-- Support for classnames starting with numbers, like `30Rnd_556x45_Stanag`
-- Errors for `>`, `<` and `!` operators inside macros
-- Support for math tokens inside of macros `+-*/%^`
 - Suppressed some localization and text format warnings in `plugin.xml`
 
-### Removed
-
-- Some overrides inside Inspection classes as they are duplicated in plugin.xml
 
 ## [1.0.1] - 2025-12-03
 

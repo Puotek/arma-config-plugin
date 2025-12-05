@@ -51,9 +51,7 @@ class ArmaConfigSmartEnterProcessor : SmartEnterProcessor() {
         val tokenType = element.node.elementType
 
         // Don't add ';' on pure preprocessor lines or single-quote blocks
-        if (tokenType == ArmaConfigTypes.PREPROCESSOR ||
-            tokenType == ArmaConfigTypes.SINGLE_QUOTE_BLOCK
-        ) {
+        if (tokenType == ArmaConfigTypes.PREPROCESSOR || tokenType == ArmaConfigTypes.SINGLE_QUOTE) {
             return false
         }
 

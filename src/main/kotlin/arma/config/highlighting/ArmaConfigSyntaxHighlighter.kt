@@ -25,7 +25,7 @@ class ArmaConfigSyntaxHighlighter : SyntaxHighlighter {
 
         ArmaConfigTypes.STRING -> STRING_KEYS
 
-        ArmaConfigTypes.SINGLE_QUOTE_BLOCK_TOKEN -> SINGLE_QUOTE_BLOCK_KEYS
+        ArmaConfigTypes.SINGLE_QUOTE -> SINGLE_QUOTE_BLOCK_KEYS
 
         ArmaConfigTypes.NUMBER, ArmaConfigTypes.FLOAT -> NUMBER_KEYS
 

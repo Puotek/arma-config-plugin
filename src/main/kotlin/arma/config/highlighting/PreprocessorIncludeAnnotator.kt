@@ -46,8 +46,8 @@ class PreprocessorIncludeAnnotator : Annotator {
         }
         if (j <= pathStartInTrimmed || j >= trimmed.length || trimmed[j] != closing) return
 
-        val pathStartInElement = leadingWs + pathStartInTrimmed -1
-        val pathEndInElement = leadingWs + j +1
+        val pathStartInElement = leadingWs + pathStartInTrimmed - 1
+        val pathEndInElement = leadingWs + j + 1
 
         holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(
             TextRange(

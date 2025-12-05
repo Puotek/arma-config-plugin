@@ -11,14 +11,14 @@ import static arma.config.psi.ArmaConfigTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import arma.config.psi.*;
 
-public class ClassNameImpl extends ASTWrapperPsiElement implements ClassName {
+public class ParameterBlockImpl extends ASTWrapperPsiElement implements ParameterBlock {
 
-  public ClassNameImpl(@NotNull ASTNode node) {
+  public ParameterBlockImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull Visitor visitor) {
-    visitor.visitClassName(this);
+    visitor.visitParameterBlock(this);
   }
 
   @Override
@@ -28,9 +28,15 @@ public class ClassNameImpl extends ASTWrapperPsiElement implements ClassName {
   }
 
   @Override
+  @NotNull
+  public ParameterName getParameterName() {
+    return findNotNullChildByClass(ParameterName.class);
+  }
+
+  @Override
   @Nullable
-  public MacroBlock getMacroBlock() {
-    return findChildByClass(MacroBlock.class);
+  public ParameterValue getParameterValue() {
+    return findChildByClass(ParameterValue.class);
   }
 
 }

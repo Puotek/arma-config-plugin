@@ -11,7 +11,7 @@ class SingleQuoteInnerStringAnnotator : Annotator {
 
     override fun annotate(element: PsiElement, holder: AnnotationHolder) {
         // Only care about the PSI node for singleQuoteBlock
-        if (element.node.elementType != ArmaConfigTypes.SINGLE_QUOTE_BLOCK) return
+        if (element.node.elementType != ArmaConfigTypes.SINGLE_QUOTE) return
 
         val text = element.text
         if (text.length < 3) return // must be at least 'x'

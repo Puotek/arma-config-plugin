@@ -120,11 +120,11 @@ class ArmaConfigLexer : LexerBase() {
             //grab full keyword
             while (tokenEnd < endOffset && buffer[tokenEnd] in 'a'..'z') tokenEnd++
             //check if string is a valid preprocessor directive
-            @Suppress("SpellCheckingInspection")
             val isDefine = when (buffer.subSequence(tokenStart + 1, tokenEnd).toString()) {
                 "define" -> true
                 "include", "undef", "if", "ifdef", "ifndef", "else", "endif"
                     -> false
+
                 else -> {
                     tokenType = TokenType.BAD_CHARACTER
                     return
@@ -198,7 +198,7 @@ class ArmaConfigLexer : LexerBase() {
                 "delete" -> ArmaConfigTypes.DELETE_KEYWORD
                 "min" -> ArmaConfigTypes.MIN_KEYWORD
                 "max" -> ArmaConfigTypes.MAX_KEYWORD
-                else -> ArmaConfigTypes.IDENT
+                else -> ArmaConfigTypes.TEXT
             }
             return
         }
@@ -266,7 +266,7 @@ class ArmaConfigLexer : LexerBase() {
                     "delete" -> ArmaConfigTypes.DELETE_KEYWORD
                     "min" -> ArmaConfigTypes.MIN_KEYWORD
                     "max" -> ArmaConfigTypes.MAX_KEYWORD
-                    else -> ArmaConfigTypes.IDENT
+                    else -> ArmaConfigTypes.TEXT
                 }
             } else {
                 // exponent or dot => FLOAT, otherwise NUMBER
@@ -352,7 +352,7 @@ class ArmaConfigLexer : LexerBase() {
             }
 
             tokenEnd = lastQuote + 1 // include the closing '
-            tokenType = ArmaConfigTypes.SINGLE_QUOTE_BLOCK_TOKEN
+            tokenType = ArmaConfigTypes.SINGLE_QUOTE
             return
         }
 
@@ -375,8 +375,8 @@ class ArmaConfigLexer : LexerBase() {
             '/' -> ArmaConfigTypes.SLASH
             '%' -> ArmaConfigTypes.PERCENT
             '^' -> ArmaConfigTypes.CARET
-            '<' -> ArmaConfigTypes.GT
-            '>' -> ArmaConfigTypes.LT
+            '<' -> ArmaConfigTypes.LT
+            '>' -> ArmaConfigTypes.GT
             '!' -> ArmaConfigTypes.EXCL
             else -> TokenType.BAD_CHARACTER  // Unknown/invalid char
         }
@@ -391,17 +391,5 @@ class ArmaConfigLexer : LexerBase() {
 
     // Characters allowed *inside* an IDENT
     private fun Char.isIdentPart(): Boolean = isLetterOrDigitCompat() || this == '_' || this == '\\' || this == '/' || this == '.'
-
-    private fun isAsciiLetter(c: Char): Boolean =
-        c in 'a'..'z' || c in 'A'..'Z'
-
-    private fun isAsciiDigit(c: Char): Boolean =
-        c in '0'..'9'
-
-    private fun isIdentifierStart(c: Char): Boolean =
-        c == '_' || isAsciiLetter(c)
-
-    private fun isIdentifierPart(c: Char): Boolean =
-        c == '_' || isAsciiLetter(c) || isAsciiDigit(c)
 
 }

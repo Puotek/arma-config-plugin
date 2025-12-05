@@ -20,9 +20,7 @@ import com.intellij.psi.PsiRecursiveElementWalkingVisitor
 class ArmaConfigFoldingBuilder : FoldingBuilderEx(), DumbAware {
 
     override fun buildFoldRegions(
-        root: PsiElement,
-        document: Document,
-        quick: Boolean
+        root: PsiElement, document: Document, quick: Boolean
     ): Array<FoldingDescriptor> {
 
         val descriptors = mutableListOf<FoldingDescriptor>()
@@ -35,8 +33,10 @@ class ArmaConfigFoldingBuilder : FoldingBuilderEx(), DumbAware {
                 val type = element.node.elementType
                 when (type) {
                     // For class declarations and arrays, try to create a folding region
-                    ArmaConfigTypes.CLASS_DECL,
-                    ArmaConfigTypes.ARRAY -> addBraceBlockFolding(element, descriptors)
+                    ArmaConfigTypes.CLASS_BLOCK, ArmaConfigTypes.ARRAY_BLOCK -> addBraceBlockFolding(
+                        element,
+                        descriptors
+                    )
                 }
             }
         })
@@ -48,8 +48,7 @@ class ArmaConfigFoldingBuilder : FoldingBuilderEx(), DumbAware {
      * Creates a folding region for the contents between `{` and `}` in `element`.
      */
     private fun addBraceBlockFolding(
-        element: PsiElement,
-        result: MutableList<FoldingDescriptor>
+        element: PsiElement, result: MutableList<FoldingDescriptor>
     ) {
         val node = element.node
 
@@ -70,12 +69,11 @@ class ArmaConfigFoldingBuilder : FoldingBuilderEx(), DumbAware {
         }
     }
 
-    override fun getPlaceholderText(node: ASTNode): String =
-        when (node.elementType) {
-            ArmaConfigTypes.CLASS_DECL -> "{...}"
-            ArmaConfigTypes.ARRAY      -> "{...}"
-            else                       -> "..."
-        }
+    override fun getPlaceholderText(node: ASTNode): String = when (node.elementType) {
+        ArmaConfigTypes.CLASS_BLOCK -> "{...}"
+        ArmaConfigTypes.ARRAY_BLOCK -> "{...}"
+        else -> "..."
+    }
 
     override fun isCollapsedByDefault(node: ASTNode): Boolean = false
 }
