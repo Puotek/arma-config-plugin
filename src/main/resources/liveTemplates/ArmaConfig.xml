@@ -1,10 +1,10 @@
 <!--suppress LiveTemplateI18n -->
-<templateSet group="Arma Config">
 <!--
 &#10;
 &#9;
 &quot;
 -->
+<templateSet group="Arma Config">
     <template
             name="class"
             value="class $NAME$ {&#10;&#9;$END$&#10;};"
@@ -50,7 +50,7 @@
     <!-- Array property -->
     <template
             name="array"
-            value="$NAME$[] = {&#10;&#9;$END$&#10;};"
+            value="$NAME$[] = {$END$};"
             description="Array property"
             toReformat="true"
             toShortenFQNames="false">

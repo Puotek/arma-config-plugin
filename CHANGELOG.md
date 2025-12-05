@@ -7,8 +7,6 @@ Format: `[MAJOR.MINOR.PATCH] - YYYY-MM-DD`
 
 ### TODO
 
-Classes with no body are basically imports so that's what im going to call them
-
 - Code reformatting
     - Option for `{` bracket opening class body on same line or newline
     - class import should stick (no blank line) to class below if the class below inherits from the import, this also
@@ -32,8 +30,10 @@ Classes with no body are basically imports so that's what im going to call them
     - for multiline arrays first item should be on newline compared to `{` and the closing `}` should also be on a
       newline aligned with the indent of the line where `{` was
     - option for amount of blank lines between any preprocessor (#include or #define) stuff and a class
+
+
 - Working grayout for unused classes, as in if a class has no body and is not used anywhere for inheritance than we gray
-  out
+  out, with quick fix to remove class (careful can be used in other included files)
 - Support for usages, basically if any class is called anywhere for inheritance than we cound that as usage (ik intellij
   has some framework for usages) and this should also support ctrl+click on the class to navigate to original import or
   to usage
@@ -43,9 +43,9 @@ Classes with no body are basically imports so that's what im going to call them
 - If I smart enter on a line that has a collapsed {} than I want it to open and I want to be inside
 
 - Fix current live templates, especially array
-- fix smart enter adding `;` on line ending with `{` (opening of block)
+- fix smart enter adding `;` at line ending with `{` (opening of block)
 
-- Maybe support for trailing `,` in arrays after all with a inspection (hemmt=ok, biTools=invalid)
+- Maybe support for trailing `,` in arrays after all with an inspection (hemmt=ok, biTools=invalid)
 
 ## [Unreleased]
 
