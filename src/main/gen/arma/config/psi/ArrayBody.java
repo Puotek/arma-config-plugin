@@ -5,12 +5,12 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface ArrayBlock extends PsiElement {
-
-  @Nullable
-  ArrayBody getArrayBody();
+public interface ArrayBody extends PsiElement {
 
   @NotNull
-  Identifier getIdentifier();
+  List<ArrayBody> getArrayBodyList();
+
+  @NotNull
+  List<ParameterValue> getParameterValueList();
 
 }

@@ -40,14 +40,10 @@ Classes with no body are basically imports so that's what im going to call them
 - Optimize imports IntelliJ support, where imports are classes with no body, and we optimize by removing unused ones (
   ones never used for inheritance)
 - Highlighting for MACROS with variables eg `MACRO(var)`
-- Improve macro parsing and also allow for checking for strings inside
 - If I smart enter on a line that has a collapsed {} than I want it to open and I want to be inside
 
 - Fix current live templates, especially array
 - fix smart enter adding `;` on line ending with `{` (opening of block)
-- Support for `&&` or actually `&` in inside of macros
-- Support for nested arrays? `array[] = {{},{},{}};`
-- Support for `##` operator in class names and parameter names `PREFIX##_Vehicles`
 
 - Maybe support for trailing `,` in arrays after all with a inspection (hemmt=ok, biTools=invalid)
 
@@ -73,6 +69,9 @@ Classes with no body are basically imports so that's what im going to call them
 - Support for classnames starting with numbers, like `30Rnd_556x45_Stanag`
 - Support for `>`, `<` and `!` operators inside macros
 - Support for math tokens inside of macros `+-*/%^`
+- Support for `##` operator in identifiers `PREFIX##_Vehicles`
+- Support for `&` inside of macros
+- Support for nested arrays
 
 ### Changed
 

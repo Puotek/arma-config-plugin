@@ -28,6 +28,7 @@
         EXCL        = '!'
         SINGLE_HASH = '#'
         DOUBLE_HASH = '##'
+        AMPERSAND   = '&'
 
 
         CLASS_KEYWORD   = 'class'
@@ -74,6 +75,7 @@ private macroElement ::= LBRACE
                        | SLASH
                        | PERCENT
                        | CARET
+                       | AMPERSAND
                        | GT
                        | LT
                        | EXCL
@@ -133,7 +135,11 @@ parameterBlock ::= identifier EQUAL parameterValue SEMICOLON
 
 ///////// ARRAY /////////
 
-arrayBlock ::= identifier LBRACKET RBRACKET PLUS? EQUAL LBRACE (parameterValue (COMMA parameterValue)*)? RBRACE SEMICOLON
+private arrayElement ::= parameterValue | arrayBody
+
+arrayBody ::= LBRACE (arrayElement (COMMA arrayElement)*)? RBRACE
+
+arrayBlock ::= identifier LBRACKET RBRACKET PLUS? EQUAL arrayBody SEMICOLON
 {pin=3}
 
 ///////// MATH /////////

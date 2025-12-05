@@ -5,6 +5,7 @@ import com.intellij.openapi.fileTypes.LanguageFileType // Base class for languag
 import javax.swing.Icon                      // For file icons in UI
 
 // Object = singleton representing this specific file type
+@Suppress("KotlinObjectRegisteredAsExtension")
 object ArmaConfigFileType : LanguageFileType(ArmaConfigLanguage) {
     // Internal ID of the file type (shown in Settings → Editor → File Types)
     override fun getName(): String = "Arma Config"

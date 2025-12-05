@@ -36,7 +36,7 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // identifier LBRACKET RBRACKET PLUS? EQUAL LBRACE (parameterValue (COMMA parameterValue)*)? RBRACE SEMICOLON
+  // identifier LBRACKET RBRACKET PLUS? EQUAL arrayBody SEMICOLON
   public static boolean arrayBlock(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "arrayBlock")) return false;
     if (!nextTokenIs(b, TEXT)) return false;
@@ -46,9 +46,9 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
     r = r && consumeTokens(b, 2, LBRACKET, RBRACKET);
     p = r; // pin = 3
     r = r && report_error_(b, arrayBlock_3(b, l + 1));
-    r = p && report_error_(b, consumeTokens(b, -1, EQUAL, LBRACE)) && r;
-    r = p && report_error_(b, arrayBlock_6(b, l + 1)) && r;
-    r = p && report_error_(b, consumeTokens(b, -1, RBRACE, SEMICOLON)) && r;
+    r = p && report_error_(b, consumeToken(b, EQUAL)) && r;
+    r = p && report_error_(b, arrayBody(b, l + 1)) && r;
+    r = p && consumeToken(b, SEMICOLON) && r;
     exit_section_(b, l, m, r, p, null);
     return r || p;
   }
@@ -60,43 +60,67 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // (parameterValue (COMMA parameterValue)*)?
-  private static boolean arrayBlock_6(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "arrayBlock_6")) return false;
-    arrayBlock_6_0(b, l + 1);
+  /* ********************************************************** */
+  // LBRACE (arrayElement (COMMA arrayElement)*)? RBRACE
+  public static boolean arrayBody(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "arrayBody")) return false;
+    if (!nextTokenIs(b, LBRACE)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, LBRACE);
+    r = r && arrayBody_1(b, l + 1);
+    r = r && consumeToken(b, RBRACE);
+    exit_section_(b, m, ARRAY_BODY, r);
+    return r;
+  }
+
+  // (arrayElement (COMMA arrayElement)*)?
+  private static boolean arrayBody_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "arrayBody_1")) return false;
+    arrayBody_1_0(b, l + 1);
     return true;
   }
 
-  // parameterValue (COMMA parameterValue)*
-  private static boolean arrayBlock_6_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "arrayBlock_6_0")) return false;
+  // arrayElement (COMMA arrayElement)*
+  private static boolean arrayBody_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "arrayBody_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = parameterValue(b, l + 1);
-    r = r && arrayBlock_6_0_1(b, l + 1);
+    r = arrayElement(b, l + 1);
+    r = r && arrayBody_1_0_1(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // (COMMA parameterValue)*
-  private static boolean arrayBlock_6_0_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "arrayBlock_6_0_1")) return false;
+  // (COMMA arrayElement)*
+  private static boolean arrayBody_1_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "arrayBody_1_0_1")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!arrayBlock_6_0_1_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "arrayBlock_6_0_1", c)) break;
+      if (!arrayBody_1_0_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "arrayBody_1_0_1", c)) break;
     }
     return true;
   }
 
-  // COMMA parameterValue
-  private static boolean arrayBlock_6_0_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "arrayBlock_6_0_1_0")) return false;
+  // COMMA arrayElement
+  private static boolean arrayBody_1_0_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "arrayBody_1_0_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, COMMA);
-    r = r && parameterValue(b, l + 1);
+    r = r && arrayElement(b, l + 1);
     exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // parameterValue | arrayBody
+  static boolean arrayElement(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "arrayElement")) return false;
+    boolean r;
+    r = parameterValue(b, l + 1);
+    if (!r) r = arrayBody(b, l + 1);
     return r;
   }
 
@@ -357,6 +381,7 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
   //                        | SLASH
   //                        | PERCENT
   //                        | CARET
+  //                        | AMPERSAND
   //                        | GT
   //                        | LT
   //                        | EXCL
@@ -389,6 +414,7 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, SLASH);
     if (!r) r = consumeToken(b, PERCENT);
     if (!r) r = consumeToken(b, CARET);
+    if (!r) r = consumeToken(b, AMPERSAND);
     if (!r) r = consumeToken(b, GT);
     if (!r) r = consumeToken(b, LT);
     if (!r) r = consumeToken(b, EXCL);

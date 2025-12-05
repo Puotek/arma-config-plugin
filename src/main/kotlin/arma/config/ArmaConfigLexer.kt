@@ -378,6 +378,7 @@ class ArmaConfigLexer : LexerBase() {
             '<' -> ArmaConfigTypes.LT
             '>' -> ArmaConfigTypes.GT
             '!' -> ArmaConfigTypes.EXCL
+            '&' -> ArmaConfigTypes.AMPERSAND
             else -> TokenType.BAD_CHARACTER  // Unknown/invalid char
         }
     }

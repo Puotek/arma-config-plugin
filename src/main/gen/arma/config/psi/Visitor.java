@@ -11,6 +11,10 @@ public class Visitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitArrayBody(@NotNull ArrayBody o) {
+    visitPsiElement(o);
+  }
+
   public void visitClassBlock(@NotNull ClassBlock o) {
     visitPsiElement(o);
   }

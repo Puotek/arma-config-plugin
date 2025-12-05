@@ -9,6 +9,7 @@ import arma.config.psi.impl.*;
 public interface ArmaConfigTypes {
 
   IElementType ARRAY_BLOCK = new ArmaConfigElementType("ARRAY_BLOCK");
+  IElementType ARRAY_BODY = new ArmaConfigElementType("ARRAY_BODY");
   IElementType CLASS_BLOCK = new ArmaConfigElementType("CLASS_BLOCK");
   IElementType CLASS_BODY = new ArmaConfigElementType("CLASS_BODY");
   IElementType CLASS_EXTENSION = new ArmaConfigElementType("CLASS_EXTENSION");
@@ -20,6 +21,7 @@ public interface ArmaConfigTypes {
   IElementType PARAMETER_BLOCK = new ArmaConfigElementType("PARAMETER_BLOCK");
   IElementType PARAMETER_VALUE = new ArmaConfigElementType("PARAMETER_VALUE");
 
+  IElementType AMPERSAND = new ArmaConfigTokenType("&");
   IElementType BLOCK_COMMENT = new ArmaConfigTokenType("BLOCK_COMMENT");
   IElementType CARET = new ArmaConfigTokenType("^");
   IElementType CLASS_KEYWORD = new ArmaConfigTokenType("class");
@@ -59,6 +61,9 @@ public interface ArmaConfigTypes {
       IElementType type = node.getElementType();
       if (type == ARRAY_BLOCK) {
         return new ArrayBlockImpl(node);
+      }
+      else if (type == ARRAY_BODY) {
+        return new ArrayBodyImpl(node);
       }
       else if (type == CLASS_BLOCK) {
         return new ClassBlockImpl(node);

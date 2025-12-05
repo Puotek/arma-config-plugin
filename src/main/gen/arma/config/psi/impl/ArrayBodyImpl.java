@@ -11,14 +11,14 @@ import static arma.config.psi.ArmaConfigTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import arma.config.psi.*;
 
-public class ArrayBlockImpl extends ASTWrapperPsiElement implements ArrayBlock {
+public class ArrayBodyImpl extends ASTWrapperPsiElement implements ArrayBody {
 
-  public ArrayBlockImpl(@NotNull ASTNode node) {
+  public ArrayBodyImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull Visitor visitor) {
-    visitor.visitArrayBlock(this);
+    visitor.visitArrayBody(this);
   }
 
   @Override
@@ -28,15 +28,15 @@ public class ArrayBlockImpl extends ASTWrapperPsiElement implements ArrayBlock {
   }
 
   @Override
-  @Nullable
-  public ArrayBody getArrayBody() {
-    return findChildByClass(ArrayBody.class);
+  @NotNull
+  public List<ArrayBody> getArrayBodyList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, ArrayBody.class);
   }
 
   @Override
   @NotNull
-  public Identifier getIdentifier() {
-    return findNotNullChildByClass(Identifier.class);
+  public List<ParameterValue> getParameterValueList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, ParameterValue.class);
   }
 
 }
