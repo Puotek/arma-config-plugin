@@ -49,8 +49,6 @@ Classes with no body are basically imports so that's what im going to call them
 - Support for nested arrays? `array[] = {{},{},{}};`
 - Support for `##` operator in class names and parameter names `PREFIX##_Vehicles`
 
-- Maybe trailing `,` for arrays? Not sure if they are legal
-
 ## [Unreleased]
 
 ### Added

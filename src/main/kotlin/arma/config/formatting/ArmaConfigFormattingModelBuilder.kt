@@ -131,7 +131,57 @@ class ArmaConfigFormattingModelBuilder : FormattingModelBuilder {
         }
 
         override fun getSubBlocks(): MutableList<Block> = buildChildren()
-        override fun getSpacing(child1: Block?, child2: Block): Spacing? = null
+
+        override fun getSpacing(child1: Block?, child2: Block): Spacing? {
+            if (child1 is ASTBlock && child2 is ASTBlock) {
+                val leftNode = child1.node
+                val rightNode = child2.node
+
+                val leftType = leftNode?.elementType
+                val rightType = rightNode?.elementType
+
+                val leftParentType = leftNode?.treeParent?.elementType
+                val rightParentType = rightNode?.treeParent?.elementType
+
+                // NEW: space between className and classExtension
+                // "Name : Parent" – this pair is CLASS_NAME (left) and CLASS_EXTENSION (right)
+                if (leftType == ArmaConfigTypes.CLASS_NAME &&
+                    rightType == ArmaConfigTypes.CLASS_EXTENSION &&
+                    leftParentType == ArmaConfigTypes.CLASS_BLOCK &&
+                    rightParentType == ArmaConfigTypes.CLASS_BLOCK
+                ) {
+                    return Spacing.createSpacing(
+                        1, 1,   // exactly one space
+                        0,      // no line feeds
+                        false,
+                        0
+                    )
+                }
+
+                // Existing rules:
+
+                // Case 1: space between ':' and parent className → ": Parent"
+                // left token is ':' whose parent is CLASS_EXTENSION
+                if (leftType == ArmaConfigTypes.COLON &&
+                    leftParentType == ArmaConfigTypes.CLASS_EXTENSION
+                ) {
+                    return Spacing.createSpacing(
+                        1, 1,
+                        0,
+                        false,
+                        0
+                    )
+                }
+
+                // (Optionally keep your "rightType == COLON" rule if you really need it,
+                // but strictly speaking spacing before ':' is now covered by CLASS_NAME → CLASS_EXTENSION)
+            }
+
+            // Everything else: use default IntelliJ spacing
+            return null
+        }
+
         override fun isIncomplete(): Boolean = false
+
     }
 }
