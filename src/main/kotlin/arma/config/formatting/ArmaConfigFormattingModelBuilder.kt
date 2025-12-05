@@ -58,11 +58,10 @@ class ArmaConfigFormattingModelBuilder : FormattingModelBuilder {
                 ArmaConfigTypes.PARAMETER_BLOCK -> Indent.getNoneIndent()
 
                 // ARRAY BLOCK:
-                //  - First line elements (name[], operators, braces, commas) -> no extra indent
-                //  - Values inside { ... } -> one extra indent
+                //  - Name / [] / operators / semicolon stay at base indent
+                //  - The arrayBody as a whole is indented one level (if on new line)
                 ArmaConfigTypes.ARRAY_BLOCK -> {
                     when (elementType) {
-                        // First line: identifier + [] + operators + braces + commas
                         ArmaConfigTypes.IDENTIFIER,
                         ArmaConfigTypes.LBRACKET,
                         ArmaConfigTypes.RBRACKET,
@@ -71,9 +70,20 @@ class ArmaConfigFormattingModelBuilder : FormattingModelBuilder {
                         ArmaConfigTypes.SEMICOLON,
                         ArmaConfigTypes.COMMA -> Indent.getNoneIndent()
 
-                        // Values inside { ... } get one extra indent
-                        ArmaConfigTypes.PARAMETER_VALUE -> Indent.getNormalIndent()
+                        // The { ... } body of the array
+                        ArmaConfigTypes.ARRAY_BODY -> Indent.getNormalIndent()
 
+                        else -> Indent.getNoneIndent()
+                    }
+                }
+
+                // Inside arrayBody (new rule):
+                //  - Values (PARAMETER_VALUE) are indented one level inside '{ }'
+                //  - Nested ARRAY_BODY (for nested arrays) also gets one extra indent
+                ArmaConfigTypes.ARRAY_BODY -> {
+                    when (elementType) {
+                        ArmaConfigTypes.PARAMETER_VALUE,
+                        ArmaConfigTypes.ARRAY_BODY -> Indent.getNormalIndent()
                         else -> Indent.getNoneIndent()
                     }
                 }
@@ -91,8 +101,11 @@ class ArmaConfigFormattingModelBuilder : FormattingModelBuilder {
                 // Inside a class body: indent one level
                 ArmaConfigTypes.CLASS_BODY -> ChildAttributes(Indent.getNormalIndent(), null)
 
-                // After '{' in an array: indent values one level
+                // After '=' in an arrayBlock: indent the arrayBody one level
                 ArmaConfigTypes.ARRAY_BLOCK -> ChildAttributes(Indent.getNormalIndent(), null)
+
+                // Inside an arrayBody: indent elements one level inside '{ }'
+                ArmaConfigTypes.ARRAY_BODY -> ChildAttributes(Indent.getNormalIndent(), null)
 
                 else -> ChildAttributes(Indent.getNoneIndent(), null)
             }
@@ -136,7 +149,6 @@ class ArmaConfigFormattingModelBuilder : FormattingModelBuilder {
 
                 // Space between class name and class extension:
                 // classBlock ::= CLASS_KEYWORD identifier classExtension? ...
-                // so here we see IDENTIFIER (left) and CLASS_EXTENSION (right)
                 if (leftType == ArmaConfigTypes.IDENTIFIER &&
                     rightType == ArmaConfigTypes.CLASS_EXTENSION &&
                     leftParentType == ArmaConfigTypes.CLASS_BLOCK &&
@@ -151,7 +163,6 @@ class ArmaConfigFormattingModelBuilder : FormattingModelBuilder {
                 }
 
                 // Space between ':' and parent identifier → ": Parent"
-                // COLON lives directly under CLASS_EXTENSION
                 if (leftType == ArmaConfigTypes.COLON &&
                     leftParentType == ArmaConfigTypes.CLASS_EXTENSION
                 ) {
