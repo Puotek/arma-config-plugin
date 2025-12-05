@@ -27,6 +27,20 @@ class InspectionTestingClass {
 };
 class NormalClass {
 
+    condition = QUOTE((_this select 0) call FUNC(canMovePack) && {backpack (_this select 0) != '' || {(_this select 0) call FUNC(chestpack) != ''}});
+    tabs[] = {{},{4}};
+    allowedPositions[] = {"driver", {"turret", {1}}};
+
+    class PREFIX##_Vehicles {
+        displayName = CSTRING(Category);
+    };
+    TAG##test = 1;
+
+    samples[]= {
+        {"\A3\Sounds_F\arsenal\weapons\LongRangeRifles\DMR_01_Rahim\DMR01_silencerShot_01",1},
+        {"\A3\Sounds_F\arsenal\weapons\LongRangeRifles\DMR_01_Rahim\DMR01_silencerShot_02",1},
+        {"\A3\Sounds_F\arsenal\weapons\LongRangeRifles\DMR_01_Rahim\DMR01_silencerShot_03",1}
+    };
 
 
     displayName = Q(AN/PRC-163 1);
