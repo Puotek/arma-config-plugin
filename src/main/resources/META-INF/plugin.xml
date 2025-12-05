@@ -47,9 +47,6 @@
         <typedHandler
                 implementation="arma.config.editor.ArmaConfigTypedHandler"/>
 
-        <annotator
-                language="ArmaConfig"
-                implementationClass="arma.config.highlighting.SingleQuoteInnerStringAnnotator"/>
 
         <breadcrumbsInfoProvider
                 implementation="arma.config.breadcrumbs.ArmaBreadcrumbsProvider"/>
@@ -60,6 +57,18 @@
                 contextId="ARMA_CONFIG"
                 implementation="arma.config.liveTemplates.ArmaConfigTemplateContextType"/>
         <defaultLiveTemplates file="/liveTemplates/ArmaConfig.xml"/>
+
+        <psi.referenceContributor
+                implementation="arma.config.reference.ArmaConfigReferenceContributor" language="ArmaConfig"/>
+
+
+        <!-- ANNOTATORS-->
+        <annotator
+                language="ArmaConfig"
+                implementationClass="arma.config.highlighting.SingleQuoteInnerStringAnnotator"/>
+        <annotator
+                language="ArmaConfig"
+                implementationClass="arma.config.highlighting.PreprocessorIncludeAnnotator"/>
 
         <!-- INSPECTIONS -->
         <localInspection

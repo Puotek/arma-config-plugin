@@ -63,80 +63,99 @@ class ArmaConfigLexer : LexerBase() {
 
     // Move to the next token
     override fun advance() {
-        // Start lexing from the end of the previous token
-        var i = tokenEnd
-        if (i < startOffset) i = startOffset
-
-        // EOF: if we've reached or passed endOffset, no more tokens
-        if (i >= endOffset) {
+        if (tokenEnd < startOffset) tokenEnd = startOffset
+        if (tokenEnd >= endOffset) {
             tokenType = null
             tokenStart = endOffset
             tokenEnd = endOffset
             return
         }
-
-        // Current char to examine
-        val c = buffer[i]
+        tokenStart = tokenEnd
+        val tokenChar = buffer[tokenStart]
 
         // WHITESPACE token
-        if (c.isWhitespace()) {
-            tokenStart = i
-            var j = i + 1
-            // Group consecutive whitespace characters into one WHITE_SPACE token
-            while (j < endOffset && buffer[j].isWhitespace()) {
-                j++
-            }
-            tokenEnd = j
+        if (tokenChar.isWhitespace()) {
+            tokenEnd = tokenStart + 1
+            while (tokenEnd < endOffset && buffer[tokenEnd].isWhitespace()) tokenEnd++
             tokenType = TokenType.WHITE_SPACE
             return
         }
 
-        // For all non-whitespace tokens, we start at i
-        tokenStart = i
-
-        // PREPROCESSOR: lines beginning with '#' (with '\' continuation)
-        if (c == '#') {
-            var j = i + 1
-            while (j < endOffset) {
-                val ch = buffer[j]
-
-                if (ch == '\n' || ch == '\r') {
-                    // find last non-whitespace before this newline
-                    var k = j - 1
-                    while (k >= i && buffer[k].isWhitespace()) {
-                        k--
-                    }
-                    val lastNonWs = if (k >= i) buffer[k] else '\u0000'
-
-                    if (lastNonWs == '\\') {
-                        // Continuation line: skip newline and continue reading
-                        j++
-                        // If we had CRLF, skip both
-                        if (ch == '\r' && j < endOffset && buffer[j] == '\n') {
-                            j++
-                        }
-                        // Continue scanning the directive body
-                        continue
-                    } else {
-                        // Real end of preprocessor directive
-                        break
-                    }
+        // PREPROCESSOR: '#' as the first non-whitespace on a line
+        // - May have spaces/tabs before '#'
+        // - Must be the first non-space char since the previous newline
+        // - '\' continuation ONLY for #define
+        if (tokenChar == '#') {
+            //check if first non-whitespace in line
+            var back = tokenStart - 1
+            var isFirstNonWsOnLine = true
+            while (back >= startOffset) {
+                val char = buffer[back]
+                if (char == '\n' || char == '\r') break
+                if (!char.isWhitespace()) {
+                    isFirstNonWsOnLine = false
+                    break
                 }
-
-                j++
+                back--
             }
-            tokenEnd = j
+
+            tokenEnd = tokenStart + 1
+            //if not first in line, then check if ## or just #
+            if (!isFirstNonWsOnLine) {
+                if (tokenEnd >= endOffset || buffer[tokenEnd] != '#') {
+                    tokenType = ArmaConfigTypes.SINGLE_HASH
+                    return
+                } else {
+                    tokenEnd++
+                    tokenType = ArmaConfigTypes.DOUBLE_HASH
+                    return
+                }
+            }
+
+            //check if a keyword starts after #
+            if (tokenEnd >= endOffset || buffer[tokenEnd] !in 'a'..'z') {
+                tokenType = ArmaConfigTypes.SINGLE_HASH
+                return
+            }
+            //grab full keyword
+            while (tokenEnd < endOffset && buffer[tokenEnd] in 'a'..'z') tokenEnd++
+            //check if string is a valid preprocessor directive
+            @Suppress("SpellCheckingInspection")
+            val isDefine = when (buffer.subSequence(tokenStart + 1, tokenEnd).toString()) {
+                "define" -> true
+                "include", "undef", "if", "ifdef", "ifndef", "else", "endif"
+                    -> false
+                else -> {
+                    tokenType = TokenType.BAD_CHARACTER
+                    return
+                }
+            }
+            //grab until end of line
+            //if define check last char, and continue to newline if \
+            while (tokenEnd < endOffset) {
+                val char = buffer[tokenEnd]
+                if (char == '\n' || char == '\r') {
+                    if (!isDefine || buffer[tokenEnd - 1] != '\\') break
+                    // For #define, allow line continuation if last character before newline is '\'
+                    tokenEnd++
+                    if (char == '\r' && tokenEnd < endOffset && buffer[tokenEnd] == '\n') tokenEnd++
+                    continue
+                    // End of directive (for non-define, or define without continuation)
+                }
+                tokenEnd++
+            }
             tokenType = ArmaConfigTypes.PREPROCESSOR
             return
         }
 
+        //fixme I want to rewrite all of the below at some point myself
         // COMMENTS: either // line comment or /* block comment */
-        if (c == '/' && i + 1 < endOffset) {
-            val next = buffer[i + 1]
+        if (tokenChar == '/' && tokenStart + 1 < endOffset) {
+            val next = buffer[tokenStart + 1]
 
             // line comment: // ...
             if (next == '/') {
-                var j = i + 2
+                var j = tokenStart + 2
                 while (j < endOffset) {
                     val ch = buffer[j]
                     if (ch == '\n' || ch == '\r') break // until newline
@@ -149,7 +168,7 @@ class ArmaConfigLexer : LexerBase() {
 
             // block comment: /* ... */
             if (next == '*') {
-                var j = i + 2
+                var j = tokenStart + 2
                 while (j < endOffset - 1) {
                     if (buffer[j] == '*' && buffer[j + 1] == '/') {
                         j += 2   // include closing "*/"
@@ -166,8 +185,8 @@ class ArmaConfigLexer : LexerBase() {
 
         // IDENT or keyword (also used for path-like tokens inside macros):
         // starts with letter / '_' / path chars, continues with letters/digits/underscore/path chars
-        if (c.isIdentStart()) {
-            var j = i + 1
+        if (tokenChar.isIdentStart()) {
+            var j = tokenStart + 1
             while (j < endOffset && buffer[j].isIdentPart()) {
                 j++
             }
@@ -186,8 +205,8 @@ class ArmaConfigLexer : LexerBase() {
 
         // NUMBER, FLOAT, or identifier starting with a digit
         // e.g. "30Rnd_556x45_Stanag" should be a single IDENT, not NUMBER("30") + IDENT("Rnd_...")
-        if (c.isDigit()) {
-            var j = i
+        if (tokenChar.isDigit()) {
+            var j = tokenStart
             var seenDot = false
             var seenExponent = false
             var isIdentLike = false
@@ -206,7 +225,7 @@ class ArmaConfigLexer : LexerBase() {
                     }
 
                     // exponent part: e[+/-]?digits  (e.g. 9.999e-006)
-                    !seenExponent && (ch == 'e' || ch == 'E') && j > i -> {
+                    !seenExponent && (ch == 'e' || ch == 'E') && j > tokenStart -> {
                         var k = j + 1
                         // optional sign
                         if (k < endOffset && (buffer[k] == '+' || buffer[k] == '-')) {
@@ -257,14 +276,13 @@ class ArmaConfigLexer : LexerBase() {
             return
         }
 
-
         // STRING:
         //  - only " ... "
         //  - NO multiline (newline ends the token, leaving it unterminated)
         //  - "" inside acts as an escaped quote and does NOT terminate the string
         //  - backslash has NO special meaning here
-        if (c == '"') {
-            var j = i + 1
+        if (tokenChar == '"') {
+            var j = tokenStart + 1
 
             while (j < endOffset) {
                 val ch = buffer[j]
@@ -299,9 +317,8 @@ class ArmaConfigLexer : LexerBase() {
         //  - ends at the last ' before a comment or newline
         //  - everything between is opaque (can contain ;, (), macros, "" strings, etc.)
         //  - no multiline: we stop scanning at newline; if we never find a closing ', treat as bad
-        if (c == '\'') {
-            val start = i
-            var j = i + 1
+        if (tokenChar == '\'') {
+            var j = tokenStart + 1
             var lastQuote = -1
 
             while (j < endOffset) {
@@ -329,21 +346,19 @@ class ArmaConfigLexer : LexerBase() {
 
             if (lastQuote == -1) {
                 // No closing ' found on this line before comment/newline -> stray quote
-                tokenStart = start
-                tokenEnd = start + 1
+                tokenEnd = tokenStart + 1
                 tokenType = TokenType.BAD_CHARACTER
                 return
             }
 
-            tokenStart = start
             tokenEnd = lastQuote + 1 // include the closing '
             tokenType = ArmaConfigTypes.SINGLE_QUOTE_BLOCK_TOKEN
             return
         }
 
         // Single-character punctuation tokens
-        tokenEnd = i + 1
-        tokenType = when (c) {
+        tokenEnd = tokenStart + 1
+        tokenType = when (tokenChar) {
             '{' -> ArmaConfigTypes.LBRACE
             '}' -> ArmaConfigTypes.RBRACE
             '=' -> ArmaConfigTypes.EQUAL
@@ -368,7 +383,7 @@ class ArmaConfigLexer : LexerBase() {
     }
 
     // Helper: we don’t use the built-in isLetterOrDigit for this Char type,
-// so we define it via isLetter()+isDigit()
+    // so we define it via isLetter()+isDigit()
     private fun Char.isLetterOrDigitCompat(): Boolean = isLetter() || isDigit()
 
     // Characters allowed at start of an IDENT (also used for path-ish macros)
@@ -376,4 +391,17 @@ class ArmaConfigLexer : LexerBase() {
 
     // Characters allowed *inside* an IDENT
     private fun Char.isIdentPart(): Boolean = isLetterOrDigitCompat() || this == '_' || this == '\\' || this == '/' || this == '.'
+
+    private fun isAsciiLetter(c: Char): Boolean =
+        c in 'a'..'z' || c in 'A'..'Z'
+
+    private fun isAsciiDigit(c: Char): Boolean =
+        c in '0'..'9'
+
+    private fun isIdentifierStart(c: Char): Boolean =
+        c == '_' || isAsciiLetter(c)
+
+    private fun isIdentifierPart(c: Char): Boolean =
+        c == '_' || isAsciiLetter(c) || isAsciiDigit(c)
+
 }

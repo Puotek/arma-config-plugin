@@ -1,20 +1,8 @@
 #include "strings.hpp"
-#include "test\test.hpp"
-#include "..\test.hpp"
-#include "\mymod\myaddon\strings.hpp"
 #include <strings.hpp>
-#include <test\test.hpp>
-#include <\mymod\myaddon\strings.hpp>
-
-#ifdef
-#ifndef
-#else
-#undef
-#if
-#endif
 
 #define SINGLE_LINE_DEFINE SINGLE_LINE_DEFINE
-    #define MULTI_LINE_DEFINE MULTI_LINE_DEFINE\
+#define MULTI_LINE_DEFINE MULTI_LINE_DEFINE\
 MULTI_LINE_DEFINE
 
 class SingleLineClass { MACRO(include); };

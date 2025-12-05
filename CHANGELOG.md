@@ -41,6 +41,7 @@ Classes with no body are basically imports so thats what im gonna call them
   ones never used for inheritance)
 - Highlighting for MACROS with variables eg `MACRO(var)`
 - Improve macro parsing and also allow for checking for strings inside
+- If I smart enter on a line that has a collapsed {} than I want it to open and i want to be inside
 
 ## [Unreleased]
 
@@ -59,13 +60,15 @@ Classes with no body are basically imports so thats what im gonna call them
 - Support for exponent in math expressions, like `999e-006`
 - Support for IntelliJ Live Templates and some basic templates
 - Configurations saved to project
-- Added auto-open of `src/test/resources` as project when testing with `runIdeClean`
+- Auto-open of `src/test/resources` as project when testing with `runIdeClean`
+- Clickable links to files for `#include` and string highlighting for the path
 
 ### Changed
 
 - `README.md` added a new guide on how to manually make a build of the plugin
 - `README.md` updated plugin description
 - Moved test resources from `src/main` to `src/test`
+- Reworked lexer parsing for macros
 
 ### Fixed
 

@@ -34,37 +34,39 @@ public interface ArmaConfigTypes {
   IElementType VALUE = new ArmaConfigElementType("VALUE");
   IElementType VALUE_LIST = new ArmaConfigElementType("VALUE_LIST");
 
-  IElementType BLOCK_COMMENT = new ArmaConfigTokenType("regex:/\\\\*([^*]|\\\\*+[^*/])*\\\\*+/");
+  IElementType BLOCK_COMMENT = new ArmaConfigTokenType("/*comment*/");
   IElementType CARET = new ArmaConfigTokenType("^");
   IElementType CLASS_KEYWORD = new ArmaConfigTokenType("class");
   IElementType COLON = new ArmaConfigTokenType(":");
   IElementType COMMA = new ArmaConfigTokenType(",");
   IElementType DELETE_KEYWORD = new ArmaConfigTokenType("delete");
+  IElementType DOUBLE_HASH = new ArmaConfigTokenType("##");
   IElementType EQUAL = new ArmaConfigTokenType("=");
   IElementType EXCL = new ArmaConfigTokenType("!");
-  IElementType FLOAT = new ArmaConfigTokenType("regex:\\\\d+\\\\.\\\\d+");
+  IElementType FLOAT = new ArmaConfigTokenType("float");
   IElementType GT = new ArmaConfigTokenType(">");
-  IElementType IDENT = new ArmaConfigTokenType("regex:[A-Za-z_][A-Za-z0-9_]*");
+  IElementType IDENT = new ArmaConfigTokenType("identifier");
   IElementType LBRACE = new ArmaConfigTokenType("{");
   IElementType LBRACKET = new ArmaConfigTokenType("[");
-  IElementType LINE_COMMENT = new ArmaConfigTokenType("regex://.*");
+  IElementType LINE_COMMENT = new ArmaConfigTokenType("//comment");
   IElementType LPAREN = new ArmaConfigTokenType("(");
   IElementType LT = new ArmaConfigTokenType("<");
   IElementType MAX_KEYWORD = new ArmaConfigTokenType("max");
   IElementType MINUS = new ArmaConfigTokenType("-");
   IElementType MIN_KEYWORD = new ArmaConfigTokenType("min");
-  IElementType NUMBER = new ArmaConfigTokenType("regex:\\\\d+");
+  IElementType NUMBER = new ArmaConfigTokenType("number");
   IElementType PERCENT = new ArmaConfigTokenType("%");
   IElementType PLUS = new ArmaConfigTokenType("+");
-  IElementType PREPROCESSOR = new ArmaConfigTokenType("regex:#.*");
+  IElementType PREPROCESSOR = new ArmaConfigTokenType("#preprocessor");
   IElementType RBRACE = new ArmaConfigTokenType("}");
   IElementType RBRACKET = new ArmaConfigTokenType("]");
   IElementType RPAREN = new ArmaConfigTokenType(")");
   IElementType SEMICOLON = new ArmaConfigTokenType(";");
+  IElementType SINGLE_HASH = new ArmaConfigTokenType("#");
   IElementType SINGLE_QUOTE_BLOCK_TOKEN = new ArmaConfigTokenType("singleQuoteBlock");
   IElementType SLASH = new ArmaConfigTokenType("/");
   IElementType STAR = new ArmaConfigTokenType("*");
-  IElementType STRING = new ArmaConfigTokenType("regex:\"([^\"\\\\\\\\n\\\\\\\\r]|\"\")*\"");
+  IElementType STRING = new ArmaConfigTokenType("quoted string using double quote");
 
   class Factory {
     public static PsiElement createElement(ASTNode node) {

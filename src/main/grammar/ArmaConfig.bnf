@@ -31,6 +31,8 @@
         GT          = '>'
         LT          = '<'
         EXCL        = '!'
+        SINGLE_HASH = '#'
+        DOUBLE_HASH = '##'
 
         LINE_COMMENT    = "//comment"
         BLOCK_COMMENT   = "/*comment*/"
