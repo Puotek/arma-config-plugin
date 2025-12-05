@@ -45,11 +45,6 @@ Classes with no body are basically imports so that's what im going to call them
 
 - Fix current live templates, especially array
 - fix smart enter adding `;` on line ending with `{` (opening of block)
-- Add the inheritance part : to names on display of structure
-- Fix breadcrumb display names
-  - Add parent from inheritance to class
-  - Fix assignment not displaying correctly
-  - Fix array parameters to display only array name + [], without anything after `=` (included
 - Support for `&&` or actually `&` in inside of macros
 - Support for nested arrays? `array[] = {{},{},{}};`
 - Support for `##` operator in class names and parameter names `PREFIX##_Vehicles`

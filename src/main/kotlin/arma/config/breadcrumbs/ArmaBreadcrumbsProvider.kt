@@ -2,7 +2,9 @@ package arma.config.breadcrumbs
 
 import arma.config.ArmaConfigLanguage
 import arma.config.psi.ArmaConfigTypes
+import arma.config.psi.ArrayBlock
 import arma.config.psi.ClassBlock
+import arma.config.psi.ParameterBlock
 import com.intellij.lang.Language
 import com.intellij.psi.PsiElement
 import com.intellij.ui.breadcrumbs.BreadcrumbsProvider
@@ -24,7 +26,14 @@ class ArmaBreadcrumbsProvider : BreadcrumbsProvider {
         // Breadcrumb elements (and thus sticky lines) are created for:
         // - class declarations
         // - assignments (e.g. variable = value;)
-        return type == ArmaConfigTypes.CLASS_BLOCK || type == ArmaConfigTypes.PARAMETER_BLOCK || type == ArmaConfigTypes.ARRAY_BLOCK
+        // - array assignments (name[] = { ... };)
+        return when (type) {
+            ArmaConfigTypes.CLASS_BLOCK,
+            ArmaConfigTypes.PARAMETER_BLOCK,
+            ArmaConfigTypes.ARRAY_BLOCK -> true
+
+            else -> false
+        }
     }
 
     // Text shown in breadcrumbs bar
@@ -33,26 +42,57 @@ class ArmaBreadcrumbsProvider : BreadcrumbsProvider {
 
         return when (type) {
             ArmaConfigTypes.CLASS_BLOCK -> {
-                // Grammar:
-                //   classDecl ::= CLASS_KEYWORD classIdent classExt? LBRACE ...
-                //   classIdent ::= macroInvocation | IDENT
-                //
-                // So the name is inside the ClassIdent child now.
                 val classDecl = e as? ClassBlock
 
-                // This will be either:
-                //  - plain identifier: "MyClass"
-                //  - macro invocation: "TAG(MyClass)"
-                val fromPsi = classDecl?.className?.text?.takeIf { it.isNotBlank() }
+                // Own name: TEXT or macroBlock – text covers both
+                val ownName = classDecl
+                    ?.className
+                    ?.text
+                    ?.takeIf { it.isNotBlank() }
 
-                // Fallback to old behaviour if something is weird
-                fromPsi ?: e.node.findChildByType(ArmaConfigTypes.TEXT)?.text ?: "class"
+                // Parent from inheritance: ": ParentClass"
+                val parentName = classDecl
+                    ?.classExtension
+                    ?.className
+                    ?.text
+                    ?.takeIf { it.isNotBlank() }
+
+                val base = ownName
+                    ?: e.node.findChildByType(ArmaConfigTypes.TEXT)?.text
+                    ?: "class"
+
+                if (parentName != null) {
+                    "$base : $parentName"
+                } else {
+                    base
+                }
             }
 
             ArmaConfigTypes.PARAMETER_BLOCK -> {
-                // `name = value;` → show "name"
-                val ident = e.node.findChildByType(ArmaConfigTypes.TEXT)
-                ident?.text ?: "<assignment>"
+                // `name = value;` → show "name" (supports macros in parameterName)
+                val param = e as? ParameterBlock
+                val nameText = param
+                    ?.parameterName
+                    ?.text
+                    ?.takeIf { it.isNotBlank() }
+
+                nameText ?: "<assignment>"
+            }
+
+            ArmaConfigTypes.ARRAY_BLOCK -> {
+                // array[] = { ... }; → show "array[]"
+                // parameterName can be TEXT or macroBlock; .text handles both
+                val array = e as? ArrayBlock
+                val nameText = array
+                    ?.parameterName
+                    ?.text
+                    ?.takeIf { it.isNotBlank() }
+
+                if (nameText != null) {
+                    "$nameText[]"
+                } else {
+                    "<array>"
+                }
             }
 
             else -> {
