@@ -36,13 +36,13 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // parameterName LBRACKET RBRACKET PLUS? EQUAL LBRACE (parameterValue (COMMA parameterValue)*)? RBRACE SEMICOLON
+  // identifier LBRACKET RBRACKET PLUS? EQUAL LBRACE (parameterValue (COMMA parameterValue)*)? RBRACE SEMICOLON
   public static boolean arrayBlock(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "arrayBlock")) return false;
     if (!nextTokenIs(b, TEXT)) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _NONE_, ARRAY_BLOCK, null);
-    r = parameterName(b, l + 1);
+    r = identifier(b, l + 1);
     r = r && consumeTokens(b, 2, LBRACKET, RBRACKET);
     p = r; // pin = 3
     r = r && report_error_(b, arrayBlock_3(b, l + 1));
@@ -101,7 +101,7 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // CLASS_KEYWORD className classExtension? classBody? SEMICOLON
+  // CLASS_KEYWORD identifier classExtension? classBody? SEMICOLON
   public static boolean classBlock(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "classBlock")) return false;
     if (!nextTokenIs(b, CLASS_KEYWORD)) return false;
@@ -109,7 +109,7 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b, l, _NONE_, CLASS_BLOCK, null);
     r = consumeToken(b, CLASS_KEYWORD);
     p = r; // pin = 1
-    r = r && report_error_(b, className(b, l + 1));
+    r = r && report_error_(b, identifier(b, l + 1));
     r = p && report_error_(b, classBlock_2(b, l + 1)) && r;
     r = p && report_error_(b, classBlock_3(b, l + 1)) && r;
     r = p && consumeToken(b, SEMICOLON) && r;
@@ -158,14 +158,14 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // COLON className
+  // COLON identifier
   public static boolean classExtension(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "classExtension")) return false;
     if (!nextTokenIs(b, COLON)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, COLON);
-    r = r && className(b, l + 1);
+    r = r && identifier(b, l + 1);
     exit_section_(b, m, CLASS_EXTENSION, r);
     return r;
   }
@@ -184,39 +184,59 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // macroBlock
-  //             | TEXT
-  public static boolean className(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "className")) return false;
-    if (!nextTokenIs(b, TEXT)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = macroBlock(b, l + 1);
-    if (!r) r = consumeToken(b, TEXT);
-    exit_section_(b, m, CLASS_NAME, r);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // DELETE_KEYWORD className SEMICOLON
+  // DELETE_KEYWORD identifier SEMICOLON
   public static boolean deleteBlock(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "deleteBlock")) return false;
     if (!nextTokenIs(b, DELETE_KEYWORD)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, DELETE_KEYWORD);
-    r = r && className(b, l + 1);
+    r = r && identifier(b, l + 1);
     r = r && consumeToken(b, SEMICOLON);
     exit_section_(b, m, DELETE_BLOCK, r);
     return r;
   }
 
   /* ********************************************************** */
-  // macroBlock SEMICOLON
+  // macroConcat (DOUBLE_HASH macroConcat)*
+  public static boolean identifier(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "identifier")) return false;
+    if (!nextTokenIs(b, TEXT)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = macroConcat(b, l + 1);
+    r = r && identifier_1(b, l + 1);
+    exit_section_(b, m, IDENTIFIER, r);
+    return r;
+  }
+
+  // (DOUBLE_HASH macroConcat)*
+  private static boolean identifier_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "identifier_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!identifier_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "identifier_1", c)) break;
+    }
+    return true;
+  }
+
+  // DOUBLE_HASH macroConcat
+  private static boolean identifier_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "identifier_1_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, DOUBLE_HASH);
+    r = r && macroConcat(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // identifier SEMICOLON
   //                | classBlock
   //                | deleteBlock
   //                | PREPROCESSOR
-  //                | TEXT SEMICOLON
   //                | LINE_COMMENT
   //                | BLOCK_COMMENT
   static boolean item(PsiBuilder b, int l) {
@@ -227,19 +247,18 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
     if (!r) r = classBlock(b, l + 1);
     if (!r) r = deleteBlock(b, l + 1);
     if (!r) r = consumeToken(b, PREPROCESSOR);
-    if (!r) r = parseTokens(b, 0, TEXT, SEMICOLON);
     if (!r) r = consumeToken(b, LINE_COMMENT);
     if (!r) r = consumeToken(b, BLOCK_COMMENT);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // macroBlock SEMICOLON
+  // identifier SEMICOLON
   private static boolean item_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = macroBlock(b, l + 1);
+    r = identifier(b, l + 1);
     r = r && consumeToken(b, SEMICOLON);
     exit_section_(b, m, null, r);
     return r;
@@ -286,30 +305,41 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // TEXT LPAREN macroAtom+ RPAREN
-  public static boolean macroBlock(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "macroBlock")) return false;
+  static boolean macroBody(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "macroBody")) return false;
     if (!nextTokenIs(b, TEXT)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeTokens(b, 0, TEXT, LPAREN);
-    r = r && macroBlock_2(b, l + 1);
+    r = r && macroBody_2(b, l + 1);
     r = r && consumeToken(b, RPAREN);
-    exit_section_(b, m, MACRO_BLOCK, r);
+    exit_section_(b, m, null, r);
     return r;
   }
 
   // macroAtom+
-  private static boolean macroBlock_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "macroBlock_2")) return false;
+  private static boolean macroBody_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "macroBody_2")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = macroAtom(b, l + 1);
     while (r) {
       int c = current_position_(b);
       if (!macroAtom(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "macroBlock_2", c)) break;
+      if (!empty_element_parsed_guard_(b, "macroBody_2", c)) break;
     }
     exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // macroBody | TEXT
+  static boolean macroConcat(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "macroConcat")) return false;
+    if (!nextTokenIs(b, TEXT)) return false;
+    boolean r;
+    r = macroBody(b, l + 1);
+    if (!r) r = consumeToken(b, TEXT);
     return r;
   }
 
@@ -479,13 +509,13 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // parameterName EQUAL parameterValue SEMICOLON
+  // identifier EQUAL parameterValue SEMICOLON
   public static boolean parameterBlock(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "parameterBlock")) return false;
     if (!nextTokenIs(b, TEXT)) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _NONE_, PARAMETER_BLOCK, null);
-    r = parameterName(b, l + 1);
+    r = identifier(b, l + 1);
     r = r && consumeToken(b, EQUAL);
     p = r; // pin = 2
     r = r && report_error_(b, parameterValue(b, l + 1));
@@ -495,23 +525,8 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // macroBlock
-  //                 | TEXT
-  public static boolean parameterName(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "parameterName")) return false;
-    if (!nextTokenIs(b, TEXT)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = macroBlock(b, l + 1);
-    if (!r) r = consumeToken(b, TEXT);
-    exit_section_(b, m, PARAMETER_NAME, r);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // macroBlock
+  // identifier
   //                  | mathBlock
-  //                  | TEXT
   //                  | STRING
   //                  | SINGLE_QUOTE
   //                  | NUMBER
@@ -520,9 +535,8 @@ public class ArmaConfigParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "parameterValue")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, PARAMETER_VALUE, "<parameter value>");
-    r = macroBlock(b, l + 1);
+    r = identifier(b, l + 1);
     if (!r) r = mathBlock(b, l + 1);
-    if (!r) r = consumeToken(b, TEXT);
     if (!r) r = consumeToken(b, STRING);
     if (!r) r = consumeToken(b, SINGLE_QUOTE);
     if (!r) r = consumeToken(b, NUMBER);

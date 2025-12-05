@@ -49,6 +49,8 @@ Classes with no body are basically imports so that's what im going to call them
 - Support for nested arrays? `array[] = {{},{},{}};`
 - Support for `##` operator in class names and parameter names `PREFIX##_Vehicles`
 
+- Maybe support for trailing `,` in arrays after all with a inspection (hemmt=ok, biTools=invalid)
+
 ## [Unreleased]
 
 ### Added
@@ -57,7 +59,7 @@ Classes with no body are basically imports so that's what im going to call them
 - Support for IntelliJ comment keybinds, so that ctrl+/ comments out the whole line with single line comment
 - Working file structure IntelliJ window
 - Inspection for duplicate parameter assignment in same class
-- Simple implementation for formatting
+- Support for formatting
 - Editor completion matcher for `[]` `{}` `""` pairing
 - Automatic `;` autocompletion for `{}` when typing
 - Smart enter processor

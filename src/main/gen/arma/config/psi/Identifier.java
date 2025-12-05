@@ -5,9 +5,6 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface ParameterName extends PsiElement {
-
-  @Nullable
-  MacroBlock getMacroBlock();
+public interface Identifier extends PsiElement {
 
 }

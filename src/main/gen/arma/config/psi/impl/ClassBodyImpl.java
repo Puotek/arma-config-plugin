@@ -47,8 +47,8 @@ public class ClassBodyImpl extends ASTWrapperPsiElement implements ClassBody {
 
   @Override
   @NotNull
-  public List<MacroBlock> getMacroBlockList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MacroBlock.class);
+  public List<Identifier> getIdentifierList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, Identifier.class);
   }
 
   @Override

@@ -8,6 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface ClassExtension extends PsiElement {
 
   @NotNull
-  ClassName getClassName();
+  Identifier getIdentifier();
 
 }

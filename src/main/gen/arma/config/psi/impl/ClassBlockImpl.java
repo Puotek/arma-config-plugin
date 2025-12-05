@@ -41,8 +41,8 @@ public class ClassBlockImpl extends ASTWrapperPsiElement implements ClassBlock {
 
   @Override
   @Nullable
-  public ClassName getClassName() {
-    return findChildByClass(ClassName.class);
+  public Identifier getIdentifier() {
+    return findChildByClass(Identifier.class);
   }
 
 }

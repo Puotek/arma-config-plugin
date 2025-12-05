@@ -78,9 +78,7 @@ comment
     class 30Rnd_556x45_Stanag;
     class test : 30Rnd_556x45_Stanag {};
     class TAG(preprocessorClass) : TAG(extensionAlso) {};
-    thingy = 0;
     delete DeleteIsAKeywordTooClass;
     PREPROCESSOR_USED_FOR_PARAMS(something);
-    JUST_A_PREPROCESSOR_THING;
     class NoBodyClass;
 };

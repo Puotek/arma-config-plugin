@@ -29,8 +29,8 @@ public class ParameterBlockImpl extends ASTWrapperPsiElement implements Paramete
 
   @Override
   @NotNull
-  public ParameterName getParameterName() {
-    return findNotNullChildByClass(ParameterName.class);
+  public Identifier getIdentifier() {
+    return findNotNullChildByClass(Identifier.class);
   }
 
   @Override

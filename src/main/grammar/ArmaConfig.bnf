@@ -52,11 +52,10 @@
 
 root ::= item*
 
-private item ::= macroBlock SEMICOLON
+private item ::= identifier SEMICOLON
                | classBlock
                | deleteBlock
                | PREPROCESSOR
-               | TEXT SEMICOLON
                | LINE_COMMENT
                | BLOCK_COMMENT
 
@@ -94,20 +93,22 @@ private macroElement ::= LBRACE
 
 private macroAtom ::= macroElement | LPAREN macroAtom+ RPAREN
 
-macroBlock ::= TEXT LPAREN macroAtom+ RPAREN
+private macroBody ::= TEXT LPAREN macroAtom+ RPAREN
+
+private macroConcat ::= macroBody | TEXT
+
+identifier ::= macroConcat (DOUBLE_HASH macroConcat)*
 
 ///////// CLASS /////////
 
 classBody ::= LBRACE classItem* RBRACE
 {pin=1}
 
-classBlock ::= CLASS_KEYWORD className classExtension? classBody? SEMICOLON
+classBlock ::= CLASS_KEYWORD identifier classExtension? classBody? SEMICOLON
 {pin=1}
 
-className ::= macroBlock
-            | TEXT
 
-classExtension ::= COLON className
+classExtension ::= COLON identifier
 
 
 private classItem ::= parameterBlock
@@ -116,28 +117,23 @@ private classItem ::= parameterBlock
 
 ///////// DELETE /////////
 
-deleteBlock ::= DELETE_KEYWORD className SEMICOLON
+deleteBlock ::= DELETE_KEYWORD identifier SEMICOLON
 
 ///////// PARAMETER /////////
 
-parameterValue ::= macroBlock
+parameterValue ::= identifier
                  | mathBlock
-                 | TEXT
                  | STRING
                  | SINGLE_QUOTE
                  | NUMBER
                  | FLOAT
 
-parameterName ::= macroBlock
-                | TEXT
-
-
-parameterBlock ::= parameterName EQUAL parameterValue SEMICOLON
+parameterBlock ::= identifier EQUAL parameterValue SEMICOLON
 {pin=2}
 
 ///////// ARRAY /////////
 
-arrayBlock ::= parameterName LBRACKET RBRACKET PLUS? EQUAL LBRACE (parameterValue (COMMA parameterValue)*)? RBRACE SEMICOLON
+arrayBlock ::= identifier LBRACKET RBRACKET PLUS? EQUAL LBRACE (parameterValue (COMMA parameterValue)*)? RBRACE SEMICOLON
 {pin=3}
 
 ///////// MATH /////////

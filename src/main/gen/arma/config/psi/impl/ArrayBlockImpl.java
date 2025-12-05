@@ -29,8 +29,8 @@ public class ArrayBlockImpl extends ASTWrapperPsiElement implements ArrayBlock {
 
   @Override
   @NotNull
-  public ParameterName getParameterName() {
-    return findNotNullChildByClass(ParameterName.class);
+  public Identifier getIdentifier() {
+    return findNotNullChildByClass(Identifier.class);
   }
 
   @Override

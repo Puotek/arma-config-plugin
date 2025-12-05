@@ -29,8 +29,8 @@ public class DeleteBlockImpl extends ASTWrapperPsiElement implements DeleteBlock
 
   @Override
   @NotNull
-  public ClassName getClassName() {
-    return findNotNullChildByClass(ClassName.class);
+  public Identifier getIdentifier() {
+    return findNotNullChildByClass(Identifier.class);
   }
 
 }

@@ -29,8 +29,8 @@ public class ClassExtensionImpl extends ASTWrapperPsiElement implements ClassExt
 
   @Override
   @NotNull
-  public ClassName getClassName() {
-    return findNotNullChildByClass(ClassName.class);
+  public Identifier getIdentifier() {
+    return findNotNullChildByClass(Identifier.class);
   }
 
 }

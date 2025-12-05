@@ -2,8 +2,8 @@ package arma.config.inspections
 
 import arma.config.psi.ArrayBlock
 import arma.config.psi.ClassBlock
+import arma.config.psi.Identifier
 import arma.config.psi.ParameterBlock
-import arma.config.psi.ParameterName
 import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElement
@@ -14,10 +14,10 @@ import com.intellij.psi.util.PsiTreeUtil
  * Reports duplicate parameter/array assignments inside a single classBlock.
  *
  * It considers both:
- *  - normal parameters:   parameterBlock ::= parameterName '=' ...
- *  - array parameters:    arrayBlock     ::= parameterName '[]' '+='? '=' ...
+ *  - normal parameters:   parameterBlock ::= identifier '=' ...
+ *  - array parameters:    arrayBlock     ::= identifier '[]' '+='? '=' ...
  *
- * The key is the textual value of parameterName, so macro-based names like
+ * The key is the textual value of identifier, so macro-based names like
  *   TAG(value)
  * are also grouped and checked for duplicates.
  */
@@ -46,11 +46,10 @@ class DuplicateAssignmentInspection : LocalInspectionTool() {
         }
         if (allAssignments.isEmpty()) return
 
-        // Map from parameter name text -> first seen assignment PSI
         val firstByName = mutableMapOf<String, PsiElement>()
 
         for (assignment in allAssignments) {
-            val nameElement = findParameterNameElement(assignment) ?: continue
+            val nameElement = findNameIdentifier(assignment) ?: continue
             val nameText = nameElement.text.trim()
             if (nameText.isEmpty()) continue
 
@@ -58,7 +57,6 @@ class DuplicateAssignmentInspection : LocalInspectionTool() {
             if (existing == null) {
                 firstByName[nameText] = assignment
             } else {
-                // Duplicate: register the problem on the *name* node (TEXT or macroBlock)
                 holder.registerProblem(
                     nameElement,
                     "Duplicate parameter '$nameText' in this class"
@@ -68,14 +66,13 @@ class DuplicateAssignmentInspection : LocalInspectionTool() {
     }
 
     /**
-     * Returns the PSI element representing the parameterName for either a ParameterBlock
+     * Returns the PSI element representing the identifier for either a ParameterBlock
      * or an ArrayBlock. This will be either:
-     *  - a TEXT leaf
-     *  - or a MacroBlock subtree (when parameterName ::= macroBlock)
-     * We return the ParameterName node itself so the whole thing is highlighted.
+     *  - a TEXT leaf-only identifier
+     *  - or an identifier with macro/## inside.
+     * We return the Identifier node so the whole thing is highlighted.
      */
-    private fun findParameterNameElement(assignment: PsiElement): PsiElement? {
-        val paramName = PsiTreeUtil.getChildOfType(assignment, ParameterName::class.java)
-        return paramName
+    private fun findNameIdentifier(assignment: PsiElement): PsiElement? {
+        return PsiTreeUtil.getChildOfType(assignment, Identifier::class.java)
     }
 }

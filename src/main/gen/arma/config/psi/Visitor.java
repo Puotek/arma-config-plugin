@@ -23,15 +23,11 @@ public class Visitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitClassName(@NotNull ClassName o) {
-    visitPsiElement(o);
-  }
-
   public void visitDeleteBlock(@NotNull DeleteBlock o) {
     visitPsiElement(o);
   }
 
-  public void visitMacroBlock(@NotNull MacroBlock o) {
+  public void visitIdentifier(@NotNull Identifier o) {
     visitPsiElement(o);
   }
 
@@ -48,10 +44,6 @@ public class Visitor extends PsiElementVisitor {
   }
 
   public void visitParameterBlock(@NotNull ParameterBlock o) {
-    visitPsiElement(o);
-  }
-
-  public void visitParameterName(@NotNull ParameterName o) {
     visitPsiElement(o);
   }
 

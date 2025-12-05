@@ -8,7 +8,7 @@ import com.intellij.psi.PsiElement;
 public interface ParameterValue extends PsiElement {
 
   @Nullable
-  MacroBlock getMacroBlock();
+  Identifier getIdentifier();
 
   @Nullable
   MathBlock getMathBlock();

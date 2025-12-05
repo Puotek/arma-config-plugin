@@ -10,17 +10,15 @@ class ArmaConfigClassTreeElement(element: ClassBlock) : PsiTreeElementBase<Class
     override fun getPresentableText(): String {
         val classDecl = value ?: return "<class>"
 
-        // Own class name (can be TEXT or macroBlock; using .text covers both)
-        val ownName = classDecl.className
+        // New grammar: classBlock ::= CLASS_KEYWORD identifier classExtension? ...
+        val ownName = classDecl.identifier
             ?.text
             ?.takeIf { it.isNotBlank() }
             ?: "<class>"
 
-        // Inheritance part: : ParentName
-        // Grammar: classExtension ::= COLON className
-        // so we can grab classExtension.className.text
+        // classExtension ::= COLON identifier
         val parentName = classDecl.classExtension
-            ?.className
+            ?.identifier
             ?.text
             ?.takeIf { it.isNotBlank() }
 
@@ -34,12 +32,9 @@ class ArmaConfigClassTreeElement(element: ClassBlock) : PsiTreeElementBase<Class
     override fun getChildrenBase(): Collection<StructureViewTreeElement> {
         val classDecl = value ?: return emptyList()
 
-        // Nested classes live inside the class body, not as direct children of ClassBlock
         val body = classDecl.classBody ?: return emptyList()
 
-        // Only direct nested classes of this body; deeper ones are handled recursively
         val nestedClasses = PsiTreeUtil.getChildrenOfTypeAsList(body, ClassBlock::class.java)
-
         return nestedClasses.map { ArmaConfigClassTreeElement(it) }
     }
 }

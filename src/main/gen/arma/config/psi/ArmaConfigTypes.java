@@ -12,14 +12,12 @@ public interface ArmaConfigTypes {
   IElementType CLASS_BLOCK = new ArmaConfigElementType("CLASS_BLOCK");
   IElementType CLASS_BODY = new ArmaConfigElementType("CLASS_BODY");
   IElementType CLASS_EXTENSION = new ArmaConfigElementType("CLASS_EXTENSION");
-  IElementType CLASS_NAME = new ArmaConfigElementType("CLASS_NAME");
   IElementType DELETE_BLOCK = new ArmaConfigElementType("DELETE_BLOCK");
-  IElementType MACRO_BLOCK = new ArmaConfigElementType("MACRO_BLOCK");
+  IElementType IDENTIFIER = new ArmaConfigElementType("IDENTIFIER");
   IElementType MATH_BLOCK = new ArmaConfigElementType("MATH_BLOCK");
   IElementType MATH_ELEMENT = new ArmaConfigElementType("MATH_ELEMENT");
   IElementType MATH_OPERATOR = new ArmaConfigElementType("MATH_OPERATOR");
   IElementType PARAMETER_BLOCK = new ArmaConfigElementType("PARAMETER_BLOCK");
-  IElementType PARAMETER_NAME = new ArmaConfigElementType("PARAMETER_NAME");
   IElementType PARAMETER_VALUE = new ArmaConfigElementType("PARAMETER_VALUE");
 
   IElementType BLOCK_COMMENT = new ArmaConfigTokenType("BLOCK_COMMENT");
@@ -71,14 +69,11 @@ public interface ArmaConfigTypes {
       else if (type == CLASS_EXTENSION) {
         return new ClassExtensionImpl(node);
       }
-      else if (type == CLASS_NAME) {
-        return new ClassNameImpl(node);
-      }
       else if (type == DELETE_BLOCK) {
         return new DeleteBlockImpl(node);
       }
-      else if (type == MACRO_BLOCK) {
-        return new MacroBlockImpl(node);
+      else if (type == IDENTIFIER) {
+        return new IdentifierImpl(node);
       }
       else if (type == MATH_BLOCK) {
         return new MathBlockImpl(node);
@@ -91,9 +86,6 @@ public interface ArmaConfigTypes {
       }
       else if (type == PARAMETER_BLOCK) {
         return new ParameterBlockImpl(node);
-      }
-      else if (type == PARAMETER_NAME) {
-        return new ParameterNameImpl(node);
       }
       else if (type == PARAMETER_VALUE) {
         return new ParameterValueImpl(node);

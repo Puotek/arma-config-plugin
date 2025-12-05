@@ -29,8 +29,8 @@ public class ParameterValueImpl extends ASTWrapperPsiElement implements Paramete
 
   @Override
   @Nullable
-  public MacroBlock getMacroBlock() {
-    return findChildByClass(MacroBlock.class);
+  public Identifier getIdentifier() {
+    return findChildByClass(Identifier.class);
   }
 
   @Override

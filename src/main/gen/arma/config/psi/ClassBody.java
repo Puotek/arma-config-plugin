@@ -17,7 +17,7 @@ public interface ClassBody extends PsiElement {
   List<DeleteBlock> getDeleteBlockList();
 
   @NotNull
-  List<MacroBlock> getMacroBlockList();
+  List<Identifier> getIdentifierList();
 
   @NotNull
   List<ParameterBlock> getParameterBlockList();

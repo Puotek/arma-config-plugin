@@ -8,7 +8,7 @@ import com.intellij.psi.PsiElement;
 public interface ArrayBlock extends PsiElement {
 
   @NotNull
-  ParameterName getParameterName();
+  Identifier getIdentifier();
 
   @NotNull
   List<ParameterValue> getParameterValueList();

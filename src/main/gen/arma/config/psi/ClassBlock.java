@@ -14,6 +14,6 @@ public interface ClassBlock extends PsiElement {
   ClassExtension getClassExtension();
 
   @Nullable
-  ClassName getClassName();
+  Identifier getIdentifier();
 
 }

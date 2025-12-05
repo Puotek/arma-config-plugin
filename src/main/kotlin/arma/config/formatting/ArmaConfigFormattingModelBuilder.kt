@@ -37,9 +37,6 @@ class ArmaConfigFormattingModelBuilder : FormattingModelBuilder {
         override fun getWrap(): Wrap? = wrap
         override fun getAlignment(): Alignment? = alignment
 
-        /**
-         * Main indentation logic.
-         */
         override fun getIndent(): Indent? {
             val parent = node.treeParent ?: return Indent.getNoneIndent()
             val parentType: IElementType = parent.elementType
@@ -61,12 +58,12 @@ class ArmaConfigFormattingModelBuilder : FormattingModelBuilder {
                 ArmaConfigTypes.PARAMETER_BLOCK -> Indent.getNoneIndent()
 
                 // ARRAY BLOCK:
-                //  - First line elements (name[], +=, =, {, }; commas) -> no extra indent
+                //  - First line elements (name[], operators, braces, commas) -> no extra indent
                 //  - Values inside { ... } -> one extra indent
                 ArmaConfigTypes.ARRAY_BLOCK -> {
                     when (elementType) {
-                        // First line: name[] + operators + braces + commas
-                        ArmaConfigTypes.PARAMETER_NAME,
+                        // First line: identifier + [] + operators + braces + commas
+                        ArmaConfigTypes.IDENTIFIER,
                         ArmaConfigTypes.LBRACKET,
                         ArmaConfigTypes.RBRACKET,
                         ArmaConfigTypes.EQUAL,
@@ -81,23 +78,18 @@ class ArmaConfigFormattingModelBuilder : FormattingModelBuilder {
                     }
                 }
 
-                // Keep math and macro contents flat; they’re usually inline
+                // Keep math contents flat; they’re usually inline
                 ArmaConfigTypes.MATH_BLOCK,
-                ArmaConfigTypes.MATH_ELEMENT,
-                ArmaConfigTypes.MACRO_BLOCK -> Indent.getNoneIndent()
+                ArmaConfigTypes.MATH_ELEMENT -> Indent.getNoneIndent()
 
                 else -> Indent.getNoneIndent()
             }
         }
 
-        /**
-         * Indent when pressing Enter.
-         */
         override fun getChildAttributes(newChildIndex: Int): ChildAttributes {
             return when (node.elementType) {
                 // Inside a class body: indent one level
                 ArmaConfigTypes.CLASS_BODY -> ChildAttributes(Indent.getNormalIndent(), null)
-
 
                 // After '{' in an array: indent values one level
                 ArmaConfigTypes.ARRAY_BLOCK -> ChildAttributes(Indent.getNormalIndent(), null)
@@ -105,7 +97,6 @@ class ArmaConfigFormattingModelBuilder : FormattingModelBuilder {
                 else -> ChildAttributes(Indent.getNoneIndent(), null)
             }
         }
-
 
         override fun isLeaf(): Boolean = node.firstChildNode == null
 
@@ -143,9 +134,10 @@ class ArmaConfigFormattingModelBuilder : FormattingModelBuilder {
                 val leftParentType = leftNode?.treeParent?.elementType
                 val rightParentType = rightNode?.treeParent?.elementType
 
-                // NEW: space between className and classExtension
-                // "Name : Parent" – this pair is CLASS_NAME (left) and CLASS_EXTENSION (right)
-                if (leftType == ArmaConfigTypes.CLASS_NAME &&
+                // Space between class name and class extension:
+                // classBlock ::= CLASS_KEYWORD identifier classExtension? ...
+                // so here we see IDENTIFIER (left) and CLASS_EXTENSION (right)
+                if (leftType == ArmaConfigTypes.IDENTIFIER &&
                     rightType == ArmaConfigTypes.CLASS_EXTENSION &&
                     leftParentType == ArmaConfigTypes.CLASS_BLOCK &&
                     rightParentType == ArmaConfigTypes.CLASS_BLOCK
@@ -158,10 +150,8 @@ class ArmaConfigFormattingModelBuilder : FormattingModelBuilder {
                     )
                 }
 
-                // Existing rules:
-
-                // Case 1: space between ':' and parent className → ": Parent"
-                // left token is ':' whose parent is CLASS_EXTENSION
+                // Space between ':' and parent identifier → ": Parent"
+                // COLON lives directly under CLASS_EXTENSION
                 if (leftType == ArmaConfigTypes.COLON &&
                     leftParentType == ArmaConfigTypes.CLASS_EXTENSION
                 ) {
@@ -172,16 +162,12 @@ class ArmaConfigFormattingModelBuilder : FormattingModelBuilder {
                         0
                     )
                 }
-
-                // (Optionally keep your "rightType == COLON" rule if you really need it,
-                // but strictly speaking spacing before ':' is now covered by CLASS_NAME → CLASS_EXTENSION)
             }
 
-            // Everything else: use default IntelliJ spacing
+            // Everything else: default spacing
             return null
         }
 
         override fun isIncomplete(): Boolean = false
-
     }
 }
