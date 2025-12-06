@@ -61,7 +61,7 @@
         <liveTemplateContext
                 contextId="ARMA_CONFIG"
                 implementation="arma.config.liveTemplates.ArmaConfigTemplateContextType"/>
-        <defaultLiveTemplates file="/liveTemplates/ArmaConfig.xml"/>
+        <defaultLiveTemplates file="/Templates.xml"/>
 
         <psi.referenceContributor
                 implementation="arma.config.reference.ArmaConfigReferenceContributor" language="ArmaConfig"/>

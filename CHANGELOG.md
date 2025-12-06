@@ -49,7 +49,9 @@ Format: `[MAJOR.MINOR.PATCH] - YYYY-MM-DD`
 
 - fixme add better samples for settings pages `ArmaConfigColorSettingsPage` and `ArmaConfigLanguageCodeStyleSettingProvider`
 
-- rename all `ArmaConfig...` files to `Cfg...`
+- ###!!!### rename all `ArmaConfig...` files to `Cfg...`
+
+- Fixme folding is broken
 
 ## [Unreleased]
 
