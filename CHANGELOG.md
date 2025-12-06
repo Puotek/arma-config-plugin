@@ -1,9 +1,8 @@
 # Changelog
 
-The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
-and this project loosely adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-Format: `[MAJOR.MINOR.PATCH] - YYYY-MM-DD`
+![Build](https://github.com/Puotek/arma-config-plugin/workflows/Build/badge.svg)
+[![Format](https://img.shields.io/badge/Keep_a_Changelog-[MAJOR.MINOR.PATCH]_--_YYYY--MM--DD-2c2d30?labelColor=f25d30)
+](https://keepachangelog.com/en/1.1.0/)
 
 ### TODO
 
@@ -81,6 +80,7 @@ Format: `[MAJOR.MINOR.PATCH] - YYYY-MM-DD`
 
 ### Changed
 
+- Improved and prettified `README.md` and `CHANGELOG.md`
 - `README.md` added a new guide on how to manually make a build of the plugin
 - `README.md` updated plugin description
 - Moved test resources from `src/main` to `src/test`

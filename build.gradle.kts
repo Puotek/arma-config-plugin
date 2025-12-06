@@ -235,12 +235,11 @@ tasks.register<Copy>("buildDownloads") {
 
 
 tasks.named<RunIdeTask>("runIde") {
-    // This is the directory the IDE should open as a project
     args = listOf(
-        "C:/Ctrl/Folder Główny/Projects/arma-config-plugin/src/test/resources"
+        projectDir.resolve("src/test/resources").absolutePath
     )
 
-    // Optional but handy: trust all projects in the sandbox so it doesn't ask
+    // trust all projects in the sandbox so it doesn't ask
     jvmArgumentProviders += CommandLineArgumentProvider {
         listOf(
             "-Didea.trust.all.projects=true"
