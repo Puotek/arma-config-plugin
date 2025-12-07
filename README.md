@@ -6,25 +6,25 @@
 
 [marketplace:versions]: https://plugins.jetbrains.com/plugin/29234-arma-config-support/versions
 
-[discord:puotek]: https://discord.com/users/291967371646599169
+[puotek:discord]: https://discord.com/users/291967371646599169
+
+[puotek:github]: https://github.com/Puotek
 
 <!--suppress HtmlDeprecatedAttribute -->
 <div align="center">
 
 [<img src="https://capsule-render.vercel.app/api?type=waving&height=222&color=0:2046fb,15:7442ec,60:fd3a53,100:fd442a&text=Arma%20Config%20IntelliJ%20Plugin&textBg=false&fontAlignY=30&fontSize=55&animation=fadeIn&reversal=false&section=header&fontColor=FFFFFF&desc=by%20Puotek&descAlign=50&descAlignY=53"  alt="Arma 3 Config IntelliJ Plugin by Puotek"/>][marketplace:page]
 
-[![IntelliJ IDEA](https://img.shields.io/badge/-black?logo=intellij-idea&logoColor=white)
-][marketplace:page]
 [![JetBrains](https://img.shields.io/badge/Marketplace-2046fb?logo=jetbrains&logoColor=white)
 ][marketplace:page]
 [![Version](https://img.shields.io/jetbrains/plugin/v/29234-arma-config-support.svg?label=Version&color=2046fb)
 ][marketplace:versions]
 [![Downloads](https://img.shields.io/jetbrains/plugin/d/29234-arma-config-support.svg?label=Downloads&color=fd3a53)
-][marketplace:page]
+][marketplace:versions]
 [![Discord](https://img.shields.io/badge/Puotek-%235865F2.svg?logo=discord&logoColor=white)
-][discord:puotek]
+][puotek:discord]
 
-[<img src="https://contrib.rocks/image?repo=Puotek/arma-config-plugin"  alt="Contributor Profile Pictures in a grid"/>][discord:puotek]
+[<img src="https://contrib.rocks/image?repo=Puotek/arma-config-plugin"  alt="Contributor Profile Pictures in a grid"/>][puotek:github]
 
 </div>
 
