@@ -30,8 +30,6 @@
     - for multiline arrays first item should be on newline compared to `{` and the closing `}` should also be on a
       newline aligned with the indent of the line where `{` was
     - option for amount of blank lines between any preprocessor (#include or #define) stuff and a class
-
-
 - Working grayout for unused classes, as in if a class has no body and is not used anywhere for inheritance than we gray
   out, with quick fix to remove class (careful can be used in other included files)
 - Support for usages, basically if any class is called anywhere for inheritance than we cound that as usage (ik intellij
@@ -41,15 +39,10 @@
   ones never used for inheritance)
 - Highlighting for MACROS with variables eg `MACRO(var)`
 - If I smart enter on a line that has a collapsed {} than I want it to open and I want to be inside
-
 - Fix current live templates, especially array
 - fix smart enter adding `;` at line ending with `{` (opening of block)
-
-
 - fixme add better samples for settings pages `ArmaConfigColorSettingsPage` and `ArmaConfigLanguageCodeStyleSettingProvider`
-
 - Fixme formatting affects block comments and defines that are multiline and indents them improperly breaking their intendend immunity, espescially for defines
-
 - Todo allow all types of assignments and class elements on root level, but make an inspection that will shout at them if they are at root in a config.cpp file
 
 ## [Unreleased]

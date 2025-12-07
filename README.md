@@ -1,6 +1,7 @@
 [github]: https://github.com/Puotek/arma-config-plugin
 
 [github:contributors]: https://github.com/Puotek/arma-config-plugin/graphs/contributors
+[github:changelog]: https://github.com/Puotek/arma-config-plugin/blob/main/CHANGELOG.md
 
 [marketplace:page]: https://plugins.jetbrains.com/plugin/29234-arma-config-support
 
@@ -42,7 +43,7 @@ Language support for [Arma 3 config files](https://community.bistudio.com/wiki/C
 - Working file structure window
 - Formatting
 - Folding
-
+- [and more...][github:changelog]
 <!-- Plugin description end -->
 
 Designed it for myself, since I enjoy JetBrains IDEs, and the current existing arma plugin was old
