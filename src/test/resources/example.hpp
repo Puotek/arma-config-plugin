@@ -24,6 +24,8 @@ class InspectionTestingClass {
     TEST(var,var);
     duplicatedParam = 1;
     duplicatedParam = 1;
+    class Carzie_31s_Down.p3d : ArmaMan {};
+    class Carzie_31s_Up.p3d : ArmaMan {};
 };
 class NormalClass {
 

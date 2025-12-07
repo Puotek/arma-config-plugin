@@ -95,7 +95,7 @@ private macroElement ::= LBRACE
 
 private macroAtom ::= macroElement | LPAREN macroAtom+ RPAREN
 
-private macroBody ::= TEXT LPAREN macroAtom+ RPAREN
+macroBody ::= TEXT LPAREN macroAtom+ RPAREN
 
 private macroConcat ::= macroBody | TEXT
 
