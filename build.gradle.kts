@@ -178,13 +178,9 @@ tasks.register("runIdeClean") {
 
 tasks.register<Copy>("copyExample") {
     group = "puotek"
-    description = "Copies example.hpp to formatting.hpp in src/test/resources"
-
-    from("src/test/resources/example.hpp")
-    into("src/test/resources")
-
-    // Always name the output file formatting.hpp
-    rename { "test_formatting.hpp" }
+    description = "Duplicates test/resources to test/temp for testing sandbox separation"
+    from("src/test/resources/")
+    into("src/test/temp/")
 }
 
 tasks.register("bumpVersion") {
@@ -236,7 +232,7 @@ tasks.register<Copy>("buildDownloads") {
 
 tasks.named<RunIdeTask>("runIde") {
     args = listOf(
-        projectDir.resolve("src/test/resources").absolutePath
+        projectDir.resolve("src/test/temp").absolutePath
     )
 
     // trust all projects in the sandbox so it doesn't ask
