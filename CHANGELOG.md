@@ -80,6 +80,7 @@
 
 ### Changed
 
+- Significant refactor: Renamed all `ArmaConfig...` class names to `Cfg...`
 - Improved and prettified `README.md` and `CHANGELOG.md`
 - `README.md` added a new guide on how to manually make a build of the plugin
 - `README.md` updated plugin description

@@ -9,61 +9,64 @@
     <extensions defaultExtensionNs="com.intellij">
         <!--suppress KotlinObjectExtensionRegistration -->
         <fileType
-                name="Arma Config"
-                implementationClass="arma.config.ArmaConfigFileType"
                 language="ArmaConfig"
+                name="Arma Config"
+                implementationClass="arma.config.CfgFileType"
                 fileNames="config.cpp"
                 extensions="hpp;ext;h;hh"/>
 
         <lang.parserDefinition
                 language="ArmaConfig"
-                implementationClass="arma.config.ArmaConfigParserDefinition"/>
+                implementationClass="arma.config.CfgParserDefinition"/>
         <lang.syntaxHighlighterFactory
                 language="ArmaConfig"
-                implementationClass="arma.config.highlighting.ArmaConfigSyntaxHighlighterFactory"/>
+                implementationClass="arma.config.highlighting.CfgSyntaxHighlighterFactory"/>
         <lang.foldingBuilder
                 language="ArmaConfig"
-                implementationClass="arma.config.folding.ArmaConfigFoldingBuilder"/>
+                implementationClass="arma.config.folding.CfgFoldingBuilder"/>
         <lang.commenter
                 language="ArmaConfig"
-                implementationClass="arma.config.ArmaConfigCommenter"/>
+                implementationClass="arma.config.CfgCommenter"/>
         <lang.psiStructureViewFactory
                 language="ArmaConfig"
-                implementationClass="arma.config.structure.ArmaConfigStructureViewFactory"/>
+                implementationClass="arma.config.structure.CfgStructureViewFactory"/>
         <lang.formatter
                 language="ArmaConfig"
-                implementationClass="arma.config.formatting.ArmaConfigFormattingModelBuilder"/>
+                implementationClass="arma.config.formatting.CfgFormattingModelBuilder"/>
         <lang.braceMatcher
                 language="ArmaConfig"
-                implementationClass="arma.config.editor.ArmaConfigBraceMatcher"/>
+                implementationClass="arma.config.editor.CfgBraceMatcher"/>
         <lang.quoteHandler
                 language="ArmaConfig"
-                implementationClass="arma.config.editor.ArmaConfigQuoteHandler"/>
+                implementationClass="arma.config.editor.CfgQuoteHandler"/>
         <lang.smartEnterProcessor
                 language="ArmaConfig"
-                implementationClass="arma.config.editor.ArmaConfigSmartEnterProcessor"/>
+                implementationClass="arma.config.editor.CfgSmartEnterProcessor"/>
 
         <langCodeStyleSettingsProvider
-                implementation="arma.config.formatting.ArmaConfigLanguageCodeStyleSettingsProvider"/>
+                implementation="arma.config.formatting.CfgLanguageCodeStyleSettingsProvider"/>
         <codeStyleSettingsProvider
-                implementation="arma.config.formatting.ui.ArmaConfigCodeStyleSettingsProvider"/>
+                implementation="arma.config.formatting.ui.CfgCodeStyleSettingsProvider"/>
 
         <typedHandler
-                implementation="arma.config.editor.ArmaConfigTypedHandler"/>
+                implementation="arma.config.editor.CfgTypedHandler"/>
 
 
         <breadcrumbsInfoProvider
-                implementation="arma.config.breadcrumbs.ArmaBreadcrumbsProvider"/>
+                implementation="arma.config.breadcrumbs.CfgBreadcrumbsProvider"/>
 
-        <colorSettingsPage implementation="arma.config.highlighting.ArmaConfigColorSettingsPage"/>
+        <colorSettingsPage
+                implementation="arma.config.highlighting.CfgColorSettingsPage"/>
 
         <liveTemplateContext
                 contextId="ARMA_CONFIG"
-                implementation="arma.config.liveTemplates.ArmaConfigTemplateContextType"/>
-        <defaultLiveTemplates file="/Templates.xml"/>
+                implementation="arma.config.liveTemplates.CfgTemplateContextType"/>
+        <defaultLiveTemplates
+                file="/Templates.xml"/>
 
         <psi.referenceContributor
-                implementation="arma.config.reference.ArmaConfigReferenceContributor" language="ArmaConfig"/>
+                language="ArmaConfig"
+                implementation="arma.config.reference.CfgReferenceContributor"/>
 
 
         <!-- ANNOTATORS-->

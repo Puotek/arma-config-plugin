@@ -1,6 +1,6 @@
 package arma.config.highlighting
 
-import arma.config.psi.ArmaConfigTypes
+import arma.config.psi.CfgTypes
 import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.Annotator
 import com.intellij.lang.annotation.HighlightSeverity
@@ -11,7 +11,7 @@ class PreprocessorIncludeAnnotator : Annotator {
 
     override fun annotate(element: PsiElement, holder: AnnotationHolder) {
         // Only interested in preprocessor tokens
-        if (element.node.elementType != ArmaConfigTypes.PREPROCESSOR) return
+        if (element.node.elementType != CfgTypes.PREPROCESSOR) return
 
         val fullText = element.text
         if (fullText.isEmpty()) return
@@ -55,6 +55,6 @@ class PreprocessorIncludeAnnotator : Annotator {
             )
         )
             // Reuse the normal STRING color for the include path
-            .textAttributes(ArmaConfigSyntaxHighlighter.STRING).create()
+            .textAttributes(CfgSyntaxHighlighter.STRING).create()
     }
 }

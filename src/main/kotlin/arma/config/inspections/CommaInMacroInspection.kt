@@ -1,6 +1,6 @@
 package arma.config.inspections
 
-import arma.config.psi.ArmaConfigTypes
+import arma.config.psi.CfgTypes
 import arma.config.psi.Identifier
 import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemsHolder
@@ -21,7 +21,7 @@ class CommaInMacroInspection : LocalInspectionTool() {
                 val type = element.node.elementType
 
                 // We only care about comma tokens
-                if (type != ArmaConfigTypes.COMMA) return
+                if (type != CfgTypes.COMMA) return
 
                 // In the new grammar, macros live inside 'identifier'.
                 // Commas that sit under an Identifier are inside macro args,

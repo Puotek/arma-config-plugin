@@ -1,6 +1,6 @@
 package arma.config.highlighting
 
-import arma.config.psi.ArmaConfigTypes
+import arma.config.psi.CfgTypes
 import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.Annotator
 import com.intellij.lang.annotation.HighlightSeverity
@@ -11,7 +11,7 @@ class SingleQuoteInnerStringAnnotator : Annotator {
 
     override fun annotate(element: PsiElement, holder: AnnotationHolder) {
         // Only care about the PSI node for singleQuoteBlock
-        if (element.node.elementType != ArmaConfigTypes.SINGLE_QUOTE) return
+        if (element.node.elementType != CfgTypes.SINGLE_QUOTE) return
 
         val text = element.text
         if (text.length < 3) return // must be at least 'x'
@@ -50,7 +50,7 @@ class SingleQuoteInnerStringAnnotator : Annotator {
 
                 holder.newSilentAnnotation(HighlightSeverity.INFORMATION)
                     .range(range)
-                    .textAttributes(ArmaConfigSyntaxHighlighter.STRING)
+                    .textAttributes(CfgSyntaxHighlighter.STRING)
                     .create()
 
                 i = j
