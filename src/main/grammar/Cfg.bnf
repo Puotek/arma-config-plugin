@@ -137,7 +137,7 @@ parameterBlock ::= identifier EQUAL parameterValue SEMICOLON
 
 private arrayElement ::= parameterValue | arrayBody
 
-arrayBody ::= LBRACE (arrayElement (COMMA arrayElement)*)? RBRACE
+arrayBody ::= LBRACE (arrayElement (COMMA arrayElement)* COMMA?)? RBRACE
 
 arrayBlock ::= identifier LBRACKET RBRACKET PLUS? EQUAL arrayBody SEMICOLON
 {pin=3}

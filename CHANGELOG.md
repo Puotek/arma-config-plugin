@@ -44,13 +44,12 @@
 - Fix current live templates, especially array
 - fix smart enter adding `;` at line ending with `{` (opening of block)
 
-- Maybe support for trailing `,` in arrays after all with an inspection (hemmt=ok, biTools=invalid)
 
 - fixme add better samples for settings pages `ArmaConfigColorSettingsPage` and `ArmaConfigLanguageCodeStyleSettingProvider`
 
-- ###!!!### rename all `ArmaConfig...` files to `Cfg...`
+- Fixme formatting affects block comments and defines that are multiline and indents them improperly breaking their intendend immunity, espescially for defines
 
-- Fixme folding is broken
+- Todo allow all types of assignments and class elements on root level, but make an inspection that will shout at them if they are at root in a config.cpp file
 
 ## [Unreleased]
 
@@ -77,6 +76,7 @@
 - Support for `##` operator in identifiers `PREFIX##_Vehicles`
 - Support for `&` inside of macros
 - Support for nested arrays
+- Support for trailing `,` in arrays with an inspection
 
 ### Changed
 

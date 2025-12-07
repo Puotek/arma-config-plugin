@@ -2,7 +2,7 @@ package arma.config.inspections
 
 import arma.config.psi.ArrayBlock
 import arma.config.psi.ClassBlock
-import arma.config.psi.Identifier
+import arma.config.psi.ClassBody
 import arma.config.psi.ParameterBlock
 import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemsHolder
@@ -26,53 +26,33 @@ class DuplicateAssignmentInspection : LocalInspectionTool() {
 
     override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor {
         return object : PsiElementVisitor() {
-
             override fun visitElement(element: PsiElement) {
-                if (element is ClassBlock) {
-                    checkClass(element, holder)
-                }
+                if (element is ClassBody) checkClass(element, holder)
             }
         }
     }
 
-    private fun checkClass(klass: ClassBlock, holder: ProblemsHolder) {
+    private fun checkClass(classBlock: ClassBody, holder: ProblemsHolder) {
         // Direct child parameter & array blocks of this class
-        val parameterBlocks = PsiTreeUtil.getChildrenOfTypeAsList(klass, ParameterBlock::class.java)
-        val arrayBlocks = PsiTreeUtil.getChildrenOfTypeAsList(klass, ArrayBlock::class.java)
-
-        val allAssignments: List<PsiElement> = buildList(parameterBlocks.size + arrayBlocks.size) {
-            addAll(parameterBlocks)
-            addAll(arrayBlocks)
-        }
-        if (allAssignments.isEmpty()) return
-
-        val firstByName = mutableMapOf<String, PsiElement>()
-
-        for (assignment in allAssignments) {
-            val nameElement = findNameIdentifier(assignment) ?: continue
-            val nameText = nameElement.text.trim()
-            if (nameText.isEmpty()) continue
-
-            val existing = firstByName[nameText]
-            if (existing == null) {
-                firstByName[nameText] = assignment
-            } else {
-                holder.registerProblem(
-                    nameElement,
-                    "Duplicate parameter '$nameText' in this class"
-                )
+        val parameterBlocks = PsiTreeUtil.getChildrenOfTypeAsList(classBlock, ParameterBlock::class.java)
+        if (parameterBlocks.isNotEmpty()) {
+            val firstByName = mutableMapOf<String, PsiElement>()
+            for (block in parameterBlocks) {
+                val ident = block.firstChild.node.text.trim()
+                if (ident.isEmpty()) continue
+                if (firstByName.containsKey(ident)) holder.registerProblem(block.firstChild, "Duplicate parameter '$ident' in class")
+                else firstByName[ident] = block
             }
         }
-    }
-
-    /**
-     * Returns the PSI element representing the identifier for either a ParameterBlock
-     * or an ArrayBlock. This will be either:
-     *  - a TEXT leaf-only identifier
-     *  - or an identifier with macro/## inside.
-     * We return the Identifier node so the whole thing is highlighted.
-     */
-    private fun findNameIdentifier(assignment: PsiElement): PsiElement? {
-        return PsiTreeUtil.getChildOfType(assignment, Identifier::class.java)
+        val arrayBlocks = PsiTreeUtil.getChildrenOfTypeAsList(classBlock, ArrayBlock::class.java)
+        if (arrayBlocks.isNotEmpty()) {
+            val firstByName = mutableMapOf<String, PsiElement>()
+            for (block in arrayBlocks) {
+                val ident = block.firstChild.node.text.trim()
+                if (ident.isEmpty()) continue
+                if (firstByName.containsKey(ident)) holder.registerProblem(block.firstChild, "Duplicate array parameter '$ident' in class")
+                else firstByName[ident] = block
+            }
+        }
     }
 }

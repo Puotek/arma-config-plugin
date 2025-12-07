@@ -19,37 +19,23 @@ import com.intellij.psi.PsiRecursiveElementWalkingVisitor
  */
 class CfgFoldingBuilder : FoldingBuilderEx(), DumbAware {
 
-    override fun buildFoldRegions(
-        root: PsiElement, document: Document, quick: Boolean
-    ): Array<FoldingDescriptor> {
-
+    override fun buildFoldRegions(root: PsiElement, document: Document, quick: Boolean): Array<FoldingDescriptor> {
         val descriptors = mutableListOf<FoldingDescriptor>()
-
-        // Recursively walk the PSI tree
         root.accept(object : PsiRecursiveElementWalkingVisitor() {
             override fun visitElement(element: PsiElement) {
                 super.visitElement(element)
-
-                val type = element.node.elementType
-                when (type) {
-                    // For class declarations and arrays, try to create a folding region
-                    CfgTypes.CLASS_BLOCK, CfgTypes.ARRAY_BLOCK -> addBraceBlockFolding(
-                        element,
-                        descriptors
-                    )
+                when (element.node.elementType) {
+                    CfgTypes.CLASS_BODY, CfgTypes.ARRAY_BODY -> addBraceBlockFolding(element, descriptors)
                 }
             }
         })
-
         return descriptors.toTypedArray()
     }
 
     /**
      * Creates a folding region for the contents between `{` and `}` in `element`.
      */
-    private fun addBraceBlockFolding(
-        element: PsiElement, result: MutableList<FoldingDescriptor>
-    ) {
+    private fun addBraceBlockFolding(element: PsiElement, result: MutableList<FoldingDescriptor>) {
         val node = element.node
 
         // Look for left and right brace tokens as direct children
@@ -62,16 +48,13 @@ class CfgFoldingBuilder : FoldingBuilderEx(), DumbAware {
             // from the '{' itself to the '}' itself
             val start = lbrace.textRange.startOffset
             val end = rbrace.textRange.endOffset
-
-            if (end > start) {
-                result.add(FoldingDescriptor(node, TextRange(start, end)))
-            }
+            if (end > start) result.add(FoldingDescriptor(node, TextRange(start, end)))
         }
     }
 
     override fun getPlaceholderText(node: ASTNode): String = when (node.elementType) {
-        CfgTypes.CLASS_BLOCK -> "{...}"
-        CfgTypes.ARRAY_BLOCK -> "{...}"
+        CfgTypes.CLASS_BODY,
+        CfgTypes.ARRAY_BODY -> "{...}"
         else -> "..."
     }
 
