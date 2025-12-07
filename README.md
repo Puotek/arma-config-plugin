@@ -25,7 +25,7 @@
 ][discord:puotek]
 
 
-<img src="https://contrib.rocks/image?repo=Puotek/arma-config-plugin"  alt="Contributor Profile Pictures in a grid"/>
+[<img src="https://contrib.rocks/image?repo=Puotek/arma-config-plugin"  alt="Contributor Profile Pictures in a grid"/>](https://github.com/Puotek/arma-config-plugin/graphs/contributors)
 
 </div>
 
