@@ -2,7 +2,6 @@
 <!--suppress PluginXmlI18n, PluginXmlCapitalization, PluginXmlPluginLogo -->
 <idea-plugin>
     <id>com.github.puotek.armaconfigplugin</id>
-    <name>Arma Config Support</name>
     <vendor>Puotek</vendor>
 
     <depends>com.intellij.modules.platform</depends>

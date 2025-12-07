@@ -10,7 +10,7 @@
 
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&height=222&color=0:2046fb,15:7442ec,60:fd3a53,100:fd442a&text=Arma%203%20Config%20IntelliJ%20Plugin&textBg=false&fontAlignY=30&fontSize=55&animation=fadeIn&reversal=false&section=header&fontColor=FFFFFF&desc=by%20Puotek&descAlign=50&descAlignY=53"  alt="Arma 3 Config IntelliJ Plugin by Puotek"/>
+<img src="https://capsule-render.vercel.app/api?type=waving&height=222&color=0:2046fb,15:7442ec,60:fd3a53,100:fd442a&text=Arma%20Config%20IntelliJ%20Plugin&textBg=false&fontAlignY=30&fontSize=55&animation=fadeIn&reversal=false&section=header&fontColor=FFFFFF&desc=by%20Puotek&descAlign=50&descAlignY=53"  alt="Arma 3 Config IntelliJ Plugin by Puotek"/>
 
 [![IntelliJ IDEA](https://img.shields.io/badge/-black?logo=intellij-idea&logoColor=white)
 ][marketplace:page]
