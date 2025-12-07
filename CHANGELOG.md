@@ -46,6 +46,7 @@
 - Todo allow all types of assignments and class elements on root level, but make an inspection that will shout at them if they are at root in a config.cpp file
 - Fixme duplicate param name inspection also compares to child class params, which is wrong, since they are on a diffrent level
 - Fixme `.` illegal in identifiers when outside of macroBody
+- Inspection for identifiers starting with numbers?
 
 ## [Unreleased]
 
@@ -83,6 +84,7 @@
 - Moved test resources from `src/main` to `src/test`
 - Reworked lexer parsing for macros
 - Significant rework to nearly everything due to large grammar `ArmaConfig.bnf` file changes
+- Lexer code cleanup and rework
 
 ### Fixed
 

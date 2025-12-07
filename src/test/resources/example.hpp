@@ -29,8 +29,18 @@ class InspectionTestingClass {
 };
 class NormalClass {
 
-
-
+    value = 10 + -10;   // = 0
+value = 10 + +5;    // = 15
+value = 10 * -2;    // = -20
+value = -10 * -10;  // = 100
+value = ---10;    // valid → result = -10
+value = --5;      // valid → result = +5
+value = -----3;   // valid → result = -3
+value = 1e5;
+value = 3.14e-2;
+value = 6.02E23;
+value = 10E+6;
+value = 0E0;
 
     x = Q((safeZoneW * 0.5) + safeZoneX - (26 * GRID_W));
     allowedHTMLLoadURIs[] += {
