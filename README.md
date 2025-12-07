@@ -72,11 +72,6 @@ Open project in IntelliJ with the following plugins installed:
 
 Make sure to [set project JDK](https://www.jetbrains.com/help/idea/sdk.html#set-up-jdk) to version 21 (e.g. `Oracle OpenJDK 21.0.1`)
 
-<kbd>File</kbd> > <kbd>Project Structure</kbd> > <kbd>Project</kbd> > <kbd>SDK</kbd> > <kbd>+</kbd> > <kbd>Download
-JDK</kbd> > <kbd>Version: 21</kbd>
-
-[<kbd>src/main/gen</kbd>](src/main/gen) > <kbd>Delete</kbd>
-
 [<kbd>src/main/grammar/Cfg.bnf</kbd>](src/main/grammar/Cfg.bnf) > <kbd>RMB</kbd> > <kbd>Generate Parser Code</kbd>
 
 Run `buildDownloads` configuration or gradle task
