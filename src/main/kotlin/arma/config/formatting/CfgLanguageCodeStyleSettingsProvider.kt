@@ -88,6 +88,7 @@ class CfgLanguageCodeStyleSettingsProvider : LanguageCodeStyleSettingsProvider()
 
     }
 
+    @Suppress("removal", "DEPRECATION")
     private fun customizeBlankLinesSettings(consumer: CodeStyleSettingsCustomizable) {
         consumer.showCustomOption( //fixme this is not showing up in options
             settingsClass,

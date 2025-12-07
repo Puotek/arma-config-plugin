@@ -8,6 +8,7 @@
 
 [discord:puotek]: https://discord.com/users/291967371646599169
 
+<!--suppress HtmlDeprecatedAttribute -->
 <div align="center">
 
 <img src="https://capsule-render.vercel.app/api?type=waving&height=222&color=0:2046fb,15:7442ec,60:fd3a53,100:fd442a&text=Arma%20Config%20IntelliJ%20Plugin&textBg=false&fontAlignY=30&fontSize=55&animation=fadeIn&reversal=false&section=header&fontColor=FFFFFF&desc=by%20Puotek&descAlign=50&descAlignY=53"  alt="Arma 3 Config IntelliJ Plugin by Puotek"/>
@@ -74,9 +75,9 @@ Make sure to [set project JDK](https://www.jetbrains.com/help/idea/sdk.html#set-
 <kbd>File</kbd> > <kbd>Project Structure</kbd> > <kbd>Project</kbd> > <kbd>SDK</kbd> > <kbd>+</kbd> > <kbd>Download
 JDK</kbd> > <kbd>Version: 21</kbd>
 
-[<kbd>src/main/gen/arma/</kbd>](src/main/gen/arma/) > <kbd>Delete</kbd>
+[<kbd>src/main/gen</kbd>](src/main/gen) > <kbd>Delete</kbd>
 
-[<kbd>src/main/grammar/ArmaConfig.bnf</kbd>](src/main/grammar/ArmaConfig.bnf) > <kbd>RMB</kbd> > <kbd>Generate Parser Code</kbd>
+[<kbd>src/main/grammar/Cfg.bnf</kbd>](src/main/grammar/Cfg.bnf) > <kbd>RMB</kbd> > <kbd>Generate Parser Code</kbd>
 
 Run `buildDownloads` configuration or gradle task
 

@@ -168,7 +168,8 @@ tasks.withType<Test> {
     enabled = false
 }
 
-tasks.register("runIdeClean") {
+//Cannot infer type for type parameter 'T'. Specify it explicitly.
+tasks.register<Task>("runIdeClean") {
     group = "puotek"
     description = "build.clean and than intellij_platform.runIde"
 
@@ -183,7 +184,7 @@ tasks.register<Copy>("copyExample") {
     into("src/test/temp/")
 }
 
-tasks.register("bumpVersion") {
+tasks.register<Task>("bumpVersion") {
     group = "puotek"
     description = "Increment pluginVersion PATCH property by 1"
 
