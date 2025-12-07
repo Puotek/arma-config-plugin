@@ -29,6 +29,8 @@
         SINGLE_HASH = '#'
         DOUBLE_HASH = '##'
         AMPERSAND   = '&'
+        BACKSLASH   = '\'
+        DOT         = '.'
 
 
         CLASS_KEYWORD   = 'class'
@@ -36,12 +38,11 @@
         MIN_KEYWORD     = 'min'
         MAX_KEYWORD     = 'max'
 
+        TEXT            = "TEXT"
+        NUMBER          = "NUMBER"
         LINE_COMMENT    = "LINE_COMMENT"
         BLOCK_COMMENT   = "BLOCK_COMMENT"
         PREPROCESSOR    = "PREPROCESSOR"
-        TEXT            = "TEXT"
-        FLOAT           = "FLOAT"
-        NUMBER          = "NUMBER"
         STRING          = "STRING"
         SINGLE_QUOTE    = "SINGLE_QUOTE"
 
@@ -73,6 +74,7 @@ private macroElement ::= LBRACE
                        | MINUS
                        | STAR
                        | SLASH
+                       | BACKSLASH
                        | PERCENT
                        | CARET
                        | AMPERSAND
@@ -87,11 +89,11 @@ private macroElement ::= LBRACE
                        | MAX_KEYWORD
                        | BLOCK_COMMENT
                        | TEXT
-                       | FLOAT
                        | NUMBER
                        | STRING
                        | SINGLE_QUOTE
                        | COMMA
+                       | DOT
 
 private macroAtom ::= macroElement | LPAREN macroAtom+ RPAREN
 
@@ -128,7 +130,6 @@ parameterValue ::= identifier
                  | STRING
                  | SINGLE_QUOTE
                  | NUMBER
-                 | FLOAT
 
 parameterBlock ::= identifier EQUAL parameterValue SEMICOLON
 {pin=2}
@@ -144,7 +145,7 @@ arrayBlock ::= identifier LBRACKET RBRACKET PLUS? EQUAL arrayBody SEMICOLON
 
 ///////// MATH /////////
 
-mathBlock ::= MINUS? mathElement (mathOperator mathElement)*
+mathBlock ::= MINUS? mathElement (mathOperator MINUS? mathElement)*
 
 mathOperator ::= PLUS
                | MINUS
@@ -159,5 +160,4 @@ mathOperator ::= PLUS
 
 mathElement ::= TEXT
               | NUMBER
-              | FLOAT
               | LPAREN mathBlock RPAREN

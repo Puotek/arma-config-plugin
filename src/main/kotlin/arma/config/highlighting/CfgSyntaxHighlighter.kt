@@ -28,8 +28,7 @@ class CfgSyntaxHighlighter : SyntaxHighlighter {
 
         CfgTypes.SINGLE_QUOTE -> SINGLE_QUOTE_BLOCK_KEYS
 
-        CfgTypes.NUMBER,
-        CfgTypes.FLOAT -> NUMBER_KEYS
+        CfgTypes.NUMBER -> NUMBER_KEYS
 
         CfgTypes.LBRACE,
         CfgTypes.RBRACE -> BRACES_KEYS

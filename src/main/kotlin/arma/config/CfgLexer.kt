@@ -279,10 +279,8 @@ class CfgLexer : LexerBase() {
                         if (buffer[tokenEnd] == '"') tokenEnd++
                         else break
                     }
-
                     else -> tokenEnd++
                 }
-                tokenEnd++
             }
             tokenType = CfgTypes.STRING
             return
@@ -306,7 +304,7 @@ class CfgLexer : LexerBase() {
             while (tokenEnd > tokenStart) {
                 if (buffer[tokenEnd] == '\'') {
                     tokenEnd++
-                    tokenType == CfgTypes.SINGLE_QUOTE
+                    tokenType = CfgTypes.SINGLE_QUOTE
                     return
                 }
                 tokenEnd--
@@ -337,6 +335,8 @@ class CfgLexer : LexerBase() {
             '>' -> CfgTypes.GT
             '!' -> CfgTypes.EXCL
             '&' -> CfgTypes.AMPERSAND
+            '\\' -> CfgTypes.BACKSLASH
+            '.' -> CfgTypes.DOT
             else -> TokenType.BAD_CHARACTER
         }
     }

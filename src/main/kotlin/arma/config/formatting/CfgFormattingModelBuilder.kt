@@ -13,20 +13,19 @@ import com.intellij.psi.tree.IElementType
 class CfgFormattingModelBuilder : FormattingModelBuilder {
 
     override fun createModel(formattingContext: FormattingContext): FormattingModel {
-        val file = formattingContext.containingFile
-        val settings = formattingContext.codeStyleSettings
-
-        val rootBlock = ArmaConfigBlock(
-            node = file.node,
-            wrap = null,
-            alignment = null,
-            settings = settings
+        return FormattingModelProvider.createFormattingModelForPsiFile(
+            formattingContext.containingFile,
+            CfgBlock(
+                formattingContext.containingFile.node,
+                null,
+                null,
+                formattingContext.codeStyleSettings
+            ),
+            formattingContext.codeStyleSettings
         )
-
-        return FormattingModelProvider.createFormattingModelForPsiFile(file, rootBlock, settings)
     }
 
-    private class ArmaConfigBlock(
+    private class CfgBlock(
         private val node: ASTNode,
         private val wrap: Wrap?,
         private val alignment: Alignment?,
@@ -46,16 +45,14 @@ class CfgFormattingModelBuilder : FormattingModelBuilder {
             val result = mutableListOf<Block>()
             var child = this.node.firstChildNode
             while (child != null) {
-                if (child.elementType != WHITE_SPACE && child.textRange.length > 0) {
-                    result.add(
-                        ArmaConfigBlock(
-                            node = child,
-                            wrap = createWrap(WrapType.NONE, false),
-                            alignment = null,
-                            settings = settings
-                        )
+                if (child.elementType != WHITE_SPACE && child.textRange.length > 0) result.add(
+                    CfgBlock(
+                        child,
+                        createWrap(WrapType.NONE, false),
+                        null,
+                        settings
                     )
-                }
+                )
                 child = child.treeNext
             }
             return result
@@ -184,6 +181,7 @@ class CfgFormattingModelBuilder : FormattingModelBuilder {
                                 CfgCodeStyleSettings.ArrayLayoutMode.MULTILINE.ordinal -> BodyLayout.MULTILINE
                                 CfgCodeStyleSettings.ArrayLayoutMode.SMART.ordinal
                                     -> leftNode?.treeParent?.let<ASTNode, BodyLayout>(::detectBodyLayout)
+
                                 else -> BodyLayout.MULTILINE
                             }!!
                         ) {
