@@ -76,8 +76,6 @@ Make sure to [set project JDK](https://www.jetbrains.com/help/idea/sdk.html#set-
 
 Run `buildDownloads` configuration or gradle task
 
-Console might say error, but your plugin build should be in your `User/Downloads` folder
-
-Install it manually using
+Console might say error, but your plugin build should be in your `User/Downloads` folder. Install it manually using
 
 <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
