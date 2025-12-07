@@ -44,6 +44,7 @@
 - fixme add better samples for settings pages `ArmaConfigColorSettingsPage` and `ArmaConfigLanguageCodeStyleSettingProvider`
 - Fixme formatting affects block comments and defines that are multiline and indents them improperly breaking their intendend immunity, espescially for defines
 - Todo allow all types of assignments and class elements on root level, but make an inspection that will shout at them if they are at root in a config.cpp file
+- Fixme duplicate param name inspection also compares to child class params, which is wrong, since they are on a diffrent level
 
 ## [Unreleased]
 

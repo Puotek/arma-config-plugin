@@ -63,9 +63,9 @@ Download the [latest release][marketplace:versions] from JetBrains Marketplace a
 
 <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
 
-## Manual Build
+## Manual Version Build
 
-Open project in IntelliJ with the following plugins installed:
+To manually create a release: Open project in IntelliJ with the following plugins installed:
 
 - [Plugin DevKit](https://plugins.jetbrains.com/plugin/22851-plugin-devkit)
 - [Grammar-Kit](https://plugins.jetbrains.com/plugin/6606-grammar-kit)

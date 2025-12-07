@@ -27,6 +27,16 @@ class InspectionTestingClass {
 };
 class NormalClass {
 
+
+
+
+    x = Q((safeZoneW * 0.5) + safeZoneX - (26 * GRID_W));
+    allowedHTMLLoadURIs[] += {
+        "https://discord.gg/*"
+    };
+    MAWLCLS(IR_AIM) = 1;
+    displayName = Q(AN/PRC-163 1);
+    animPeriod=9.9999997e-006;
     condition = QUOTE((_this select 0) call FUNC(canMovePack) && {backpack (_this select 0) != '' || {(_this select 0) call FUNC(chestpack) != ''}});
     tabs[] = {{},{4}};
     allowedPositions[] = {"driver", {"turret", {1}}};
@@ -35,17 +45,14 @@ class NormalClass {
         displayName = CSTRING(Category);
     };
     TAG##test = 1;
-
     samples[]= {
         {"\A3\Sounds_F\arsenal\weapons\LongRangeRifles\DMR_01_Rahim\DMR01_silencerShot_01",1},
         {"\A3\Sounds_F\arsenal\weapons\LongRangeRifles\DMR_01_Rahim\DMR01_silencerShot_02",1},
         {"\A3\Sounds_F\arsenal\weapons\LongRangeRifles\DMR_01_Rahim\DMR01_silencerShot_03",1}
     };
-
-
     displayName = Q(AN/PRC-163 1);
     x = Q((safeZoneW * 0.5) + safeZoneX - (26 * GRID_W));
-    condition = Q(count TAG(targets) > 0);
+    condition3 = Q(count TAG(targets) > 0);
     condition2 = Q(!(_target in TAG(targets)));
     indentifier = anotherIdentifer;
     array[] = {
