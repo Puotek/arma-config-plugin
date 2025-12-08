@@ -88,20 +88,28 @@
                 implementationClass="arma.config.inspections.CommaInMacroInspection"/>
         <localInspection
                 language="ArmaConfig"
-                shortName="TrailingCommaInspection"
-                displayName="Trailing comma in array"
-                groupName="Arma Config"
-                enabledByDefault="true"
-                level="ERROR"
-                implementationClass="arma.config.inspections.TrailingCommaInspection"/>
-        <localInspection
-                language="ArmaConfig"
                 shortName="ArmaDuplicateAssignment"
                 displayName="Duplicate parameter assignment in class"
                 groupName="Arma Config"
                 enabledByDefault="true"
                 level="ERROR"
                 implementationClass="arma.config.inspections.DuplicateAssignmentInspection"/>
+        <localInspection
+                language="ArmaConfig"
+                shortName="IdentifierStartingWithNumber"
+                displayName="Identifier starting with number"
+                groupName="Arma Config"
+                enabledByDefault="true"
+                level="WARNING"
+                implementationClass="arma.config.inspections.IdentifierStartingWithNumber"/>
+        <localInspection
+                language="ArmaConfig"
+                shortName="TrailingCommaInspection"
+                displayName="Trailing comma in array"
+                groupName="Arma Config"
+                enabledByDefault="true"
+                level="ERROR"
+                implementationClass="arma.config.inspections.TrailingCommaInspection"/>
 
     </extensions>
 </idea-plugin>

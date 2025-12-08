@@ -1,7 +1,6 @@
 package arma.config.inspections
 
 import arma.config.psi.ArrayBlock
-import arma.config.psi.ClassBlock
 import arma.config.psi.ClassBody
 import arma.config.psi.ParameterBlock
 import com.intellij.codeInspection.LocalInspectionTool
@@ -32,9 +31,9 @@ class DuplicateAssignmentInspection : LocalInspectionTool() {
         }
     }
 
-    private fun checkClass(classBlock: ClassBody, holder: ProblemsHolder) {
+    private fun checkClass(classBody: ClassBody, holder: ProblemsHolder) {
         // Direct child parameter & array blocks of this class
-        val parameterBlocks = PsiTreeUtil.getChildrenOfTypeAsList(classBlock, ParameterBlock::class.java)
+        val parameterBlocks = PsiTreeUtil.getChildrenOfTypeAsList(classBody, ParameterBlock::class.java)
         if (parameterBlocks.isNotEmpty()) {
             val firstByName = mutableMapOf<String, PsiElement>()
             for (block in parameterBlocks) {
@@ -44,7 +43,7 @@ class DuplicateAssignmentInspection : LocalInspectionTool() {
                 else firstByName[ident] = block
             }
         }
-        val arrayBlocks = PsiTreeUtil.getChildrenOfTypeAsList(classBlock, ArrayBlock::class.java)
+        val arrayBlocks = PsiTreeUtil.getChildrenOfTypeAsList(classBody, ArrayBlock::class.java)
         if (arrayBlocks.isNotEmpty()) {
             val firstByName = mutableMapOf<String, PsiElement>()
             for (block in arrayBlocks) {
