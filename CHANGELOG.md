@@ -8,7 +8,6 @@
 ### TODO
 
 - Code reformatting
-    - Option for `{` bracket opening class body on same line or newline
     - class import should stick (no blank line) to class below if the class below inherits from the import, this also
       excludes the import class from sticking to other import classes (it should have a blank line separating them)
     - option for amount of blank lines between import classes and a normal class. import classes can be next to
@@ -39,7 +38,6 @@
   ones never used for inheritance)
 - Highlighting for MACROS with variables eg `MACRO(var)`
 - If I smart enter on a line that has a collapsed {} than I want it to open and I want to be inside
-- Fix current live templates, especially array
 - fix smart enter adding `;` at line ending with `{` (opening of block)
 - fixme add better samples for settings pages `ArmaConfigColorSettingsPage` and `ArmaConfigLanguageCodeStyleSettingProvider`
 - Fixme formatting affects block comments and defines that are multiline and indents them improperly breaking their intendend immunity, espescially for defines
@@ -53,7 +51,8 @@
 - Support for IntelliJ comment keybinds, so that ctrl+/ comments out the whole line with single line comment
 - Working file structure IntelliJ window
 - Inspection for duplicate parameter assignment in same class
-- Support for formatting
+- Code reformatting
+    - Option for `{` bracket opening class body on same line or newline
 - Editor completion matcher for `[]` `{}` `""` pairing
 - Automatic `;` autocompletion for `{}` when typing
 - Smart enter processor
@@ -87,7 +86,6 @@
 ### Fixed
 
 - Suppressed some localization and text format warnings in `plugin.xml`
-
 
 ## [1.0.1] - 2025-12-03
 

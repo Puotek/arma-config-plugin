@@ -1,8 +1,10 @@
 import org.jetbrains.changelog.Changelog
 import org.jetbrains.changelog.markdownToHTML
+import org.jetbrains.grammarkit.tasks.GenerateParserTask
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 import org.jetbrains.intellij.platform.gradle.tasks.BuildPluginTask
 import org.jetbrains.intellij.platform.gradle.tasks.RunIdeTask
+
 
 plugins {
     id("java") // Java support
@@ -11,6 +13,7 @@ plugins {
     alias(libs.plugins.changelog) // Gradle Changelog Plugin
     alias(libs.plugins.qodana) // Gradle Qodana Plugin
     alias(libs.plugins.kover) // Gradle Kover Plugin
+    alias(libs.plugins.grammarkit)
 }
 
 group = providers.gradleProperty("pluginGroup").get()
@@ -135,6 +138,14 @@ tasks {
     publishPlugin {
         dependsOn(patchChangelog)
     }
+
+    generateParser {
+        sourceFile.set(file("src/main/grammar/Cfg.bnf"))
+        pathToParser.set("/arma/config/parser/CfgParser.java")
+        pathToPsiRoot.set("/arma/config/psi")
+        targetRootOutputDir.set(file("src/main/gen"))
+        purgeOldFiles.set(true)
+    }
 }
 
 intellijPlatformTesting {
@@ -162,6 +173,14 @@ sourceSets {
     main {
         java.srcDir("src/main/gen")
     }
+}
+
+tasks.named("compileKotlin") {
+    dependsOn("generateParser")
+}
+
+tasks.named("compileJava") {
+    dependsOn("generateParser")
 }
 
 tasks.withType<Test> {
@@ -239,7 +258,8 @@ tasks.named<RunIdeTask>("runIde") {
     // trust all projects in the sandbox so it doesn't ask
     jvmArgumentProviders += CommandLineArgumentProvider {
         listOf(
-            "-Didea.trust.all.projects=true"
+            "-Didea.trust.all.projects=true",
+            "-Didea.log.level=error"
         )
     }
 }
