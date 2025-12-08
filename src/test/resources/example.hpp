@@ -28,23 +28,23 @@ class InspectionTestingClass {
 };
 class NormalClass {
 
-    value = 10 + -10;   // = 0
-    value = 10 + 5;    // = 15
-    value = 10 * -2;    // = -20
-    value = -10 * -10;  // = 100
-    value = -10;    // valid → result = -10
-    value = 1e5;
-    value = 3.14e-2;
-    value = 6.02E23;
-    value = 10E+6;
-    value = 0E0;
+    value0 = 10 + -10;   // = 0
+    value1 = 10 + 5;    // = 15
+    value2 = 10 * -2;    // = -20
+    value3 = -10 * -10;  // = 100
+    value4 = -10;    // valid → result = -10
+    value5 = 1e5;
+    value6 = 3.14e-2;
+    value7 = 6.02E23;
+    value8 = 10E+6;
+    value9 = 0E0;
 
-    x = Q((safeZoneW * 0.5) + safeZoneX - (26 * GRID_W));
+    x1 = Q((safeZoneW * 0.5) + safeZoneX - (26 * GRID_W));
     allowedHTMLLoadURIs[] += {
         "https://discord.gg/*"
     };
     MAWLCLS(IR_AIM) = 1;
-    displayName = Q(AN/PRC-163 1);
+    displayName1 = Q(AN/PRC-163 1);
     animPeriod=9.9999997e-006;
     condition = QUOTE((_this select 0) call FUNC(canMovePack) && {backpack (_this select 0) != '' || {(_this select 0) call FUNC(chestpack) != ''}});
     tabs[] = {{},{4}};

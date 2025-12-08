@@ -42,66 +42,67 @@ class CfgLanguageCodeStyleSettingsProvider : LanguageCodeStyleSettingsProvider()
             "USE_TAB_CHARACTER",
             "KEEP_INDENTS_ON_EMPTY_LINES"
         )
-        consumer.showCustomOption(
-            settingsClass,
-            "KEEP_EMPTY_ARRAY_ON_ONE_LINE",
-            "Keep empty array on one line",
-            "Arrays",
-        )
-    }
-
-    private fun customizeSpacingSettings(consumer: CodeStyleSettingsCustomizable) {
-        consumer.showCustomOption(
-            settingsClass,
-            "KEEP_EMPTY_ARRAY_ON_ONE_LINE",
-            "Keep empty array on one line",
-            "Arrays",
-        )
-    }
-
-    private fun customizeWrappingSettings(consumer: CodeStyleSettingsCustomizable) {
-        val groupName = "Arrays"
-        consumer.showCustomOption(
-            settingsClass,
-            "WRAP_ARRAYS",
-            groupName,
-            null,
-            CfgCodeStyleSettings.ArrayLayoutMode.labels,
-            CfgCodeStyleSettings.ArrayLayoutMode.ordinals
-        )
 /*
         consumer.showCustomOption(
             settingsClass,
-            "WRAP_ARRAYS",
+            "KEEP_EMPTY_ARRAY_ON_ONE_LINE",
+            "Keep empty array on one line",
             "Arrays",
-            "Arrays",
-            CfgCodeStyleSettings.ArrayLayoutMode.labels,
-            CfgCodeStyleSettings.ArrayLayoutMode.ordinals
         )
 */
+    }
+
+    private fun customizeSpacingSettings(consumer: CodeStyleSettingsCustomizable) {
+/*
         consumer.showCustomOption(
             settingsClass,
             "KEEP_EMPTY_ARRAY_ON_ONE_LINE",
             "Keep empty array on one line",
-            groupName,
+            "Arrays",
         )
+*/
+    }
 
+    private fun customizeWrappingSettings(consumer: CodeStyleSettingsCustomizable) {
+        val groupArrays = "Arrays"
+        consumer.showCustomOption(
+            settingsClass,
+            "ARRAYS_WRAP",
+            groupArrays,
+            null,
+            CfgCodeStyleSettings.WrapSetting.labels,
+            CfgCodeStyleSettings.WrapSetting.ordinals
+        )
+        consumer.showCustomOption(
+            settingsClass,
+            "ARRAYS_OPEN_BODY_NEWLINE",
+            "New line after `{`",
+            groupArrays
+        )
+        consumer.showCustomOption(
+            settingsClass,
+            "ARRAYS_CLOSE_BODY_NEWLINE",
+            "Place '}' on new line",
+            groupArrays
+        )
+        consumer.showCustomOption(
+            settingsClass,
+            "ARRAYS_FORCE_TRAILING_COMMA",
+            "Force trailing comma when multiline",
+            groupArrays
+        )
     }
 
     @Suppress("removal", "DEPRECATION")
     private fun customizeBlankLinesSettings(consumer: CodeStyleSettingsCustomizable) {
-        consumer.showCustomOption( //fixme this is not showing up in options
-            settingsClass,
-            "BLANK_LINES_AROUND_CLASS",
-            "Blank lines around class",
-            "Blank lines"
-        )
+/*
         consumer.showCustomOption(
             settingsClass,
             "KEEP_EMPTY_ARRAY_ON_ONE_LINE",
             "Keep empty array on one line",
             CodeStyleSettingsCustomizable.BLANK_LINES //deprecated but works
         )
+*/
 
     }
 }
