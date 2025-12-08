@@ -55,8 +55,7 @@ and didn't support some of the nicer IntelliJ features like breadcrumbs and stic
 
 #### Using the IDE built-in plugin system
 
-<kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "
-arma-config-plugin"</kbd> >
+<kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "Arma Config Support"</kbd> >
 <kbd>Install</kbd>
 
 #### Using JetBrains Marketplace
