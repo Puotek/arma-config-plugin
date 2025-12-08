@@ -15,13 +15,13 @@
 <!--suppress HtmlDeprecatedAttribute -->
 <div align="center">
 
-[<img src="https://capsule-render.vercel.app/api?type=waving&height=222&color=0:2046fb,15:7442ec,60:fd3a53,100:fd442a&text=Arma%20Config%20IntelliJ%20Plugin&textBg=false&fontAlignY=30&fontSize=55&animation=fadeIn&reversal=false&section=header&fontColor=FFFFFF&desc=by%20Puotek&descAlign=50&descAlignY=53"  alt="Arma 3 Config IntelliJ Plugin by Puotek"/>][marketplace:page]
+[<img src="https://capsule-render.vercel.app/api?type=waving&height=222&color=0:2046fb,15:7442ec,60:fd3a53,100:fd442a&text=Arma%203%20Config%20File%20Support&textBg=false&fontAlignY=30&fontSize=55&animation=fadeIn&reversal=false&section=header&fontColor=FFFFFF&desc=JetBrains%20IDE%20Plugin&descAlign=50&descAlignY=53"  alt="Arma 3 Config IntelliJ Plugin by Puotek"/>][marketplace:page]
 
-[![Marketplace](https://img.shields.io/badge/Marketplace-2046fb?logo=jetbrains&logoColor=white)
+[![Marketplace](https://img.shields.io/badge/Marketplace-2835a9?logo=jetbrains&logoColor=white)
 ][marketplace:page]
-[![Version](https://img.shields.io/jetbrains/plugin/v/29234-arma-config-support.svg?label=Version&color=2046fb)
-][marketplace:versions]
-[![Downloads](https://img.shields.io/jetbrains/plugin/d/29234-arma-config-support.svg?label=Downloads&color=fd3a53)
+[![Version](https://img.shields.io/jetbrains/plugin/v/29234-arma-config-support.svg?label=Version&color=713280)
+][github:changelog]
+[![Downloads](https://img.shields.io/jetbrains/plugin/d/29234-arma-config-support.svg?label=Downloads&color=aa3426)
 ][marketplace:versions]
 [![Discord](https://img.shields.io/badge/Puotek-%235865F2.svg?logo=discord&logoColor=white)
 ][puotek:discord]
