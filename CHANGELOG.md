@@ -42,6 +42,8 @@
 - fixme add better samples for settings pages `ArmaConfigColorSettingsPage` and `ArmaConfigLanguageCodeStyleSettingProvider`
 - Fixme formatting affects block comments and defines that are multiline and indents them improperly breaking their intendend immunity, espescially for defines
 - Todo allow all types of assignments and class elements on root level, but make an inspection that will shout at them if they are at root in a config.cpp file
+- Support for weird characters in include path
+- Action on iclude paths allowing to copy paste given file into that file, consider having to resolve includes inside the file or adjust paths, should be under right click file or maybe `alt` + `enter`
 
 ## [Unreleased]
 
