@@ -1,8 +1,8 @@
 # Changelog
 
-[![Version](https://img.shields.io/jetbrains/plugin/v/29234-arma-config-support.svg?label=Version&color=2046fb)
+[![Version](https://img.shields.io/jetbrains/plugin/v/29234-arma-config-support.svg?label=Latest%20Release&color=151b23&labelColor=2835a9&logo=jetbrains&logoColor=white)
 ](https://plugins.jetbrains.com/plugin/29234-arma-config-support/versions)
-[![Format](https://img.shields.io/badge/Keep_a_Changelog-[MAJOR.MINOR.PATCH]_--_YYYY--MM--DD-2c2d30?labelColor=f25d30)
+[![Format](https://img.shields.io/badge/Keep_a_Changelog-[MAJOR.MINOR.PATCH]_--_YYYY--MM--DD-151b23?labelColor=f25d30)
 ](https://keepachangelog.com/en/1.1.0/)
 
 ### TODO
