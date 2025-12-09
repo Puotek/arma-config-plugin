@@ -28,7 +28,7 @@
     - Around classes
     - min/max inside class bodies
   - Rules
-    - Dont change indent for comments and preprocessors
+    - Don't change indent for comments and preprocessors
 - Working grayout for unused classes, as in if a class has no body and is not used anywhere for inheritance than we gray
   out, with quick fix to remove class (careful can be used in other included files)
 - Support for usages, basically if any class is called anywhere for inheritance than we cound that as usage (ik intellij

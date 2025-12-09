@@ -145,23 +145,22 @@ tasks {
         targetRootOutputDir.set(file("src/main/gen"))
         purgeOldFiles.set(true)
     }
-    @Suppress("unused")
-    val runIdeForUiTests by intellijPlatformTesting.runIde.registering {
-        task {
-            jvmArgumentProviders += CommandLineArgumentProvider {
-                listOf(
-                    "-Drobot-server.port=8082",
-                    "-Dide.mac.message.dialogs.as.sheets=false",
-                    "-Djb.privacy.policy.text=<!--999.999-->",
-                    "-Djb.consents.confirmation.enabled=false",
-                )
-            }
-        }
-
-        plugins {
-            robotServerPlugin()
-        }
-    }
+//    val runIdeForUiTests by intellijPlatformTesting.runIde.registering {
+//        task {
+//            jvmArgumentProviders += CommandLineArgumentProvider {
+//                listOf(
+//                    "-Drobot-server.port=8082",
+//                    "-Dide.mac.message.dialogs.as.sheets=false",
+//                    "-Djb.privacy.policy.text=<!--999.999-->",
+//                    "-Djb.consents.confirmation.enabled=false",
+//                )
+//            }
+//        }
+//
+//        plugins {
+//            robotServerPlugin()
+//        }
+//    }
 }
 
 sourceSets {
@@ -201,6 +200,7 @@ tasks.register<Copy>("copyExample") {
 tasks.register<Task>("bumpVersion") {
     group = "puotek"
     description = "Increment pluginVersion PATCH property by 1"
+    notCompatibleWithConfigurationCache("This task mutates gradle.properties and uses script APIs")
 
     doLast {
         val propsFile = file("gradle.properties")
