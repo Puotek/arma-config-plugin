@@ -15,7 +15,7 @@
 [puotek:github]: https://github.com/Puotek
 
 <!--suppress HtmlDeprecatedAttribute -->
-<div align="center" style="text-decoration:none;">
+<p align="center" style="text-decoration:none;">
 
 [<img src="https://capsule-render.vercel.app/api?type=waving&height=222&color=0:2046fb,15:7442ec,60:fd3a53,100:fd442a&text=Arma%20Config%20Support&textBg=false&fontAlignY=30&fontSize=55&animation=fadeIn&reversal=false&section=header&fontColor=FFFFFF&desc=JetBrains%20IDE%20Plugin&descAlign=50&descAlignY=53"  alt="Arma Config Support JetBrains IDE Plugin"/>][marketplace:page]
 
@@ -30,7 +30,7 @@
 
 [<img src="https://contrib.rocks/image?repo=Puotek/arma-config-plugin"  alt="Contributor Profile Pictures in a grid"/>][puotek:github]
 
-</div>
+</p>
 
 <!-- Plugin description -->
 
