@@ -69,8 +69,8 @@ To manually create a release, open project in IntelliJ with [Plugin DevKit](http
 
 Make sure to [set project JDK](https://www.jetbrains.com/help/idea/sdk.html#set-up-jdk) to version 21 (e.g. `Oracle OpenJDK 21.0.1`)
 
-Run `buildDownloads` configuration or gradle task
+Run `buildDownloads` configuration or gradle task.
 
-Console might say error, but your plugin build should be in your `User/Downloads` folder. Install it manually using:
+Your plugin build should be in your `User/Downloads` folder. Install it manually using:
 
 <kbd>Settings</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
