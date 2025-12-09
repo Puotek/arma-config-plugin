@@ -10,7 +10,7 @@ import com.intellij.psi.codeStyle.LanguageCodeStyleSettingsProvider
 
 class CfgLanguageCodeStyleSettingsProvider : LanguageCodeStyleSettingsProvider() {
 
-    val settingsClass = CfgCodeStyleSettings::class.java
+    private val settingsClass = CfgCodeStyleSettings::class.java
 
     override fun getLanguage() = CfgLanguage
     override fun createCustomSettings(settings: CodeStyleSettings): CustomCodeStyleSettings = CfgCodeStyleSettings(settings)
