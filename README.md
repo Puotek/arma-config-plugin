@@ -10,6 +10,8 @@
 
 [puotek:discord]: https://discord.com/users/291967371646599169
 
+[puotek:steam:workshop]: https://steamcommunity.com/id/puotekpl/myworkshopfiles/?appid=107410&numperpage=30
+
 <!--suppress HtmlDeprecatedAttribute -->
 <div align="center">
 
@@ -19,6 +21,9 @@
 [![Version](https://img.shields.io/jetbrains/plugin/v/29234-arma-config-support.svg?label=Version&color=713280&labelColor=151b23)][github:changelog]
 [![Downloads](https://img.shields.io/jetbrains/plugin/d/29234-arma-config-support.svg?label=Downloads&color=aa3426&labelColor=151b23)][marketplace:versions]
 [![Discord](https://img.shields.io/badge/Puotek-%235865F2.svg?logo=discord&logoColor=white)][puotek:discord]
+[![Discord](https://img.shields.io/badge/Puotek-1b2838?logo=steam&logoColor=white)][puotek:steam:workshop]
+
+[//]: # (![Rating]&#40;https://img.shields.io/jetbrains/plugin/r/stars/29234?label=&color=0d1117&style=for-the-badge&#41;)
 
 </div>
 
