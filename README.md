@@ -1,7 +1,5 @@
 [github]: https://github.com/Puotek/arma-config-plugin
 
-[github:contributors]: https://github.com/Puotek/arma-config-plugin/graphs/contributors
-
 [github:changelog]: https://github.com/Puotek/arma-config-plugin/blob/main/CHANGELOG.md
 
 [github:issues]: https://github.com/Puotek/arma-config-plugin/issues
@@ -12,8 +10,6 @@
 
 [puotek:discord]: https://discord.com/users/291967371646599169
 
-[puotek:github]: https://github.com/Puotek
-
 <!--suppress HtmlDeprecatedAttribute -->
 <div align="center">
 
@@ -23,8 +19,6 @@
 [![Version](https://img.shields.io/jetbrains/plugin/v/29234-arma-config-support.svg?label=Version&color=713280&labelColor=151b23)][github:changelog]
 [![Downloads](https://img.shields.io/jetbrains/plugin/d/29234-arma-config-support.svg?label=Downloads&color=aa3426&labelColor=151b23)][marketplace:versions]
 [![Discord](https://img.shields.io/badge/Puotek-%235865F2.svg?logo=discord&logoColor=white)][puotek:discord]
-
-[<img src="https://contrib.rocks/image?repo=Puotek/arma-config-plugin"  alt="Contributor Profile Pictures in a grid"/>][puotek:github]
 
 </div>
 
