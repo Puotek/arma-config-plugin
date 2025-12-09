@@ -2,7 +2,6 @@
 
 [marketplace:versions]: https://plugins.jetbrains.com/plugin/29234-arma-config-support/versions
 
-
 # Changelog
 
 [![Version](https://img.shields.io/jetbrains/plugin/v/29234-arma-config-support.svg?label=Version&color=2835a9&labelColor=151b23)][marketplace:versions]
@@ -11,39 +10,52 @@
 ### TODO
 
 - Code reformatting
-  - Arrays
-    - Auto add comma after last element
-  - Classes
-    - Wrapping `ALWAYS/NEVER/SMART`
-    - `{` on newline placement
-    - Space before/after `:`
-    - Space before `{`
-  - Assignments
-    - Space before/after `=`
-  - Comments
-    - Space before/after '//'
-  - Blank lines
-    - After preprocessor
-    - Between classes depending on if import/body (stick related import?)
-    - Around classes
-    - min/max inside class bodies
-  - Rules
-    - Don't change indent for comments and preprocessors
-- Working grayout for unused classes, as in if a class has no body and is not used anywhere for inheritance than we gray
-  out, with quick fix to remove class (careful can be used in other included files)
-- Support for usages, basically if any class is called anywhere for inheritance than we cound that as usage (ik intellij
-  has some framework for usages) and this should also support ctrl+click on the class to navigate to original import or
-  to usage
-- Optimize imports IntelliJ support, where imports are classes with no body, and we optimize by removing unused ones (
-  ones never used for inheritance)
-- Highlighting for MACROS with variables eg `MACRO(var)`
-- If I smart enter on a line that has a collapsed {} than I want it to open and I want to be inside
-- fix smart enter adding `;` at line ending with `{` (opening of block)
-- fixme add better samples for settings pages `ArmaConfigColorSettingsPage` and `ArmaConfigLanguageCodeStyleSettingProvider`
+    - Semicolon always collapse with no-space
+    - Arrays
+        - Auto insert comma after last element
+        - Spaces between `{}` when collapsed with elements
+    - Classes
+        - Wrapping `ALWAYS/NEVER/SMART`
+        - `{` on newline placement
+        - Space before/after `:`
+        - Space before `{`
+        - Spaces between `{}` when collapsed with elements
+    - Assignments
+        - Space before/after `=`
+    - Comments
+        - Space before/after '//'
+    - Blank lines
+        - After preprocessor
+        - Between classes depending on if import/body (stick related import?)
+        - Around classes
+        - min/max inside class bodies
+    - Rules
+        - Don't change indent for comments and preprocessors
+- Working grayout for unused classes
+    - If a class has no body and is not used anywhere for inheritance
+    - Quick fix to remove class (careful can be used in other included files)
+- Support for usage search
+    - If any class is called anywhere for inheritance than we cound that as usage (ik intellij has some framework for usages)
+    - This should also support ctrl+click on the class to navigate to original import or
+      to usage
+    - If a class with the same name on the same indent level is called somewhere and its parent inherits after parent class or class that has inherited inherits (deepsearch)
+    - Search included files?
+- Optimize imports
+    - imports are classes with no body, and we optimize by removing unused ones (ones never used for inheritance)
+    - Only works for config.cpp?
+    - Search all included files?
+    - Requires basiclly a system for resolving includes
+- Separate Highlighting for macro `()` from normal `()`. Similar to single quote strings, but a level above
+- Smart Enter:
+    - When invoked on a collapsed `{}`, automatically expand it and place cursor inside
+    - Fix Smart Enter incorrectly adding `;` on lines ending with `{`
+- fixme better samples for settings pages `ArmaConfigColorSettingsPage` and `ArmaConfigLanguageCodeStyleSettingProvider`
 - Fixme formatting affects block comments and defines that are multiline and indents them improperly breaking their intendend immunity, espescially for defines
 - Todo allow all types of assignments and class elements on root level, but make an inspection that will shout at them if they are at root in a config.cpp file
-- Support for weird characters in include path
-- Action on iclude paths allowing to copy paste given file into that file, consider having to resolve includes inside the file or adjust paths, should be under right click file or maybe `alt` + `enter`
+- Support for weird characters in include path, path normalization to Windows file/dir names
+- Include resolving (copy and paste included file into #include line)
+    - consider having to resolve includes inside the file or adjust paths
+    - should be under right click file or maybe `alt` + `enter`
 - Create a setting or something that allows you to set the file as the PREP file and make it check if all functions from x folder are PREPED
 - Suggestions/autocompletion when writing the #include path
 - Suggestions/autocompletion when writing a path in macro at some point?
@@ -52,81 +64,77 @@
 
 ### Added
 
-- Support for single quote strings `' '` with highlighting
-- Support for IntelliJ comment keybinds, so that ctrl+/ comments out the whole line with single line comment
-- Working file structure IntelliJ window
-- Inspection for duplicate parameter assignment in same class
+- Comment keybind support <kbd>Ctrl</kbd>+<kbd>/</kbd> and <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>/</kbd>
+- Clickable `#include` file paths and improved highlighting
+- File Structure window integration
+- Editor completion matcher for `[]`, `{}` and `""`
+- Automatic `;` insertion when typing `{}`
+- Smart Enter processor
+- Live Templates group and basic built-in templates
 - Code reformatting
-    - Collapse empty `{}`
+    - Collapse empty `{}` blocks
     - Arrays
-      - Wrapping `ALWAYS/NEVER/SMART`
-      - `{` and `}` newline placment
-      - Leading commas
-      - Space before/after `=`
-- Editor completion matcher for `[]` `{}` `""` pairing
-- Automatic `;` autocompletion for `{}` when typing
-- Smart enter processor
-- Support for `+=` with array assignment
-- Support for use of macros in parameter names
-- Support for exponent in math expressions, like `999e-006`
-- Support for IntelliJ Live Templates and some basic templates
-- Configurations saved to project
-- Auto-open of `src/test/resources` as project when testing with `runIdeClean`
-- Clickable links to files for `#include` and string highlighting for the path
-- Support for classnames starting with numbers, like `30Rnd_556x45_Stanag`
-- Support for `>`, `<` and `!` operators inside macros
-- Support for math tokens inside of macros `+-*/%^`
-- Support for `##` operator in identifiers `PREFIX##_Vehicles`
-- Support for `&` inside of macros
-- Support for nested arrays
-- Support for trailing `,` in arrays with an inspection
+        - Wrapping `ALWAYS/NEVER/SMART`
+        - `{` and `}` newline placement
+        - Leading commas
+        - Space before/after `=`
+- Inspection for duplicate parameter assignment in the same class
 - Inspection for identifiers starting with numbers
+- Syntax support for:
+    - Single-quote strings `' '` with special highlighting
+    - `+=` operator for array assignments
+    - Macros appearing in parameter names
+    - Exponent notation in numeric expressions (`999e-006`)
+    - Unary `-` operator in math expressions
+    - Class names starting with a number (e.g. `30Rnd_556x45_Stanag`)
+    - `&`, `>`, `<`, `!`, `+`, `-`, `*`, `/`, `%` and `^` operators inside macros
+    - `##` operator
+    - Nested arrays
+    - Trailing comma in arrays with an inspection (Acceptable in HEMTT, but not BI Tools)
+    - Improved macro syntax
+    - Block comments in more locations `/* */`
 
-### Changed
+### Dev
 
-- Significant refactor: Renamed all `ArmaConfig...` class names to `Cfg...`
-- Improved and prettified `README.md` and `CHANGELOG.md`
-- `README.md` added a new guide on how to manually make a build of the plugin
-- `README.md` updated plugin description
-- Moved test resources from `src/main` to `src/test`
-- Reworked lexer parsing for macros
-- Significant rework to nearly everything due to large grammar `ArmaConfig.bnf` file changes
-- Lexer code cleanup and rework
-
-### Fixed
-
-- Suppressed some localization and text format warnings in `plugin.xml`
+- Improved and cleaned up `README` and `CHANGELOG`
+- Added a section to `README` explaining how to manually build the plugin
+- Massive rename of all internal `ArmaConfig...` classes to `Cfg...`
+- Major grammar refactor
+- Major lexer refactor
+- Widespread internal cleanup due to class renames, grammar and lexer changes
+- Test resources moved from `src/main` to `src/test`
+- Run configurations saved to project
+- Auto-open of `src/test/resources` as a project when using `runIdeClean` for testing
+- Suppressed text localization, capitalization and lack of logo warnings in `plugin.xml`
 
 ## [1.0.1] - 2025-12-03
 
-### Changed
+### Dev
 
-- Filled `CHANGELOG.md` with info
-- Updated `README.md` with plugin id for links
+- Updated `README` with plugin ID for correct links
+- Populated `CHANGELOG` with version history
 
 ## [1.0.0] - 2025-12-03
 
 ### Added
 
-- Working parsing with support for:
-    - classes
-    - class inheritance
-    - no body classes
-    - preprocessor #include and #define
-    - delete keyword
-    - line and block comments
-    - inline preprocessor usage inside of properties and class names
-    - properties
-        - string
-        - array
-        - int
-        - float
-        - complex math expressions
-- Syntax Highlighting
-- Breadcrumb provider (also works for Sticky Lines)
-- Existing IntelliJ Icons for files (separate for config.cpp vs all others)
-- Internal gradle tasks
-- Settings page for highlighting
+- Syntax parsing with support for:
+    - Classes
+    - Class inheritance
+    - Classes without bodies
+    - Preprocessor directives: `#include`, `#define`
+    - `delete` keyword
+    - Line and block comments
+    - Macro usage inside properties and class names
+    - Strings
+    - Arrays
+    - Integers and Floats
+    - Math expressions
+- Syntax highlighting
+- Breadcrumb provider and Sticky Lines
+- IntelliJ file icons (different for `config.cpp` vs other files)
+- IntelliJ Gradle tasks integration
+- Highlighting settings page
 - Inspections
-    - commas inside of parentheses
-    - syntax check for correct array properties usage property[] = {};
+    - Commas inside macros
+    - Array syntax validation `property[] = {};`
