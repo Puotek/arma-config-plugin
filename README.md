@@ -37,10 +37,14 @@ Language support for [Arma 3 config files](https://community.bistudio.com/wiki/C
 - Breadcrumbs and sticky lines
 - Inspections
 - Support for macro usage in syntax checking
-- Support for comment keybinds
+- Comment keybinds support <kbd>Ctrl</kbd>+<kbd>/</kbd> and <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>/</kbd>
+- Clickable `#include` file paths
 - Working file structure window
-- Formatting
+- Code reformatting with settings
 - Folding
+- Editor completion matcher for `[]`, `{}` and `""`
+- Smart Enter processor
+- Live Templates group and basic built-in templates
 - [and more...][github:changelog]
 
 <!-- Plugin description end -->

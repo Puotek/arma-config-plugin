@@ -64,7 +64,7 @@
 
 ### Added
 
-- Comment keybind support <kbd>Ctrl</kbd>+<kbd>/</kbd> and <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>/</kbd>
+- Comment keybinds support <kbd>Ctrl</kbd>+<kbd>/</kbd> and <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>/</kbd>
 - Clickable `#include` file paths and improved highlighting
 - File Structure window integration
 - Editor completion matcher for `[]`, `{}` and `""`
