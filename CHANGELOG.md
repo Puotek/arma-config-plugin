@@ -41,6 +41,9 @@
 - Todo allow all types of assignments and class elements on root level, but make an inspection that will shout at them if they are at root in a config.cpp file
 - Support for weird characters in include path
 - Action on iclude paths allowing to copy paste given file into that file, consider having to resolve includes inside the file or adjust paths, should be under right click file or maybe `alt` + `enter`
+- Create a setting or something that allows you to set the file as the PREP file and make it check if all functions from x folder are PREPED
+- Suggestions/autocompletion when writing the #include path
+- Suggestions/autocompletion when writing a path in macro at some point?
 
 ## [Unreleased]
 
