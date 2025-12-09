@@ -1,5 +1,5 @@
 version: 1.0
-name: "qodana_profile.yaml"
+name: "Custom Profile"
 baseProfile: qodana.recommended
 
 groups:
