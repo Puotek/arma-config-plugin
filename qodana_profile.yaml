@@ -1,5 +1,5 @@
 version: 1.0
-name: "Custom arma-config-plugin Profile"
+name: qodana_profile.yaml
 baseProfile: qodana.recommended
 
 groups:
