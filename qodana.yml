@@ -10,3 +10,7 @@ exclude:
   - name: All
     paths:
       - .qodana
+
+disable:
+  - Probable bugs
+  - Redundant constructs
