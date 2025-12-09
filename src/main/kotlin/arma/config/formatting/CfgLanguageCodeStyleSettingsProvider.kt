@@ -53,18 +53,21 @@ class CfgLanguageCodeStyleSettingsProvider : LanguageCodeStyleSettingsProvider()
     }
 
     private fun customizeSpacingSettings(consumer: CodeStyleSettingsCustomizable) {
-/*
         consumer.showCustomOption(
             settingsClass,
-            "KEEP_EMPTY_ARRAY_ON_ONE_LINE",
-            "Keep empty array on one line",
-            "Arrays",
+            "ARRAYS_SPACE_EQUALS_BEFORE",
+            "Space before `=`",
+            groupArrays,
         )
-*/
+        consumer.showCustomOption(
+            settingsClass,
+            "ARRAYS_SPACE_EQUALS_AFTER",
+            "Space after `=`",
+            groupArrays,
+        )
     }
 
     private fun customizeWrappingSettings(consumer: CodeStyleSettingsCustomizable) {
-        val groupArrays = "Arrays"
         consumer.showCustomOption(
             settingsClass,
             "ARRAYS_WRAP",
@@ -75,22 +78,29 @@ class CfgLanguageCodeStyleSettingsProvider : LanguageCodeStyleSettingsProvider()
         )
         consumer.showCustomOption(
             settingsClass,
-            "ARRAYS_OPEN_BODY_NEWLINE",
-            "New line after `{`",
+            "ARRAYS_NEWLINE_BODY_OPEN",
+            "Place `{` on new line",
             groupArrays
         )
         consumer.showCustomOption(
             settingsClass,
-            "ARRAYS_CLOSE_BODY_NEWLINE",
-            "Place '}' on new line",
+            "ARRAYS_NEWLINE_BODY_CLOSE",
+            "Place `}` on new line",
             groupArrays
         )
         consumer.showCustomOption(
             settingsClass,
-            "ARRAYS_FORCE_TRAILING_COMMA",
-            "Force trailing comma when multiline",
+            "ARRAYS_LEADING_COMMAS",
+            "Leading commas",
             groupArrays
         )
+        consumer.showCustomOption(
+            settingsClass,
+            "ARRAYS_ADD_TRAILING_COMMA",
+            "Add comma after last element",
+            groupArrays
+        )
+
     }
 
     @Suppress("removal", "DEPRECATION")
@@ -106,3 +116,5 @@ class CfgLanguageCodeStyleSettingsProvider : LanguageCodeStyleSettingsProvider()
 
     }
 }
+
+private const val groupArrays = "Arrays"

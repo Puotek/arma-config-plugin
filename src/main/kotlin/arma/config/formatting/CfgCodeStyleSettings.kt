@@ -7,7 +7,7 @@ import com.intellij.psi.codeStyle.CodeStyleSettings
 import com.intellij.psi.codeStyle.CustomCodeStyleSettings
 import com.intellij.rml.dfa.utils.toInt
 
-@Suppress("PropertyName","FunctionName")
+@Suppress("PropertyName", "FunctionName", "unused")
 class CfgCodeStyleSettings(container: CodeStyleSettings) : CustomCodeStyleSettings("CfgCodeStyleSettings", container) {
     enum class WrapSetting {
         ONELINE,
@@ -28,15 +28,25 @@ class CfgCodeStyleSettings(container: CodeStyleSettings) : CustomCodeStyleSettin
     var ARRAYS_WRAP: Int = WrapSetting.SMART.ordinal
 
     @JvmField
-    var ARRAYS_OPEN_BODY_NEWLINE: Boolean = false
+    var ARRAYS_NEWLINE_BODY_OPEN: Boolean = false
 
     @JvmField
-    var ARRAYS_CLOSE_BODY_NEWLINE: Boolean = true
+    var ARRAYS_NEWLINE_BODY_CLOSE: Boolean = true
 
     @JvmField
-    var ARRAYS_FORCE_TRAILING_COMMA: Boolean = false
-    //fixme maybe this as dropdown?
-    //todo implement
+    var ARRAYS_LEADING_COMMAS: Boolean = false
+
+    @JvmField
+    var ARRAYS_ADD_TRAILING_COMMA: Boolean = false /*
+    fixme maybe this as dropdown?
+    todo implement
+    */
+
+    @JvmField
+    var ARRAYS_SPACE_EQUALS_BEFORE: Boolean = true
+
+    @JvmField
+    var ARRAYS_SPACE_EQUALS_AFTER: Boolean = true
 
     @JvmField
     var KEEP_EMPTY_ARRAY_ON_ONE_LINE: Boolean = true
@@ -74,11 +84,10 @@ class CfgCodeStyleSettings(container: CodeStyleSettings) : CustomCodeStyleSettin
             if (firstChild == null || secondChild == null) return true
 
             // If there is a newline between '{' and first element → multiline layout
-            return if (body.psi.containingFile.text.subSequence(
-                    firstChild.textRange.endOffset,
-                    secondChild.textRange.startOffset
-                ).any { it == '\n' }
-            ) true else false
+            return body.psi.containingFile.text.subSequence(
+                firstChild.textRange.endOffset,
+                secondChild.textRange.startOffset
+            ).any { it == '\n' }
         }
 
         //Helper that depending on current set mode returns whether to wrap (or if Smart it will find out)
@@ -88,13 +97,19 @@ class CfgCodeStyleSettings(container: CodeStyleSettings) : CustomCodeStyleSettin
             WrapSetting.SMART -> detectBodyLayout(body)
         }
 
-        fun ARRAYS_WRAP(body: ASTNode): Int = helper(body, raw.ARRAYS_WRAP).toInt()
+        fun ARRAYS_WRAP(body: ASTNode): Boolean = helper(body, raw.ARRAYS_WRAP)
 
-        val ARRAYS_OPEN_BODY_NEWLINE: Int get() = raw.ARRAYS_OPEN_BODY_NEWLINE.toInt()
+        val ARRAYS_NEWLINE_BODY_OPEN: Boolean get() = raw.ARRAYS_NEWLINE_BODY_OPEN
 
-        val ARRAYS_CLOSE_BODY_NEWLINE: Int get() = raw.ARRAYS_CLOSE_BODY_NEWLINE.toInt()
+        val ARRAYS_NEWLINE_BODY_CLOSE: Boolean get() = raw.ARRAYS_NEWLINE_BODY_CLOSE
 
-        val ARRAYS_FORCE_TRAILING_COMMA: Int get() = raw.ARRAYS_FORCE_TRAILING_COMMA.toInt()
+        val ARRAYS_LEADING_COMMAS: Boolean get() = raw.ARRAYS_LEADING_COMMAS
+
+        val ARRAYS_ADD_TRAILING_COMMA: Boolean get() = !raw.ARRAYS_LEADING_COMMAS && raw.ARRAYS_ADD_TRAILING_COMMA
+
+        val ARRAYS_SPACE_EQUALS_BEFORE: Int get() = raw.ARRAYS_SPACE_EQUALS_BEFORE.toInt()
+
+        val ARRAYS_SPACE_EQUALS_AFTER: Int get() = raw.ARRAYS_SPACE_EQUALS_AFTER.toInt()
 
     }
 }

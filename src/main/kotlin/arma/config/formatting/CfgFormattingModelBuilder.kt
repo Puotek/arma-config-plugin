@@ -8,6 +8,7 @@ import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiFile
 import com.intellij.psi.TokenType.WHITE_SPACE
 import com.intellij.psi.codeStyle.CodeStyleSettings
+import com.intellij.rml.dfa.utils.toInt
 
 class CfgFormattingModelBuilder : FormattingModelBuilder {
 
@@ -115,33 +116,44 @@ class CfgFormattingModelBuilder : FormattingModelBuilder {
                 }
 
                 CfgTypes.ARRAY_BLOCK -> {
-                    if (rightType == CfgTypes.ARRAY_BODY) {
-                        val wrap = codeStyleSettings.ARRAYS_WRAP(rightNode)
-                        val newline = if (wrap != 0) codeStyleSettings.ARRAYS_OPEN_BODY_NEWLINE else 0
+                    if (leftType == CfgTypes.ARRAY_BODY) {
                         return Spacing.createSpacing(
-                            1,1,newline,false,0
+                            0, 0, 0, false, 0
+                        )
+                    }
+                    if (rightType == CfgTypes.EQUAL) {
+                        val spaceEqualBefore = codeStyleSettings.ARRAYS_SPACE_EQUALS_BEFORE
+                        return Spacing.createSpacing(
+                            spaceEqualBefore, spaceEqualBefore, 0, false, 0
+                        )
+                    }
+                    if (rightType == CfgTypes.ARRAY_BODY) {
+                        val spaceEqualAfter = codeStyleSettings.ARRAYS_SPACE_EQUALS_AFTER
+                        val wrap = codeStyleSettings.ARRAYS_WRAP(rightNode)
+                        val newline = codeStyleSettings.ARRAYS_NEWLINE_BODY_OPEN
+                        return Spacing.createSpacing(
+                            spaceEqualAfter, spaceEqualAfter, (wrap && newline).toInt(), false, 0
                         )
                     }
                 }
 
                 CfgTypes.ARRAY_BODY -> {
                     val wrap = codeStyleSettings.ARRAYS_WRAP(leftNode.treeParent)
-                    val closeNewline = if (wrap != 0) codeStyleSettings.ARRAYS_CLOSE_BODY_NEWLINE else 0
-
-                    //newline after and before {} when array has content
+                    val leadingCommas = codeStyleSettings.ARRAYS_LEADING_COMMAS
+                    val newLine = codeStyleSettings.ARRAYS_NEWLINE_BODY_CLOSE
                     if (leftType == CfgTypes.LBRACE) return Spacing.createSpacing(
-                        0, 0, wrap, false, 0
+                        0, 0, wrap.toInt(), false, 0
                     )
-                    if (rightType == CfgTypes.RBRACE) return Spacing.createSpacing(
-                        0,0,closeNewline,false,0
-                    )
-                    //no space or newline before comma
+                    if (rightType == CfgTypes.RBRACE) {
+                        return Spacing.createSpacing(
+                            0, 0, (wrap && newLine).toInt(), false, 0
+                        )
+                    }
                     if (rightType == CfgTypes.COMMA) return Spacing.createSpacing(
-                        0, 0, 0, false, 0
+                        0, 0, (wrap && leadingCommas).toInt(), false, 0
                     )
-                    //space and newline after comma
                     if (leftType == CfgTypes.COMMA) return Spacing.createSpacing(
-                        1, 1, wrap, false, 0
+                        (!(wrap && leadingCommas)).toInt(), (!(wrap && leadingCommas)).toInt(), (wrap && !leadingCommas).toInt(), false, 0
                     )
                 }
 

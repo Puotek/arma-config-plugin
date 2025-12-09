@@ -8,27 +8,24 @@
 ### TODO
 
 - Code reformatting
-    - class import should stick (no blank line) to class below if the class below inherits from the import, this also
-      excludes the import class from sticking to other import classes (it should have a blank line separating them)
-    - option for amount of blank lines between import classes and a normal class. import classes can be next to
-      each other (on first reformat we keep any blank lines between, on second reformat we make sure there is no blank
-      lines between import classes)
-    - formatting for : that is used for class inheritance so that it has smart space on both sides
-    - make sure to not touch stuff inside preprocessor macros that have () as in like Q() or TAG(nothing touched inside)
-    - dont touch anything inside of normal `" "` and single quote strings `' '`
-    - collapse empty {} blocks
-    - smart space after class name / before opening of class body, and also working for inheritance
-    - single space before single line // comments
-    - option to have a space after a // comment opens eg: //test vs // test (option is have space or no space or
-      untouched)
-    - options for array wrapping in config, talking about {}, where I want the reformat to keep current way, either it
-      will keep single line if it currently is and make sure to add a space after each , (make this an option) or if the
-      array was multiline to any extent I want it to reformat to be multiline fully
-    - for arrays I also want an option to have , at the start of each line or at the end of each line when arrays are
-      multiline
-    - for multiline arrays first item should be on newline compared to `{` and the closing `}` should also be on a
-      newline aligned with the indent of the line where `{` was
-    - option for amount of blank lines between any preprocessor (#include or #define) stuff and a class
+  - Arrays
+    - Auto add comma after last element
+  - Classes
+    - Wrapping `ALWAYS/NEVER/SMART`
+    - `{` on newline placement
+    - Space before/after `:`
+    - Space before `{`
+  - Assignments
+    - Space before/after `=`
+  - Comments
+    - Space before/after '//'
+  - Blank lines
+    - After preprocessor
+    - Between classes depending on if import/body (stick related import?)
+    - Around classes
+    - min/max inside class bodies
+  - Rules
+    - Dont change indent for comments and preprocessors
 - Working grayout for unused classes, as in if a class has no body and is not used anywhere for inheritance than we gray
   out, with quick fix to remove class (careful can be used in other included files)
 - Support for usages, basically if any class is called anywhere for inheritance than we cound that as usage (ik intellij
@@ -54,7 +51,12 @@
 - Working file structure IntelliJ window
 - Inspection for duplicate parameter assignment in same class
 - Code reformatting
-    - Option for `{` bracket opening class body on same line or newline
+    - Collapse empty `{}`
+    - Arrays
+      - Wrapping `ALWAYS/NEVER/SMART`
+      - `{` and `}` newline placment
+      - Leading commas
+      - Space before/after `=`
 - Editor completion matcher for `[]` `{}` `""` pairing
 - Automatic `;` autocompletion for `{}` when typing
 - Smart enter processor
