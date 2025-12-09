@@ -5,12 +5,8 @@ version: "1.0"
 linter: jetbrains/qodana-jvm-community:2025.2
 projectJDK: "21"
 profile:
-  name: qodana.recommended
+  name: qodana_profile.yaml
 exclude:
   - name: All
     paths:
-      - .qodana
-
-disable:
-  - Probable bugs
-  - Redundant constructs
+      - qodana_profile.yaml
