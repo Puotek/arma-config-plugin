@@ -7,8 +7,9 @@
 [![Version](https://img.shields.io/jetbrains/plugin/v/29234-arma-config-support.svg?label=Version&color=2835a9&labelColor=151b23)][marketplace:versions]
 [![Format](https://img.shields.io/badge/Keep_a_Changelog-[MAJOR.MINOR.PATCH]_--_YYYY--MM--DD-151b23?labelColor=f25d30)][keepachangelog]
 
-## TODO
+### TODO
 
+- fixme better samples for settings pages `ArmaConfigColorSettingsPage` and `ArmaConfigLanguageCodeStyleSettingProvider`
 - Code reformatting
     - Semicolon always collapse with no-space
     - Arrays
@@ -49,18 +50,15 @@
 - Smart Enter:
     - When invoked on a collapsed `{}`, automatically expand it and place cursor inside
     - Fix Smart Enter incorrectly adding `;` on lines ending with `{`
-- fixme better samples for settings pages `ArmaConfigColorSettingsPage` and `ArmaConfigLanguageCodeStyleSettingProvider`
 - Fixme formatting affects block comments and defines that are multiline and indents them improperly breaking their intendend immunity, espescially for defines
 - Todo allow all types of assignments and class elements on root level, but make an inspection that will shout at them if they are at root in a config.cpp file
-- Support for weird characters in include path, path normalization to Windows file/dir names
 - Include resolving (copy and paste included file into #include line)
     - consider having to resolve includes inside the file or adjust paths
     - should be under right click file or maybe `alt` + `enter`
-- Create a setting or something that allows you to set the file as the PREP file and make it check if all functions from x folder are PREPED
 - Suggestions/autocompletion when writing the #include path
 - Suggestions/autocompletion when writing a path in macro at some point?
 - Filepath detection in strings (both `''` and `""`) and make em clickable
-- Make it so that some live templates dont activate when in comments or have them have that context in general if possible
+- Make it so that some live templates don't activate when in comments or have them have that context in general if possible
 - SQF Injection support
 
 ## [Unreleased]
