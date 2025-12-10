@@ -23,7 +23,7 @@
     - Assignments
         - Space before/after `=`
     - Comments
-        - Space before/after '//'
+        - Space before/after `//`
     - Blank lines
         - After preprocessor
         - Between classes depending on if import/body (stick related import?)
