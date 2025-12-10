@@ -4,9 +4,11 @@
 
 [github:issues]: https://github.com/Puotek/arma-config-plugin/issues
 
-[marketplace:page]: https://plugins.jetbrains.com/plugin/29234-arma-config-support
+[marketplace]: https://plugins.jetbrains.com/plugin/29234-arma-config-support
 
 [marketplace:versions]: https://plugins.jetbrains.com/plugin/29234-arma-config-support/versions
+
+[marketplace:reviews]: https://plugins.jetbrains.com/plugin/29234-arma-config-support/reviews
 
 [puotek:discord]: https://discord.com/users/291967371646599169
 
@@ -15,9 +17,9 @@
 <!--suppress HtmlDeprecatedAttribute -->
 <div align="center">
 
-[<img src="https://capsule-render.vercel.app/api?type=waving&height=222&color=0:2046fb,15:7442ec,60:fd3a53,100:fd442a&text=Arma%20Config%20Support&textBg=false&fontAlignY=30&fontSize=55&animation=fadeIn&reversal=false&section=header&fontColor=FFFFFF&desc=JetBrains%20IDE%20Plugin&descAlign=50&descAlignY=53"  alt="Arma Config Support JetBrains IDE Plugin"/>][marketplace:page]
+[<img src="https://capsule-render.vercel.app/api?type=waving&height=222&color=0:2046fb,15:7442ec,60:fd3a53,100:fd442a&text=Arma%20Config%20Support&textBg=false&fontAlignY=30&fontSize=55&animation=fadeIn&reversal=false&section=header&fontColor=FFFFFF&desc=JetBrains%20IDE%20Plugin&descAlign=50&descAlignY=53"  alt="Arma Config Support JetBrains IDE Plugin"/>][marketplace]
 
-[![Marketplace](https://img.shields.io/badge/Marketplace-2835a9?logo=jetbrains&logoColor=white)][marketplace:page]
+[![Marketplace](https://img.shields.io/badge/Marketplace-2835a9?logo=jetbrains&logoColor=white)][marketplace]
 [![Version](https://img.shields.io/jetbrains/plugin/v/29234-arma-config-support.svg?label=Version&color=713280&labelColor=151b23)][github:changelog]
 [![Downloads](https://img.shields.io/jetbrains/plugin/d/29234-arma-config-support.svg?label=Downloads&color=aa3426&labelColor=151b23)][marketplace:versions]
 [![Discord](https://img.shields.io/badge/Puotek-%235865F2.svg?logo=discord&logoColor=white)][puotek:discord]
