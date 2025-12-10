@@ -7,7 +7,7 @@
 [![Version](https://img.shields.io/jetbrains/plugin/v/29234-arma-config-support.svg?label=Version&color=2835a9&labelColor=151b23)][marketplace:versions]
 [![Format](https://img.shields.io/badge/Keep_a_Changelog-[MAJOR.MINOR.PATCH]_--_YYYY--MM--DD-151b23?labelColor=f25d30)][keepachangelog]
 
-### TODO
+## TODO
 
 - Code reformatting
     - Semicolon always collapse with no-space
@@ -61,6 +61,7 @@
 - Suggestions/autocompletion when writing a path in macro at some point?
 - Filepath detection in strings (both `''` and `""`) and make em clickable
 - Make it so that some live templates dont activate when in comments or have them have that context in general if possible
+- SQF Injection support
 
 ## [Unreleased]
 
