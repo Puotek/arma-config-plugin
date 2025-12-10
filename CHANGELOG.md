@@ -59,6 +59,8 @@
 - Create a setting or something that allows you to set the file as the PREP file and make it check if all functions from x folder are PREPED
 - Suggestions/autocompletion when writing the #include path
 - Suggestions/autocompletion when writing a path in macro at some point?
+- Filepath detection in strings (both `''` and `""`) and make em clickable
+- Make it so that some live templates dont activate when in comments or have them have that context in general if possible
 
 ## [Unreleased]
 
