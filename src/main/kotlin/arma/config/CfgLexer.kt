@@ -297,10 +297,11 @@ class CfgLexer : LexerBase() {
         if (tokenChar == '\'') {
             while (tokenEnd < regionEnd) {
                 if (buffer[tokenEnd] == '\n' || buffer[tokenEnd] == '\r') break
-                if (buffer[tokenEnd - 1] == '/' || buffer[tokenEnd] == '/') break
-                if (buffer[tokenEnd - 1] == '/' || buffer[tokenEnd] == '*') break
+                if (buffer[tokenEnd - 1] == '/' && buffer[tokenEnd] == '/') break
+                if (buffer[tokenEnd - 1] == '/' && buffer[tokenEnd] == '*') break
                 tokenEnd++
             }
+            tokenEnd--
             while (tokenEnd > tokenStart) {
                 if (buffer[tokenEnd] == '\'') {
                     tokenEnd++
@@ -309,6 +310,7 @@ class CfgLexer : LexerBase() {
                 }
                 tokenEnd--
             }
+            tokenEnd++
             tokenType = TokenType.BAD_CHARACTER
             return
         }
