@@ -22,35 +22,31 @@ import com.intellij.psi.util.PsiTreeUtil
  */
 @Suppress("InspectionDescriptionNotFoundInspection")
 class DuplicateAssignmentInspection : LocalInspectionTool() {
-
     override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor {
         return object : PsiElementVisitor() {
             override fun visitElement(element: PsiElement) {
-                if (element is ClassBody) checkClass(element, holder)
-            }
-        }
-    }
-
-    private fun checkClass(classBody: ClassBody, holder: ProblemsHolder) {
-        // Direct child parameter & array blocks of this class
-        val parameterBlocks = PsiTreeUtil.getChildrenOfTypeAsList(classBody, ParameterBlock::class.java)
-        if (parameterBlocks.isNotEmpty()) {
-            val firstByName = mutableMapOf<String, PsiElement>()
-            for (block in parameterBlocks) {
-                val ident = block.firstChild.node.text.trim()
-                if (ident.isEmpty()) continue
-                if (firstByName.containsKey(ident)) holder.registerProblem(block.firstChild, "Duplicate parameter '$ident' in class")
-                else firstByName[ident] = block
-            }
-        }
-        val arrayBlocks = PsiTreeUtil.getChildrenOfTypeAsList(classBody, ArrayBlock::class.java)
-        if (arrayBlocks.isNotEmpty()) {
-            val firstByName = mutableMapOf<String, PsiElement>()
-            for (block in arrayBlocks) {
-                val ident = block.firstChild.node.text.trim()
-                if (ident.isEmpty()) continue
-                if (firstByName.containsKey(ident)) holder.registerProblem(block.firstChild, "Duplicate array parameter '$ident' in class")
-                else firstByName[ident] = block
+                if (element is ClassBody) {
+                    val parameterBlocks = PsiTreeUtil.getChildrenOfTypeAsList(element, ParameterBlock::class.java)
+                    if (parameterBlocks.isNotEmpty()) {
+                        val firstByName = mutableMapOf<String, PsiElement>()
+                        for (block in parameterBlocks) {
+                            val ident = block.firstChild
+                            val name = ident.node.text.trim()
+                            if (name.isEmpty()) continue
+                            if (firstByName.putIfAbsent(name, block) != null) holder.registerProblem(ident, "Duplicate parameter '$name' in class")
+                        }
+                    }
+                    val arrayBlocks = PsiTreeUtil.getChildrenOfTypeAsList(element, ArrayBlock::class.java)
+                    if (arrayBlocks.isNotEmpty()) {
+                        val firstByName = mutableMapOf<String, PsiElement>()
+                        for (block in arrayBlocks) {
+                            val ident = block.firstChild
+                            val name = ident.node.text.trim()
+                            if (name.isEmpty()) continue
+                            if (firstByName.putIfAbsent(name, block) != null) holder.registerProblem(ident, "Duplicate array parameter '$name' in class")
+                        }
+                    }
+                }
             }
         }
     }

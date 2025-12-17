@@ -7,7 +7,7 @@
 <templateSet group="Arma Config">
     <template
             name="class"
-            value="class $NAME$ {&#10;&#9;$END$&#10;};"
+            value="class $END$;"
             description="Class declaration"
             toReformat="true"
             toShortenFQNames="false">

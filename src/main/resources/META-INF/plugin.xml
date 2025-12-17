@@ -80,7 +80,7 @@
         <!-- INSPECTIONS -->
         <localInspection
                 language="ArmaConfig"
-                shortName="ArmaCommaInParentheses"
+                shortName="CommaInMacroInspection"
                 displayName="Comma inside parentheses"
                 groupName="Arma Config"
                 enabledByDefault="true"
@@ -88,12 +88,20 @@
                 implementationClass="arma.config.inspections.CommaInMacroInspection"/>
         <localInspection
                 language="ArmaConfig"
-                shortName="ArmaDuplicateAssignment"
-                displayName="Duplicate parameter assignment in class"
+                shortName="DuplicateAssignmentInspection"
+                displayName="Duplicate parameter or array"
                 groupName="Arma Config"
                 enabledByDefault="true"
                 level="ERROR"
                 implementationClass="arma.config.inspections.DuplicateAssignmentInspection"/>
+        <localInspection
+                language="ArmaConfig"
+                shortName="DuplicateClassInspection"
+                displayName="Duplicate class"
+                groupName="Arma Config"
+                enabledByDefault="true"
+                level="ERROR"
+                implementationClass="arma.config.inspections.DuplicateClassInspection"/>
         <localInspection
                 language="ArmaConfig"
                 shortName="IdentifierStartingWithNumber"

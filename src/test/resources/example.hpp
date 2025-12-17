@@ -25,6 +25,8 @@ class InspectionTestingClass {
     duplicatedParam = 1;
     duplicatedParam = 1;
     trailingComma[] = {"hi",};
+    class duplicateClass;
+    class duplicateClass;
 };
 class NormalClass {
 

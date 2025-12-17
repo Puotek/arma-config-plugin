@@ -7,7 +7,7 @@
 [![Version](https://img.shields.io/jetbrains/plugin/v/29234-arma-config-support.svg?label=Version&color=2835a9&labelColor=151b23)][marketplace:versions]
 [![Format](https://img.shields.io/badge/Keep_a_Changelog-[MAJOR.MINOR.PATCH]_--_YYYY--MM--DD-151b23?labelColor=f25d30)][keepachangelog]
 
-### TODO
+### Planned
 
 - fixme better samples for settings pages `ArmaConfigColorSettingsPage` and `ArmaConfigLanguageCodeStyleSettingProvider`
 - Code reformatting
@@ -81,6 +81,7 @@
         - Leading commas
         - Space before/after `=`
 - Inspection for duplicate parameter assignment in the same class
+- Inspection for duplicate class in the same scope
 - Inspection for identifiers starting with numbers
 - Inspection for `#include` filepath being unresolved
 - Syntax support for:
