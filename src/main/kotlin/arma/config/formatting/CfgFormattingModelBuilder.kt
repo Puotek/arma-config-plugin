@@ -155,7 +155,12 @@ class CfgFormattingModelBuilder : FormattingModelBuilder {
                 }
 
                 CfgTypes.ARRAY_BLOCK -> {
-                    if (rightType == CfgTypes.EQUAL) {
+                    if (rightType == CfgTypes.LBRACKET ||
+                        rightType == CfgTypes.RBRACKET ||
+                        leftType == CfgTypes.PLUS) return Spacing.createSpacing(
+                        0, 0, 0, false, 0
+                    )
+                    if (rightType == CfgTypes.EQUAL || rightType == CfgTypes.PLUS) {
                         val spaceEqualBefore = codeStyleSettings.ARRAYS_SPACE_EQUALS_BEFORE
                         return Spacing.createSpacing(
                             spaceEqualBefore, spaceEqualBefore, 0, false, 0
