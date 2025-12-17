@@ -94,33 +94,67 @@ class CfgFormattingModelBuilder : FormattingModelBuilder {
 
             val commonParent = leftNode?.treeParent?.elementType
             assert(commonParent == rightNode?.treeParent?.elementType)
+            val commonParentNode = leftNode!!.treeParent
+
+            if (commonParent == CfgTypes.MACRO_BODY) return null
 
             when (leftType) {
                 CfgTypes.LINE_COMMENT, CfgTypes.BLOCK_COMMENT, CfgTypes.PREPROCESSOR -> return null
+
+                //todo move to commonParent checking and add respective settings for KEEP_EMPTY_ONELINE
                 CfgTypes.LBRACE if rightType == CfgTypes.RBRACE -> return Spacing.createSpacing(
                     0, 0, 0, false, 0
                 )
             }
             when (rightType) {
                 CfgTypes.LINE_COMMENT, CfgTypes.BLOCK_COMMENT, CfgTypes.PREPROCESSOR -> return null
+                CfgTypes.SEMICOLON -> return Spacing.createSpacing(
+                    0, 0, 0, false, 0
+                )
             }
             when (commonParent) {
-                CfgTypes.CLASS_BODY -> return when (leftType) {
-                    CfgTypes.IDENTIFIER if rightType == CfgTypes.SEMICOLON -> Spacing.createSpacing(
-                        0, 0, 0, false, 0
+                CfgTypes.CLASS_BLOCK -> {
+                    if (leftType == CfgTypes.CLASS_KEYWORD) return Spacing.createSpacing(
+                        1, 1, 0, false, 0
                     )
+                    if (rightType == CfgTypes.CLASS_EXTENSION) {
+                        val spaceBeforeColon = codeStyleSettings.CLASS_SPACE_COLON_BEFORE.toInt()
+                        return Spacing.createSpacing(
+                            spaceBeforeColon, spaceBeforeColon, 0, false, 0
+                        )
+                    }
+                    if (rightType == CfgTypes.CLASS_BODY) {
+                        val spaceBeforeBody = codeStyleSettings.CLASS_SPACE_BEFORE_BODY.toInt()
+                        val wrap = codeStyleSettings.CLASS_WRAP(rightNode)
+                        val newline = codeStyleSettings.CLASS_NEWLINE_BODY_OPEN
+                        return Spacing.createSpacing(
+                            spaceBeforeBody, spaceBeforeBody, (wrap && newline).toInt(), false, 0
+                        )
+                    }
+                }
 
-                    else -> Spacing.createSpacing(
-                        1, 1, 1, true, 3
+                CfgTypes.CLASS_EXTENSION -> {
+                    val spaceAfterColon = codeStyleSettings.CLASS_SPACE_COLON_AFTER.toInt()
+                    if (leftType == CfgTypes.COLON) return Spacing.createSpacing(
+                        spaceAfterColon, spaceAfterColon, 0, false, 0
+                    )
+                }
+
+                CfgTypes.CLASS_BODY -> {
+                    val wrap = codeStyleSettings.CLASS_WRAP(commonParentNode)
+                    val newLine = codeStyleSettings.CLASS_NEWLINE_BODY_CLOSE
+                    val spaceWrapped = codeStyleSettings.CLASS_SPACE_WRAPPED.toInt()
+                    //todo implement setting for collapse empty
+//                    if (leftType == CfgTypes.LBRACE && rightType == CfgTypes.RBRACE)
+                    if (leftType == CfgTypes.LBRACE) return Spacing.createSpacing(
+                        spaceWrapped, spaceWrapped, wrap.toInt(), false, 0
+                    )
+                    if (rightType == CfgTypes.RBRACE) return Spacing.createSpacing(
+                        spaceWrapped, spaceWrapped, (wrap && newLine).toInt(), false, 0
                     )
                 }
 
                 CfgTypes.ARRAY_BLOCK -> {
-                    if (leftType == CfgTypes.ARRAY_BODY) {
-                        return Spacing.createSpacing(
-                            0, 0, 0, false, 0
-                        )
-                    }
                     if (rightType == CfgTypes.EQUAL) {
                         val spaceEqualBefore = codeStyleSettings.ARRAYS_SPACE_EQUALS_BEFORE
                         return Spacing.createSpacing(
@@ -138,7 +172,7 @@ class CfgFormattingModelBuilder : FormattingModelBuilder {
                 }
 
                 CfgTypes.ARRAY_BODY -> {
-                    val wrap = codeStyleSettings.ARRAYS_WRAP(leftNode.treeParent)
+                    val wrap = codeStyleSettings.ARRAYS_WRAP(commonParentNode)
                     val leadingCommas = codeStyleSettings.ARRAYS_LEADING_COMMAS
                     val newLine = codeStyleSettings.ARRAYS_NEWLINE_BODY_CLOSE
                     if (leftType == CfgTypes.LBRACE) return Spacing.createSpacing(
@@ -157,41 +191,10 @@ class CfgFormattingModelBuilder : FormattingModelBuilder {
                     )
                 }
 
-                CfgTypes.CLASS_BLOCK -> {
-                    //space after `class`
-                    if (leftType == CfgTypes.CLASS_KEYWORD) return Spacing.createSpacing(
-                        1, 1, 0, false, 0
-                    )
-                    //space before body
-                    if (rightType == CfgTypes.CLASS_BODY) return Spacing.createSpacing(
-                        1, 1, 0, false, 0
-                    )
-                    //no space before `;`
-                    if (rightType == CfgTypes.SEMICOLON) return Spacing.createSpacing(
-                        0, 0, 0, false, 0
-                    )
-                    //space before `:`
-                    if (rightType == CfgTypes.CLASS_EXTENSION) return Spacing.createSpacing(
-                        1, 1, 0, false, 0
-                    )
-                }
+                CfgTypes.DELETE_BLOCK -> if (leftType == CfgTypes.DELETE_KEYWORD) return Spacing.createSpacing(
+                    1, 1, 0, false, 0
+                )
 
-                CfgTypes.DELETE_BLOCK -> {
-                    //space after `class`
-                    if (leftType == CfgTypes.DELETE_KEYWORD) return Spacing.createSpacing(
-                        1, 1, 0, false, 0
-                    )
-                    //no space before `;`
-                    if (rightType == CfgTypes.SEMICOLON) return Spacing.createSpacing(
-                        0, 0, 0, false, 0
-                    )
-                }
-
-                CfgTypes.CLASS_EXTENSION -> {
-                    if (leftType == CfgTypes.COLON) return Spacing.createSpacing(
-                        1, 1, 0, false, 0
-                    )
-                }
             }
             return null
         }

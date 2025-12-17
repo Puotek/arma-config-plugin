@@ -11,15 +11,8 @@
 
 - fixme better samples for settings pages `ArmaConfigColorSettingsPage` and `ArmaConfigLanguageCodeStyleSettingProvider`
 - Code reformatting
-    - Semicolon always collapse with no-space
     - Arrays
         - Auto insert comma after last element
-        - Spaces between `{}` when collapsed with elements
-    - Classes
-        - Wrapping `ALWAYS/NEVER/SMART`
-        - `{` on newline placement
-        - Space before/after `:`
-        - Space before `{`
         - Spaces between `{}` when collapsed with elements
     - Assignments
         - Space before/after `=`
@@ -60,6 +53,8 @@
 - Filepath detection in strings (both `''` and `""`) and make em clickable
 - Make it so that some live templates don't activate when in comments or have them have that context in general if possible
 - SQF Injection support
+- Improve macro highlihting, keyword purple, first word (separated by spaces) white, everything assigned in Yellow for example
+- Add Inspection for `#include` that will show warning if included file is not found
 
 ## [Unreleased]
 
@@ -73,7 +68,14 @@
 - Smart Enter processor
 - Live Templates group and basic built-in templates
 - Code reformatting
+    - Semicolon always collapse with no-space
     - Collapse empty `{}` blocks
+    - Class
+        - Wrapping `ALWAYS/SMART`
+        - `{` and `}` newline placement
+        - Space before/after `:`
+        - Spaces between `{}` when collapsed with elements
+        - Space before `{`
     - Arrays
         - Wrapping `ALWAYS/NEVER/SMART`
         - `{` and `}` newline placement

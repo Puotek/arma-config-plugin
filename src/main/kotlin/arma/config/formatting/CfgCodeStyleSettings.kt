@@ -25,6 +25,31 @@ class CfgCodeStyleSettings(container: CodeStyleSettings) : CustomCodeStyleSettin
     }
 
     @JvmField
+    var CLASS_WRAP: Int = WrapSetting.SMART.ordinal
+
+    @JvmField
+    var CLASS_NEWLINE_BODY_OPEN: Boolean = false
+
+    @JvmField
+    var CLASS_NEWLINE_BODY_CLOSE: Boolean = true
+
+    //fixme rename to COLLAPSE_EMPTY_BODY
+    @JvmField
+    var CLASS_KEEP_EMPTY_BODY_ONELINE: Boolean = true
+
+    @JvmField
+    var CLASS_SPACE_BEFORE_BODY: Boolean = true
+
+    @JvmField
+    var CLASS_SPACE_COLON_BEFORE: Boolean = true
+
+    @JvmField
+    var CLASS_SPACE_COLON_AFTER: Boolean = true
+
+    @JvmField
+    var CLASS_SPACE_WRAPPED: Boolean = true
+
+    @JvmField
     var ARRAYS_WRAP: Int = WrapSetting.SMART.ordinal
 
     @JvmField
@@ -32,6 +57,10 @@ class CfgCodeStyleSettings(container: CodeStyleSettings) : CustomCodeStyleSettin
 
     @JvmField
     var ARRAYS_NEWLINE_BODY_CLOSE: Boolean = true
+
+    //fixme rename to COLLAPSE_EMPTY_BODY
+    @JvmField
+    var ARRAYS_KEEP_EMPTY_BODY_ONELINE: Boolean = true
 
     @JvmField
     var ARRAYS_LEADING_COMMAS: Boolean = false
@@ -49,7 +78,10 @@ class CfgCodeStyleSettings(container: CodeStyleSettings) : CustomCodeStyleSettin
     var ARRAYS_SPACE_EQUALS_AFTER: Boolean = true
 
     @JvmField
-    var KEEP_EMPTY_ARRAY_ON_ONE_LINE: Boolean = true
+    var PARAMETER_SPACE_EQUALS_BEFORE: Boolean = true
+
+    @JvmField
+    var PARAMETER_SPACE_EQUALS_AFTER: Boolean = true
 
     @JvmField
     var BLANK_LINES_AROUND_CLASS: Int = 1
@@ -96,6 +128,20 @@ class CfgCodeStyleSettings(container: CodeStyleSettings) : CustomCodeStyleSettin
             WrapSetting.MULTILINE -> true
             WrapSetting.SMART -> detectBodyLayout(body)
         }
+
+        fun CLASS_WRAP(body: ASTNode): Boolean = helper(body, raw.CLASS_WRAP)
+
+        val CLASS_NEWLINE_BODY_OPEN: Boolean get() = raw.CLASS_NEWLINE_BODY_OPEN
+
+        val CLASS_NEWLINE_BODY_CLOSE: Boolean get() = raw.CLASS_NEWLINE_BODY_CLOSE
+
+        val CLASS_SPACE_COLON_BEFORE: Boolean get() = raw.CLASS_SPACE_COLON_BEFORE
+
+        val CLASS_SPACE_COLON_AFTER: Boolean get() = raw.CLASS_SPACE_COLON_AFTER
+
+        val CLASS_SPACE_BEFORE_BODY: Boolean get() = raw.CLASS_SPACE_BEFORE_BODY
+
+        val CLASS_SPACE_WRAPPED: Boolean get() = raw.CLASS_SPACE_WRAPPED
 
         fun ARRAYS_WRAP(body: ASTNode): Boolean = helper(body, raw.ARRAYS_WRAP)
 
