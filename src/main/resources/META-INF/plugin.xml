@@ -110,6 +110,14 @@
                 enabledByDefault="true"
                 level="ERROR"
                 implementationClass="arma.config.inspections.TrailingCommaInspection"/>
+        <localInspection
+                language="ArmaConfig"
+                shortName="UnresolvedIncludeInspection"
+                displayName="Included file not found"
+                groupName="Arma Config"
+                enabledByDefault="true"
+                level="ERROR"
+                implementationClass="arma.config.inspections.UnresolvedIncludeInspection"/>
 
     </extensions>
 </idea-plugin>

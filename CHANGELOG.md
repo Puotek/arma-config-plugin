@@ -1,4 +1,4 @@
-[keepachangelog]: https://keepachangelog.com/en/1.1.0/
+[keepachangelog]: https://keepachangelog.com/en/
 
 [marketplace:versions]: https://plugins.jetbrains.com/plugin/29234-arma-config-support/versions
 
@@ -54,7 +54,6 @@
 - Make it so that some live templates don't activate when in comments or have them have that context in general if possible
 - SQF Injection support
 - Improve macro highlihting, keyword purple, first word (separated by spaces) white, everything assigned in Yellow for example
-- Add Inspection for `#include` that will show warning if included file is not found
 
 ## [Unreleased]
 
@@ -83,6 +82,7 @@
         - Space before/after `=`
 - Inspection for duplicate parameter assignment in the same class
 - Inspection for identifiers starting with numbers
+- Inspection for `#include` filepath being unresolved
 - Syntax support for:
     - Single-quote strings `' '` with special highlighting
     - `+=` operator for array assignments
