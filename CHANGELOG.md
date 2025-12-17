@@ -115,13 +115,6 @@
 
 ## [1.0.1] - 2025-12-03
 
-### Dev
-
-- Updated `README` with plugin ID for correct links
-- Populated `CHANGELOG` with version history
-
-## [1.0.0] - 2025-12-03
-
 ### Added
 
 - Syntax parsing with support for:
@@ -144,3 +137,8 @@
 - Inspections
     - Commas inside macros
     - Array syntax validation `property[] = {};`
+
+### Dev
+
+- Updated `README` with plugin ID for correct links
+- Populated `CHANGELOG` with version history
