@@ -63,6 +63,7 @@ class NormalClass {
         AttributesDescriptor("Comment", CfgSyntaxHighlighter.COMMENT),
         AttributesDescriptor("Preprocessor keyword", CfgSyntaxHighlighter.PREPROCESSOR),
         AttributesDescriptor("Single-quote block", CfgSyntaxHighlighter.SINGLE_QUOTE_BLOCK),
+        AttributesDescriptor("Macro", CfgSyntaxHighlighter.MACRO),
         AttributesDescriptor("Bad character", CfgSyntaxHighlighter.BAD_CHAR),
     )
 

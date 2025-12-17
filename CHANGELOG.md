@@ -53,7 +53,8 @@
 - Filepath detection in strings (both `''` and `""`) and make em clickable
 - Make it so that some live templates don't activate when in comments or have them have that context in general if possible
 - SQF Injection support
-- Improve macro highlihting, keyword purple, first word (separated by spaces) white, everything assigned in Yellow for example
+- Improve `#define` highlihting, keyword normal, first word (separated by spaces) as MACRO_KEY(or separate new key), everything assigned in Yellow for example
+- HEMTT has its own preproc stuff? https://github.com/acemod/ACE3/blob/ca7f71d0924780913c78fec86c4c2ee78f3b56a1/addons/advanced_fatigue/CfgEden.hpp#L14C11-L14C50
 
 ## [Unreleased]
 
@@ -84,6 +85,7 @@
 - Inspection for duplicate class in the same scope
 - Inspection for identifiers starting with numbers
 - Inspection for `#include` filepath being unresolved
+- Improved syntax highlighting for `MACRO()`
 - Syntax support for:
     - Single-quote strings `' '` with special highlighting
     - `+=` operator for array assignments

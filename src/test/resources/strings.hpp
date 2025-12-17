@@ -26,6 +26,13 @@ The output is always in the comment on the parameter and if config failed to bin
 
 
 class StringTest {
+
+    advExample = SQ((_this select 0) call MACRO(canMovePack) && {backpack (_this select 0) != '' || {(_this select 0) call MACRO(chestpack) != ''}});
+                //"(_this select 0) call canMovePack && {backpack (_this select 0) != '' || {(_this select 0) call chestpack != ''}}"
+    //based on this advExample I can assume that '' is resolved after all surrounding(or all completly) macros are resolved, so if it was inside a quoting macro it will become part of a string and be ignored
+
+
+
     double= "substring"; //"substring"
     double = "Here is a ""substring"""; //"Here is a ""substring"""
     double = "Here is a """; //"Here is a """

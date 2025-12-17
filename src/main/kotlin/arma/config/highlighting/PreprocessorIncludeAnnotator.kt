@@ -8,7 +8,6 @@ import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
 
 class PreprocessorIncludeAnnotator : Annotator {
-
     override fun annotate(element: PsiElement, holder: AnnotationHolder) {
         // Only interested in preprocessor tokens
         if (element.node.elementType != CfgTypes.PREPROCESSOR) return

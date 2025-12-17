@@ -72,6 +72,9 @@
         <!-- ANNOTATORS-->
         <annotator
                 language="ArmaConfig"
+                implementationClass="arma.config.highlighting.MacroAnnotator"/>
+        <annotator
+                language="ArmaConfig"
                 implementationClass="arma.config.highlighting.SingleQuoteInnerStringAnnotator"/>
         <annotator
                 language="ArmaConfig"

@@ -95,7 +95,7 @@ private macroElement ::= LBRACE
                        | COMMA
                        | DOT
 
-private macroAtom ::= macroElement | LPAREN macroAtom+ RPAREN
+private macroAtom ::= macroBody | macroElement | LPAREN macroAtom+ RPAREN
 
 macroBody ::= TEXT LPAREN macroAtom+ RPAREN
 

@@ -64,7 +64,6 @@ class CfgSyntaxHighlighter : SyntaxHighlighter {
     }
 
     companion object {
-        // Make these @JvmField so they can be referenced from the ColorSettingsPage
 
         @JvmField
         val KEYWORD: TextAttributesKey = TextAttributesKey.createTextAttributesKey(
@@ -119,10 +118,13 @@ class CfgSyntaxHighlighter : SyntaxHighlighter {
 
         @JvmField
         val SINGLE_QUOTE_BLOCK: TextAttributesKey = TextAttributesKey.createTextAttributesKey(
-            "ARMA_CONFIG_SINGLE_QUOTE_BLOCK",
-            // Base it on STRING so theme inheritance is nice, but user can change it separately
-            DefaultLanguageHighlighterColors.VALID_STRING_ESCAPE
+            "ARMA_CONFIG_SINGLE_QUOTE_BLOCK", DefaultLanguageHighlighterColors.VALID_STRING_ESCAPE
         )
+
+        @JvmField
+        val MACRO: TextAttributesKey = TextAttributesKey.createTextAttributesKey(
+            "ARMA_CONFIG_MACRO", DefaultLanguageHighlighterColors.INSTANCE_FIELD
+        ) // used for MacroAnnotator.kt
 
 
         // Bad characters -> use the global “Bad character” style (red by default)

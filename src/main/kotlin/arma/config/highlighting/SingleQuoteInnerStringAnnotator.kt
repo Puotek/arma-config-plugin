@@ -8,7 +8,6 @@ import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
 
 class SingleQuoteInnerStringAnnotator : Annotator {
-
     override fun annotate(element: PsiElement, holder: AnnotationHolder) {
         // Only care about the PSI node for singleQuoteBlock
         if (element.node.elementType != CfgTypes.SINGLE_QUOTE) return
